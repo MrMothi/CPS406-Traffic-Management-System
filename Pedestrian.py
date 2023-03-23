@@ -1,0 +1,2 @@
+class Pedestrian:
+    pass

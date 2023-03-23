@@ -1,0 +1,2 @@
+class TrafficLight:
+    pass
