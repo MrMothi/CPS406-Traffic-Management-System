@@ -6,4 +6,4 @@ class Vehicle:
         self.name = "" #car id
         self.speed = 0
         self.type = "" #can be either car, public transport, or emergency
-        self.plate = "" 
+        self.plate = ""
