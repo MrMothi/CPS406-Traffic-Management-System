@@ -19,6 +19,8 @@ class Intersection:
    #4 threads for the 4 sets of lights (1 of each per road), 2 stoplights, 2 pedestrianlights
    #these threads will source info for multiple light objects
    #can be terminated here, and run with ifstatements for the light timings, and or possibly the sleep timings to adjust the durations
-
+ 
     #all pedestrians(maybe just 1, which induces others if leaving queue) and vehicles 1st in queue run on busy wait queues, and
     #based on thier action will check the appropriate queue & stoplight timing variables both within intersection, before moving
+   #MAKE NOTE OF CHANGES IN REPORT SUBMISSION
+   

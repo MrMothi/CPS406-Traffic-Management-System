@@ -1,3 +1,4 @@
+import Vehicle
 class PublicTransit(Vehicle):
     def __init__(self, operational, inIntersection, stopped, name, speed, type, plate, inBusLane):
         super().__init__(operational, inIntersection, stopped, name, speed, type, plate)
