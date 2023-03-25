@@ -1,5 +1,5 @@
 class Intersection:
-    pass
+    def __init__(self, pedestrianCount, vehicleCount, stoplightTiming, pedestrianLightTiming, incident, ):
 
 
 
@@ -24,3 +24,6 @@ class Intersection:
     #based on thier action will check the appropriate queue & stoplight timing variables both within intersection, before moving
    #MAKE NOTE OF CHANGES IN REPORT SUBMISSION
    
+
+
+   #make object get out of list/dequeue, after creating thread in intersection for the time occupied
