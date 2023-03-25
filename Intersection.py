@@ -12,11 +12,13 @@ class Intersection:
 
    # 12-16 threads for locations on the roads at the intersection, 4 for sidewalks, 3 per enterance for cars on the intersections
    # are joined after the end of the loop
-   # have a while loop for the whole system here, possibly treat this class as a object
+   # have a while loop for the whole system here, possibly treat this class as a object, run threads within while maybe or by methods??
    # other objects such as cars and such check the variables changed by the threads to move through the intersection or not
    # ie for emergencies, we can set x areas of the 16 to be filled for y amount of time
 
    #4 threads for the 4 sets of lights (1 of each per road), 2 stoplights, 2 pedestrianlights
    #these threads will source info for multiple light objects
    #can be terminated here, and run with ifstatements for the light timings, and or possibly the sleep timings to adjust the durations
-   
+
+    #all pedestrians(maybe just 1, which induces others if leaving queue) and vehicles 1st in queue run on busy wait queues, and
+    #based on thier action will check the appropriate queue & stoplight timing variables both within intersection, before moving
