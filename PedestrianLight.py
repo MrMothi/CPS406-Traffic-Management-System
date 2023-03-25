@@ -5,3 +5,10 @@ class PedestrianLight:
         self.signalColour = signalColour #string
         self.timeToWalk = timeToWalk #int
         self.walkTiming = walkTiming #int
+    
+    def setStop(self):
+        return True
+    
+    def setGo(self):
+        return True
+    
