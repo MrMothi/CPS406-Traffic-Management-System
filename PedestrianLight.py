@@ -12,3 +12,4 @@ class PedestrianLight:
     def setGo(self):
         return True
     
+     #NOTE: JUST SKELETON CODE FOR NOW, WILL NEED TO IMPLEMENT THEM LATER WHEN WRITING MAIN CODE
