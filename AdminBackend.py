@@ -1,5 +1,4 @@
 import Intersection
-import TrafficLight
 from Vehicle import EmergencyVehicle
 
 class AuthorizedUser:
