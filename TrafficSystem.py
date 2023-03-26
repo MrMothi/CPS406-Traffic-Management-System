@@ -12,7 +12,7 @@ class TrafficSystem:
     loggedIn = False
     
     @classmethod
-    def validateLogin(cls):
+    def login(cls):
         username = str(input("Username: "))
         password = str(input("Password: "))
         
