@@ -22,15 +22,44 @@ class Intersection:
         # self.roads = constructObjects()
 
         # self.roads =  roads: tuple(Road, Road)
-        
+    
+
+
+        #array holding all stoplight thread variables
+        stopLightThreads = []
+        #array holding all pedestrianlight thread variables
+        pedLightThreads = []
+        #array holding all other running threads
+        otherThreads = []
+
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
-
-
+        occ1 = False                                               #   occ# occupancy where  #mod4 = 
+        occ2 = False                                               # 1 is turning left
+        occ3 = False                                               # 2 is going straight
+        occ4 = False                                               # 3 is turning right
+        occ5 = False                                               # 4 is pedestrian walking
+        occ6 = False      
+        occ7 = False
+        occ8 = False
+        occ9 = False
+        occ10 = False
+        occ11 = False
+        occ12 = False
+        occ13 = False
+        occ14 = False
+        occ15 = False
+        occ16 = False
 
     def constructObjects(self):
     #     r1 = Road(self)     #has vehicle arrays 1 and 3                            #implement this later after threads
     #     r2 = Road(self)     #has vehicle arrays 2 and 4
         return None
+
+    def createStopLightThreads(self):
+        pass
+
+    def createPedestrianLightThreads(self):
+        pass
 
     #Thread function to update a variable after a given time
     def updateAfterTime(self, var, t):        #pass in reference to instance variable and time to wait until making it false again
@@ -110,6 +139,30 @@ class Intersection:
 
 
 
-
+#-____________________________________________________________________________________________________________________________
 #FIRST SET UP THREADS FOR THE LOCATION OCCUPIED VARS, THEN SET UP OBJECTS, LIGHTS, LIGHT THREADS, THEN CAR AI, THEN PEDESTRIAN AI
                                             #DONT FORGET PEDESTRIAN THREADS AND AI, GIVE PEDESTRIANS RIGHT OF WAY
+
+
+                                            #emergency all location variables now True (indicating area is taken)
+                                            #4 way stop and call new method in vehicle whihc is force action, give wait between loop 2 seconds
+                                                #cycle through vehicle arrays per road in circle
+                                                #force action just goes without checking
+
+
+
+                                        #function for creating all 2 stoplight threads and function for pedeslight threads,
+                                        #instance variable for threads
+                                        #so that admin may control 
+                                        #maybe have timings for each light (or kill thread, send set red function)
+                                        
+
+                                        #for finding appropirate occupancy variables, maybe hardcode(need to have variable to determine which vehicle
+                                        # array)
+                                        #otherwise find formula to find the road then work from that road#
+
+
+
+                                        # have while conditions in threads to end them externally (like object variable)
+
+                                        #read all these notes
