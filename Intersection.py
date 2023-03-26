@@ -15,8 +15,18 @@ class Intersection:
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
 
+    #methods from UML
+    def checkTrafficSignal(self, rd: Road):
+        # skeleton atm, rd will be grabbed from one of the roads of the intersection: self.road
+        return rd.getStatus
     
-
+    def checkPedestrianSignal(self, rd: Road):
+        # checks for pSignal from sidewalk linked to rd
+        return
+    
+    def requestEmergencySignal(self, rd: Road):
+        return
+    
 
 #manages the creation of vehicles and pedestrians
 #manages the timings of signals, events and also changes made by the admin
