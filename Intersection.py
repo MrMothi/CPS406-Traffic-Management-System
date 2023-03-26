@@ -7,10 +7,10 @@ from TrafficLight import *
 
 class Intersection:
 
-    def __init__(self, stoplightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
+    def __init__(self, trafficlightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
         pedestrianCount: int = 0, vehicleCount: int = 0, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
 
-        self.stoplightTiming = stoplightTiming
+        self.trafficlightTiming = trafficlightTiming
         self.pedestrianLightTiming = pedestrianLightTiming
         self.pedestrianCount = pedestrianCount
         self.vehicleCount = vehicleCount
@@ -24,39 +24,47 @@ class Intersection:
         # self.roads =  roads: tuple(Road, Road)
     
 
+        #array holding trafficlights
+        self.trafficLightObj = []
+        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road1
+        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road2
 
-        #array holding all stoplight thread variables
-        stopLightThreads = []
+        #array holding all trafficlight thread variables
+        self.trafficLightThreads = []
         #array holding all pedestrianlight thread variables
-        pedLightThreads = []
+        self.pedLightThreads = []
         #array holding all other running threads
-        otherThreads = []
+        self.otherThreads = []
 
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
-        occ1 = False                                               #   occ# occupancy where  #mod4 = 
-        occ2 = False                                               # 1 is turning left
-        occ3 = False                                               # 2 is going straight
-        occ4 = False                                               # 3 is turning right
-        occ5 = False                                               # 4 is pedestrian walking
-        occ6 = False      
-        occ7 = False
-        occ8 = False
-        occ9 = False
-        occ10 = False
-        occ11 = False
-        occ12 = False
-        occ13 = False
-        occ14 = False
-        occ15 = False
-        occ16 = False
+        self.occ1 = False                                               #   occ# occupancy where  #mod4 = 
+        self.occ2 = False                                               # 1 is turning left
+        self.occ3 = False                                               # 2 is going straight
+        self.occ4 = False                                               # 3 is turning right
+        self.occ5 = False                                               # 4 is pedestrian walking
+        self.occ6 = False      
+        self.occ7 = False
+        self.occ8 = False
+        self.occ9 = False
+        self.occ10 = False
+        self.occ11 = False
+        self.occ12 = False
+        self.occ13 = False
+        self.occ14 = False
+        self.occ15 = False
+        self.occ16 = False
 
     def constructObjects(self):
     #     r1 = Road(self)     #has vehicle arrays 1 and 3                            #implement this later after threads
     #     r2 = Road(self)     #has vehicle arrays 2 and 4
         return None
 
-    def createStopLightThreads(self):
-        pass
+    #Creates threads for the two trafficlights, cycling through colours while also being opposite
+    def createTrafficLightThreads(self):
+        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[0].cycleLight1))
+        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[1].cycleLight2))
+        self.trafficLightThreads[0].start()
+        self.trafficLightThreads[1].start()
 
     def createPedestrianLightThreads(self):
         pass
@@ -70,10 +78,10 @@ class Intersection:
 
     #Main loop for the intersection
     def run(self):
+        
         #STARTING THREADS FOR LIGHTS
-        t1 = TrafficLight(True, "red")
-        trafflightR1 = threading.Thread(target=t1.cycleLight)
-        trafflightR1.start()
+        self.createTrafficLightThreads()
+
 
         #LOOP FOR THE INTERSECTION
         while(self.running):
@@ -84,9 +92,10 @@ class Intersection:
 
 
         #ENDING AND CATCHING THREADS
-        #ending the stoplight cycling threads
-        t1.operational = False
-        trafflightR1.join()
+        #ending the trafficlight cycling threads
+        self.trafficLightObj[0].operational = False
+        self.trafficLightObj[1].operational = False
+        # trafflightR1.join()
 
         #Printing done when the main loop is ended
         print("Done")
@@ -163,6 +172,23 @@ class Intersection:
 
 
 
-                                        # have while conditions in threads to end them externally (like object variable)
+                                        # have while conditions in threads to end them externally (like while occupied# != 0)
+
+
+                                        #have a separate lights setup function here that runs to offset the light timings
+                                        # green =   x - (x/2)         yellow = x/2
+
+                                        #make the occupancy threads based on time instead, to allow for multiple cars from the same intersection to go
+                                        # also maybe assume that same intersection can go concurrently after .25 seconds  (dont need to check if current lane is in intersection?)
+
+                                        #vehicle AI is a big set of if statments
+                                        #first checking road, then if light is green/yellow (maybe allow green only?/check lightTimeleft instance variable/just dont go on yellows yet)
+                                        #then check which array of the road its in
+                                        #then check appropirate variables of occ#
+
+                                        #pass in object of intersection to each lower object
+                                        #pass in road for cars and maybe sidewalk for pedestrian along with intersection
+                                        #intersection holds the lights
+                                        #add function in intersection to give timings & signal color or set them as global variables
 
                                         #read all these notes
