@@ -9,3 +9,7 @@ class Road:
         
         #abdullah testing
         #git git git
+    
+    def getStatus(self):
+        return self.operational
+    
