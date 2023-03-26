@@ -27,7 +27,7 @@ class TrafficSystem:
 
 
 
-    #Function to create the intersection
+    #Function to create the intersection, and returns a reference to it
     @classmethod
     def initializeIntersection(cls):
         inter = Intersection(5, 4, "", pedestrianCount=10, vehicleCount=10)

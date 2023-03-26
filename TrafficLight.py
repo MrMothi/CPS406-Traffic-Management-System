@@ -2,7 +2,7 @@ import time
 
 class TrafficLight:
     
-    signalTime = 5 #class variable for the traffic signal timings, can be edited globally by the intersection class
+    signalTime = 5 #default class variable for the traffic signal timings, can be edited globally by the intersection class
 
     def __init__(self, operational, signalColour):   
         self.operational = operational #bool
@@ -35,3 +35,5 @@ class TrafficLight:
             print("Now red2", flush=True)
             time.sleep(self.signalTime)
         return
+
+    #implement methods for changing signal to specific colour, make this break the threads and apply to both?

@@ -1,8 +1,10 @@
 import threading
-import time                                    #put the traffic and pedestrian lights here maybe 
+import time                                    
 import random
 from Road import *
+from Sidewalk import *
 from TrafficLight import *
+from PedestrianLight import *
 
 
 class Intersection:
@@ -10,7 +12,10 @@ class Intersection:
     def __init__(self, trafficlightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
         pedestrianCount: int = 0, vehicleCount: int = 0, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
 
+
+        # REGULAR INSTANCE VARIABLES----------------------------------------------------------------------------
         self.trafficlightTiming = trafficlightTiming
+        # TrafficLight.signalTime = trafficlightTiming #for some reason it doesnt work down there --------------------------------------
         self.pedestrianLightTiming = pedestrianLightTiming
         self.pedestrianCount = pedestrianCount
         self.vehicleCount = vehicleCount
@@ -19,16 +24,23 @@ class Intersection:
         self.incident = incident
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
-        # self.roads = constructObjects()
-
-        # self.roads =  roads: tuple(Road, Road)
     
 
-        #array holding trafficlights
+        # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
+        #array holding TrafficLightsights
         self.trafficLightObj = []
-        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road1
-        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road2
+        #array holding PedestrianLights
+        self.pedLightObj = []
+        #array holding Roads
+        self.roadsObj = [] #roads: tuple(Road, Road)
+        #array holding Sidewalks
+        self.sidewalkObj = []
+        
+        #calling method to create all objects
+        self.constructObjects()
 
+
+        #THREAD VARIABLES AND OCCUPANCY VARIABLES---------------------------------------------------------------
         #array holding all trafficlight thread variables
         self.trafficLightThreads = []
         #array holding all pedestrianlight thread variables
@@ -37,26 +49,47 @@ class Intersection:
         self.otherThreads = []
 
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
-        self.occ1 = False                                               #   occ# occupancy where  #mod4 = 
-        self.occ2 = False                                               # 1 is turning left
-        self.occ3 = False                                               # 2 is going straight
-        self.occ4 = False                                               # 3 is turning right
-        self.occ5 = False                                               # 4 is pedestrian walking
-        self.occ6 = False      
-        self.occ7 = False
-        self.occ8 = False
-        self.occ9 = False
-        self.occ10 = False
-        self.occ11 = False
-        self.occ12 = False
-        self.occ13 = False
-        self.occ14 = False
-        self.occ15 = False
-        self.occ16 = False
+        self.occ1 = 0                                               #   occ# occupancy where  #mod4 = 
+        self.occ2 = 0                                               # 1 is turning left
+        self.occ3 = 0                                               # 2 is going straight
+        self.occ4 = 0                                               # 3 is turning right
+        self.occ5 = 0                                               # 4 is pedestrian walking
+        self.occ6 = 0     
+        self.occ7 = 0                                               # <=0 means open, >0 means occupied for x seconds more 
+        self.occ8 = 0
+        self.occ9 = 0
+        self.occ10 = 0
+        self.occ11 = 0
+        self.occ12 = 0
+        self.occ13 = 0
+        self.occ14 = 0
+        self.occ15 = 0
+        self.occ16 = 0
 
+
+
+
+    #creates all the stationary objects for the intersection (Trafficlights, PedestrianLights, Roads, Sidewalks)
     def constructObjects(self):
-    #     r1 = Road(self)     #has vehicle arrays 1 and 3                            #implement this later after threads
-    #     r2 = Road(self)     #has vehicle arrays 2 and 4
+        #Lights are only made if they run at a separate colour cycle, other objects can reference the same light if they follow the same signal
+        #making trafficlights
+        TrafficLight.signalTime = self.trafficlightTiming
+        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road1
+        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road2
+        
+        # #making pedestrianlights
+        # self.pedLightObj.append(PedestrianLight())  #Pedestrian Lights for rd1 (for signalling across rd1)
+        # self.pedLightObj.append(PedestrianLight())  #Pedestrian Lights for rd2 (for signalling across rd2)
+
+        # #making sidewalks (Passing in intersection object reference)
+        # self.sidewalksObj.append(SideWalk())   #Sidewalk #1  for rd1      parallel to respectively numbered vehicle array       -----------implement more after car stuff finished---------
+        # self.sidewalksObj.append(SideWalk())   #Sidewalk #2  for rd2
+        # self.sidewalksObj.append(SideWalk())   #Sidewalk #3  for rd1
+        # self.sidewalksObj.append(SideWalk())   #Sidewalk #4  for rd2
+
+        #making roads  (Passing in intersection object reference)
+        self.roadsObj.append(Road(self, True, False, False, ['''sidewalks?'''], [], [], 1))     #has vehicle arrays 1 and 3   
+        self.roadsObj.append(Road(self, True, False, False, [], [], [], 2))     #has vehicle arrays 2 and 4
         return None
 
     #Creates threads for the two trafficlights, cycling through colours while also being opposite
@@ -69,11 +102,11 @@ class Intersection:
     def createPedestrianLightThreads(self):
         pass
 
-    #Thread function to update a variable after a given time
-    def updateAfterTime(self, var, t):        #pass in reference to instance variable and time to wait until making it false again
-        var = True
-        time.sleep(t)
-        var = False                        
+    #Thread function to keep decreasing variable until its <= 0, decreasing by 1 each time, and waiting 1 second each time
+    def updateAfterTime(self, var):        #pass in reference to instance variable
+        while(t>0):
+            t = t-1
+            time.sleep(1)                     
 
 
     #Main loop for the intersection
@@ -83,10 +116,10 @@ class Intersection:
         self.createTrafficLightThreads()
 
 
-        #LOOP FOR THE INTERSECTION
+        #MAIN LOOP FOR THE INTERSECTION--------------------------------------
         while(self.running):
             self.running = False
-        for i in range(50):
+        for i in range(100):
             print("1", end="", flush=True)
             time.sleep(.25)
 
@@ -95,7 +128,7 @@ class Intersection:
         #ending the trafficlight cycling threads
         self.trafficLightObj[0].operational = False
         self.trafficLightObj[1].operational = False
-        # trafflightR1.join()
+        #MAYBE INSTALL PACKAGE WHICH ENDS THE THREADS BY THROWING EXCEPTION IN THEM
 
         #Printing done when the main loop is ended
         print("Done")
@@ -190,5 +223,8 @@ class Intersection:
                                         #pass in road for cars and maybe sidewalk for pedestrian along with intersection
                                         #intersection holds the lights
                                         #add function in intersection to give timings & signal color or set them as global variables
+
+
+                                        #sidewalks hold 2 arrays for the two sides of the road, once pedestrian crosses, they get deleted from system& array
 
                                         #read all these notes
