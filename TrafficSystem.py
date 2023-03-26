@@ -9,12 +9,6 @@ class TrafficSystem:
     }
 
 
-    #Function to create the intersection
-    def initializeIntersection():
-        inter = Intersection()
-
-
-
     #implement login system here, backend for the frontend
     
     #prototype
@@ -31,5 +25,11 @@ class TrafficSystem:
             TrafficSystem.loggedIn = False
         return
 
-#not object class
-#fjfjfeof
+
+
+    #Function to create the intersection
+    @classmethod
+    def initializeIntersection(cls):
+        inter = Intersection(5, 4, "", pedestrianCount=10, vehicleCount=10)
+    
+

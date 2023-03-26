@@ -1,13 +1,13 @@
 import Road
 
 class Intersection:
-    def __init__(self, stoplightTiming: int, pedestrianLightTiming: int, weather: str, roads: tuple(Road, Road), running: bool = False,
-        pedestrianCount: int = 0, vehicleCount: int = 0, incident: bool = False, crossSignalRequested: bool = False, speedsData: list[int] = []):
+    def __init__(self, stoplightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
+        pedestrianCount: int = 0, vehicleCount: int = 0, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
 
         self.stoplightTiming = stoplightTiming
         self.pedestrianLightTiming = pedestrianLightTiming
         self.weather = weather
-        self.roads = roads
+        self.roads =  roads: tuple(Road, Road)
         self.running = running
         self.pedestrianCount = pedestrianCount
         self.vehicleCount = vehicleCount
