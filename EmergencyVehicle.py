@@ -1,4 +1,4 @@
-import Vehicle  #importing superclass of vehicle
+from Vehicle import Vehicle   #importing superclass of vehicle
 class EmergencyVehicle(Vehicle):
     def __init__(self, operational, inIntersection, stopped, name, speed, type, plate, onScene, emergencyType, emergencySignal):
         super().__init__(operational, inIntersection, stopped, name, speed, type, plate)

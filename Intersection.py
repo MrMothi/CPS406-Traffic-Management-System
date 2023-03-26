@@ -1,19 +1,74 @@
-import Road
+import threading
+import time                                    #put the traffic and pedestrian lights here maybe 
+import random
+from Road import *
+from TrafficLight import *
+
 
 class Intersection:
+
     def __init__(self, stoplightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
         pedestrianCount: int = 0, vehicleCount: int = 0, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
 
         self.stoplightTiming = stoplightTiming
         self.pedestrianLightTiming = pedestrianLightTiming
-        self.weather = weather
-        self.roads =  roads: tuple(Road, Road)
-        self.running = running
         self.pedestrianCount = pedestrianCount
         self.vehicleCount = vehicleCount
+        self.weather = weather
+        self.running = True   #running
         self.incident = incident
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
+        # self.roads = constructObjects()
+
+        # self.roads =  roads: tuple(Road, Road)
+        
+        #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
+
+
+
+    def constructObjects(self):
+    #     r1 = Road(self)     #has vehicle arrays 1 and 3                            #implement this later after threads
+    #     r2 = Road(self)     #has vehicle arrays 2 and 4
+        return None
+
+    #Thread function to update a variable after a given time
+    def updateAfterTime(self, var, t):        #pass in reference to instance variable and time to wait until making it false again
+        var = True
+        time.sleep(t)
+        var = False                        
+
+
+    #Main loop for the intersection
+    def run(self):
+        #STARTING THREADS FOR LIGHTS
+        t1 = TrafficLight(True, "red")
+        trafflightR1 = threading.Thread(target=t1.cycleLight)
+        trafflightR1.start()
+
+        #LOOP FOR THE INTERSECTION
+        while(self.running):
+            self.running = False
+        for i in range(50):
+            print("1", end="", flush=True)
+            time.sleep(.25)
+
+
+        #ENDING AND CATCHING THREADS
+        #ending the stoplight cycling threads
+        t1.operational = False
+        trafflightR1.join()
+
+        #Printing done when the main loop is ended
+        print("Done")
+        return None
+
+
+
+
+
+
+
 
     #methods from UML
     def checkTrafficSignal(self, rd: Road):
@@ -52,3 +107,9 @@ class Intersection:
 
 
    #make object get out of list/dequeue, after creating thread in intersection for the time occupied
+
+
+
+
+#FIRST SET UP THREADS FOR THE LOCATION OCCUPIED VARS, THEN SET UP OBJECTS, LIGHTS, LIGHT THREADS, THEN CAR AI, THEN PEDESTRIAN AI
+                                            #DONT FORGET PEDESTRIAN THREADS AND AI, GIVE PEDESTRIANS RIGHT OF WAY

@@ -1,8 +1,8 @@
-import Intersection
+from Intersection import *
 
 class TrafficSystem:
     intersectionName = "MetroFloRoad"
-    Intersection inter
+    inter = None  #variable for the intersection object (Future expansion to list of intersections)
     userInfoDict = {
         "Admin1" : "Pa55word",
         "Admin2" : "traffic"
@@ -31,5 +31,5 @@ class TrafficSystem:
     @classmethod
     def initializeIntersection(cls):
         inter = Intersection(5, 4, "", pedestrianCount=10, vehicleCount=10)
-    
+        return inter
 
