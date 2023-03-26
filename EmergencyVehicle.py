@@ -14,5 +14,3 @@ class EmergencyVehicle(Vehicle):
         # self.speed = speed
         # self.type = type
         # self.plate = plate
-
-        #testing git

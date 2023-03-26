@@ -1,6 +1,19 @@
-class Intersection:
-    def __init__(self, pedestrianCount, vehicleCount, stoplightTiming, pedestrianLightTiming, incident, ):
+import Road
 
+class Intersection:
+    def __init__(self, stoplightTiming: int, pedestrianLightTiming: int, weather: str, roads: tuple(Road, Road), running: bool = False,
+                 pedestrianCount: int = 0, vehicleCount: int = 0, incident: bool = False, crossSignalRequested: bool = False, speedsData: list[int] = []):
+
+        self.stoplightTiming = stoplightTiming
+        self.pedestrianLightTiming = pedestrianLightTiming
+        self.weather = weather
+        self.roads = roads
+        self.running = running
+        self.pedestrianCount = pedestrianCount
+        self.vehicleCount = vehicleCount
+        self.incident = incident
+        self.crossSignalRequested = crossSignalRequested
+        self.speedsData = speedsData
 
 
 #manages the creation of vehicles and pedestrians
