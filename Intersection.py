@@ -111,24 +111,26 @@ class Intersection:
 
     #Main loop for the intersection
     def run(self):
-        
-        #STARTING THREADS FOR LIGHTS
-        self.createTrafficLightThreads()
+        try:#maybe keep this for error proofing
 
+            #STARTING THREADS FOR LIGHTS
+            self.createTrafficLightThreads()
 
-        #MAIN LOOP FOR THE INTERSECTION--------------------------------------
-        while(self.running):
-            self.running = False
-        for i in range(100):
-            print("1", end="", flush=True)
-            time.sleep(.25)
+            #MAIN LOOP FOR THE INTERSECTION--------------------------------------
+            while(self.running):
+                self.running = False
+            for i in range(100):
+                print("1", end="", flush=True)
+                # print(self.checkTrafficSignal(self.roadsObj[1]))
+                time.sleep(.25)
 
-
-        #ENDING AND CATCHING THREADS
-        #ending the trafficlight cycling threads
-        self.trafficLightObj[0].operational = False
-        self.trafficLightObj[1].operational = False
-        #MAYBE INSTALL PACKAGE WHICH ENDS THE THREADS BY THROWING EXCEPTION IN THEM
+        except KeyboardInterrupt:
+            #ENDING AND CATCHING THREADS
+            #ending the trafficlight cycling threads
+            self.trafficLightObj[0].operational = False
+            self.trafficLightObj[1].operational = False
+            #MAYBE INSTALL PACKAGE WHICH ENDS THE THREADS BY THROWING EXCEPTION IN THEM
+        #else:
 
         #Printing done when the main loop is ended
         print("Done")
@@ -142,9 +144,10 @@ class Intersection:
 
 
     #methods from UML
+
+    #Given a Road object, it returns the current signal colour string for its respective trafficLights
     def checkTrafficSignal(self, rd: Road):
-        # skeleton atm, rd will be grabbed from one of the roads of the intersection: self.road
-        return rd.getStatus
+        return self.trafficLightObj[rd.rdNum-1].signalColour
     
     def checkPedestrianSignal(self, rd: Road):
         # checks for pSignal from sidewalk linked to rd
@@ -228,3 +231,15 @@ class Intersection:
                                         #sidewalks hold 2 arrays for the two sides of the road, once pedestrian crosses, they get deleted from system& array
 
                                         #read all these notes
+
+
+
+
+
+
+
+
+
+
+
+                                        #setup roading pinging then after do the ifstatements
