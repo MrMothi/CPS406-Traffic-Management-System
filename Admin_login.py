@@ -3,7 +3,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk, ImageDraw
 import AdminPanel
 from TrafficSystem import *
-from threading import thread
+from threading import Thread
 
 def main():
     def login(root):
@@ -12,7 +12,9 @@ def main():
         if TrafficSystem.login(username, password):
             root.destroy()
             inter = TrafficSystem.initializeIntersection()
-            inter.run()
+            # inter.run()
+            interloop = threading.Thread(target=inter.run) 
+            interloop.start()
             AdminPanel.create_intersection()
         
 

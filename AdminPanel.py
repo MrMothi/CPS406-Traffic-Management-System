@@ -212,10 +212,16 @@ def create_intersection():
 
         pedestrian_count = 0
         car_count = 0
+        
+        canvas.delete("C4")
+        canvas.delete("C2")
+        canvas.delete("C1")
+        canvas.delete("C3")
         display_car_count(canvas, 50, 450, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane2), "C4")
-        display_car_count(canvas, 750, 450, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C2")
+        display_car_count(canvas, 750, 450, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane2), "C3")
         display_car_count(canvas, 400, 100, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C1")
-        display_car_count(canvas, 400, 800, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane2), "C3")
+        display_car_count(canvas, 400, 780, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C2")
+
     # (50, 450),
     # (750, 450),
     # (400, 100),
