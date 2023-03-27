@@ -26,5 +26,4 @@ class TrafficSystem:
         return cls.inter
     
 if __name__ == "__main__":
-    # create_title_screen()
-    TrafficSystem.initializeIntersection()
+    create_title_screen()
