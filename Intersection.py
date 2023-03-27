@@ -135,8 +135,8 @@ class Intersection:
                 #Pinging every car first in the queue for each car array in the two roads
                 #Going clockwise from C1, C2, C3, C4 : where C1 and C3 are in rd1 and C2 and C4 are in rd2
                 print(self.roadsObj[0].vehiclesInLane1)   
-                print(self.roadsObj[0].vehiclesInLane2)
                 print(self.roadsObj[1].vehiclesInLane1)
+                print(self.roadsObj[0].vehiclesInLane2)
                 print(self.roadsObj[1].vehiclesInLane2)
                 print(self.occ)
                 
@@ -201,10 +201,27 @@ class Intersection:
         
         #IMPLEMENT RANDOMIZATION SINCE FOR NOW THIS IS A TESTER FUNCTION
 
+
+        #TESTING
         #cars in C1
-        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
-        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 2, 1))   #going straight from c1
-        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 3, 1))   #going right from c1
+        # self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
+        # self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"2",20,"type","ABC",self, self.roadsObj[0], 2, 1))   #going straight from c1
+        # self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"3",20,"type","ABC",self, self.roadsObj[0], 3, 1))   #going right from c1
+        # #cars in C2
+        # self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"4",20,"type","ABC",self, self.roadsObj[1], 1, 2))   #going left from c2  
+        # self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"5",20,"type","ABC",self, self.roadsObj[1], 2, 2))   #going straight from c2
+        # self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"6",20,"type","ABC",self, self.roadsObj[1], 3, 2))   #going right from c2
+        #cars in C3
+        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"7",20,"type","ABC",self, self.roadsObj[0], 1, 3))   #going left from c2  
+        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"8",20,"type","ABC",self, self.roadsObj[0], 2, 3))   #going straight from c2
+        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"9",20,"type","ABC",self, self.roadsObj[0], 3, 3))   #going right from c2
+        #cars in C4
+        # self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"10",20,"type","ABC",self, self.roadsObj[1], 1, 4))   #going left from c2  
+        # self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"11",20,"type","ABC",self, self.roadsObj[1], 2, 4))   #going straight from c2
+        # self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"12",20,"type","ABC",self, self.roadsObj[1], 3, 4))   #going right from c2
+
+
+
 
 
     #methods from UML
