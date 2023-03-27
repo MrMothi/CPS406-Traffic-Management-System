@@ -1,7 +1,12 @@
 from Intersection import *
 from Road import *
+import random
+import string
 
 class Vehicle:
+
+    vehicleId = 1
+
     def __init__(self, operational, stopped, name, speed, type, plate, inter, rd, actionType, carArrayNum):
         self.operational = True
         self.stopped = True
@@ -82,3 +87,31 @@ class Vehicle:
         #maybe 80% of the time is straight
         #10% left and right respectively
         pass
+
+    def addVehicles(cls):   
+        newId = cls.vehicleId
+        cls.vehicleId += 1
+
+        x = random.randint(1,100)
+        if x <= 88:
+            randType = "car"
+        elif x <= 98:
+            randType = "publicTransit"
+        else:
+            randType = "emergencyVehicle"
+
+        y = random.randint(1,10)
+        randAction = 2
+        if y == 9:
+            randAction = 1
+        elif y == 10:
+            randAction = 3
+        else:
+            randAction = 2
+
+        randPlate = (''.join(random.choices(string.ascii_uppercase + string.digits, k=7)))
+        randRd = (random.randint(0, 1))
+        randCarArrayNum = (random.randint(1,4))
+
+
+        print (True, True, newId, 40, randType, randPlate, cls, cls.roadsObj[randRd], randAction, randCarArrayNum)
