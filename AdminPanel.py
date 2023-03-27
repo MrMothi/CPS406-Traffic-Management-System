@@ -1,4 +1,6 @@
 import tkinter as tk
+from TrafficSystem import *
+import time
 
 def create_road(canvas, x1, y1, x2, y2):
     canvas.create_rectangle(x1, y1, x2, y2, fill="dark grey", outline="")
@@ -22,7 +24,7 @@ def display_car_count(canvas, x, y, count):
     canvas.create_text(x, y, text=f"Cars: {count}", font=("Arial", 10), tags="car_count_text")    
 
 def toggle_traffic_light(canvas, light):
-    colors = ["red", "yellow", "green"]
+    colors = ["green", "yellow", "red"]
     current_color = canvas.itemcget(light, "fill")
     next_color = colors[(colors.index(current_color) + 1) % len(colors)]
     canvas.itemconfigure(light, fill=next_color)
@@ -181,7 +183,7 @@ def create_intersection():
     canvas = tk.Canvas(window, width=900, height=800)
     canvas.pack()
 
-    # Roads
+        # Roads
     create_road(canvas, 250, 50, 550, 850)   # Vertical road
     create_road(canvas, 0, 300, 800, 600)   # Horizontal road
 
@@ -189,48 +191,49 @@ def create_intersection():
     create_dashed_yellow_line(canvas, 400, 50, 400, 850)     # Top vertical line
     create_dashed_yellow_line(canvas, 0, 450, 800, 450)     # Left horizontal line
 
-    # Traffic lights
-    create_traffic_light(canvas, 385, 300, "red", "traffic_light_1")  # Top
-    create_traffic_light(canvas, 250, 435, "red", "traffic_light_2")  # Left
-    create_traffic_light(canvas, 385, 600, "red", "traffic_light_3")  # Bottom
-    create_traffic_light(canvas, 550, 435, "red", "traffic_light_4")  # Right
+    while True:
+        # Traffic lights
+        create_traffic_light(canvas, 385, 300, TrafficSystem.inter.trafficLightObj[0].signalColour, "traffic_light_1")  # Top
+        create_traffic_light(canvas, 240, 435, TrafficSystem.inter.trafficLightObj[1].signalColour, "traffic_light_2")  # Left
+        create_traffic_light(canvas, 385, 600, TrafficSystem.inter.trafficLightObj[0].signalColour, "traffic_light_3")  # Bottom
+        create_traffic_light(canvas, 540, 435, TrafficSystem.inter.trafficLightObj[1].signalColour, "traffic_light_4")  # Right
 
-# Pedestrian lights
-    create_pedestrian_light(canvas, 550, 600, "green", "ped_light_1")  # Bottom Right
-    create_pedestrian_light(canvas, 250, 300, "green", "ped_light_2")  # Top Left
-    create_pedestrian_light(canvas, 250, 600, "green", "ped_light_3")  # Bottom Left
-    create_pedestrian_light(canvas, 550, 300, "green", "ped_light_4")  # Top Right
+    # Pedestrian lights
+        create_pedestrian_light(canvas, 550, 615, TrafficSystem.inter.pedLightObj[0].signalColour, "ped_light_1")  # Bottom Right
+        create_pedestrian_light(canvas, 235, 300, TrafficSystem.inter.pedLightObj[1].signalColour, "ped_light_2")  # Top Left
+        create_pedestrian_light(canvas, 250, 615, TrafficSystem.inter.pedLightObj[0].signalColour, "ped_light_3")  # Bottom Left
+        create_pedestrian_light(canvas, 565, 300, TrafficSystem.inter.pedLightObj[1].signalColour, "ped_light_4")  # Top Right
 
-    create_pedestrian_light(canvas, 550, 570, "green", "ped_light_5")  # Bottom Right 2
-    create_pedestrian_light(canvas, 250, 270, "green", "ped_light_6")  # Top Left 2
-    create_pedestrian_light(canvas, 250, 570, "green", "ped_light_7")  # Bottom Left 2
-    create_pedestrian_light(canvas, 550, 270, "green", "ped_light_8")  # Top Right 2
+        create_pedestrian_light(canvas, 565, 570, TrafficSystem.inter.pedLightObj[1].signalColour, "ped_light_5")  # Bottom Right 2
+        create_pedestrian_light(canvas, 250, 255, TrafficSystem.inter.pedLightObj[0].signalColour, "ped_light_6")  # Top Left 2
+        create_pedestrian_light(canvas, 235, 570, TrafficSystem.inter.pedLightObj[1].signalColour, "ped_light_7")  # Bottom Left 2
+        create_pedestrian_light(canvas, 550, 255, TrafficSystem.inter.pedLightObj[0].signalColour, "ped_light_8")  # Top Right 2
 
 
-    pedestrian_count = 0
-    car_count = 0
+        pedestrian_count = 0
+        car_count = 0
+
+        
 
     
+        
 
-  
-    
+        create_arrow(canvas, 300, 300, 300, 300)     
+                    
+        create_arrow(canvas, 100, 450, 200, 450)
 
-    create_arrow(canvas, 300, 300, 300, 300)     
-                 
-    create_arrow(canvas, 100, 450, 200, 450)
+        # Center the window on the screen
+        window.update_idletasks()
+        width = window.winfo_width()
+        height = window.winfo_height()
+        x = (window.winfo_screenwidth() // 2) - (width // 2)
+        y = (window.winfo_screenheight() // 2) - (height // 2)
+        window.geometry("{}x{}+{}+{}".format(width, height, x, y))
 
-    # Center the window on the screen
-    window.update_idletasks()
-    width = window.winfo_width()
-    height = window.winfo_height()
-    x = (window.winfo_screenwidth() // 2) - (width // 2)
-    y = (window.winfo_screenheight() // 2) - (height // 2)
-    window.geometry("{}x{}+{}+{}".format(width, height, x, y))
+        create_legend(canvas)
+        create_admin_panel(window, canvas)
 
-    create_legend(canvas)
-    create_admin_panel(window, canvas)
-
-    window.mainloop()
+        window.update()
 
 if __name__ == "__main__":
     create_intersection()
