@@ -6,15 +6,36 @@ def create_road(canvas, x1, y1, x2, y2):
 def create_dashed_yellow_line(canvas, x1, y1, x2, y2):
     canvas.create_line(x1, y1, x2, y2, fill="yellow", dash=(60, 20), width=6)
 
-def create_traffic_light(canvas, x, y, clr):
-    canvas.create_oval(x, y, x + 30, y + 30, fill=clr, outline="")
+def create_traffic_light(canvas, x, y, clr, tag):
+    canvas.create_oval(x, y, x + 30, y + 30, fill=clr, outline="", tags=tag)
 
-def create_pedestrian_light(canvas, x, y, clr):
-    canvas.create_polygon(x, y, x - 10, y + 30, x + 10, y + 30, fill=clr, outline="")
-
+def create_pedestrian_light(canvas, x, y, clr, tag):
+    canvas.create_polygon(x, y, x - 10, y + 30, x + 10, y + 30, fill=clr, outline="", tags=tag)
 
 def create_arrow(canvas, x1, y1, x2, y2):
-    canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)    
+    canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+
+def display_pedestrian_count(canvas, x, y, count):
+    canvas.create_text(x, y, text=f"Pedestrians: {count}", font=("Arial", 10), tags="ped_count_text")
+
+def display_car_count(canvas, x, y, count):
+    canvas.create_text(x, y, text=f"Cars: {count}", font=("Arial", 10), tags="car_count_text")    
+
+def toggle_traffic_light(canvas, light):
+    colors = ["red", "yellow", "green"]
+    current_color = canvas.itemcget(light, "fill")
+    next_color = colors[(colors.index(current_color) + 1) % len(colors)]
+    canvas.itemconfigure(light, fill=next_color)
+
+def toggle_pedestrian_light(canvas, light):
+    colors = ["red", "green"]
+    current_color = canvas.itemcget(light, "fill")
+    next_color = colors[(colors.index(current_color) + 1) % len(colors)]
+    canvas.itemconfigure(light, fill=next_color)
+
+def create_admin_panel(window, canvas):
+    admin_panel = tk.Frame(window)
+    admin_panel.pack(side=tk.LEFT, padx=10)
 
 def create_legend(canvas):
     # Legend title
@@ -36,6 +57,69 @@ def create_legend(canvas):
     canvas.create_line(20, 170, 40, 170, arrow=tk.LAST, fill="black")
     canvas.create_text(90, 170, text="Vehicle Direction ", font=("Arial", 10))
 
+
+def update_pedestrian_count(canvas, entry, x, y):
+    count = int(entry.get())
+    canvas.delete("ped_count_text")
+    display_pedestrian_count(canvas, x, y, count)
+
+
+def update_car_count(canvas, entry, x, y):
+    count = int(entry.get())
+    canvas.delete("car_count_text")
+    display_car_count(canvas, x, y, count)
+
+
+def update_traffic_light(canvas, x, y, clr):
+    create_traffic_light(canvas, x, y, clr)
+
+
+def update_pedestrian_light(canvas, x, y, clr):
+    create_pedestrian_light(canvas, x, y, clr)
+
+
+def create_admin_panel(window, canvas):
+    admin_panel = tk.Frame(window, bg="white", width=300, height=500)
+    admin_panel.pack(side=tk.TOP, anchor=tk.W, padx=10, pady=1)
+
+    tk.Label(admin_panel, text="Admin Panel", font=("Arial", 14, "bold"), bg="white").grid(row=0, column=0, columnspan=2, pady=10)
+
+    # Change Pedestrian Count
+    tk.Label(admin_panel, text="Pedestrians:", font=("Arial", 10), bg="white").grid(row=1, column=0)
+    pedestrian_entry = tk.Entry(admin_panel, width=5)
+    pedestrian_entry.grid(row=1, column=1)
+    pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda: update_pedestrian_count(canvas, pedestrian_entry, 250, 290))
+    pedestrian_button.grid(row=1, column=2)
+
+    # Change Car Count
+    tk.Label(admin_panel, text="Cars:", font=("Arial", 10), bg="white").grid(row=2, column=0)
+    car_entry = tk.Entry(admin_panel, width=5)
+    car_entry.grid(row=2, column=1)
+    car_button = tk.Button(admin_panel, text="Update", command=lambda: update_car_count(canvas, car_entry, 570, 290))
+    car_button.grid(row=2, column=2)
+
+    traffic_light_buttons = [
+        tk.Button(admin_panel, text="Traffic Light 1", command=lambda: toggle_traffic_light(canvas, "traffic_light_1")),
+        tk.Button(admin_panel, text="Traffic Light 2", command=lambda: toggle_traffic_light(canvas, "traffic_light_2")),
+        tk.Button(admin_panel, text="Traffic Light 3", command=lambda: toggle_traffic_light(canvas, "traffic_light_3")),
+        tk.Button(admin_panel, text="Traffic Light 4", command=lambda: toggle_traffic_light(canvas, "traffic_light_4")),
+    ]
+
+    pedestrian_light_buttons = [
+        tk.Button(admin_panel, text="Pedestrian Light 1", command=lambda: toggle_pedestrian_light(canvas, "ped_light_1")),
+        tk.Button(admin_panel, text="Pedestrian Light 2", command=lambda: toggle_pedestrian_light(canvas, "ped_light_2")),
+        tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: toggle_pedestrian_light(canvas, "ped_light_3")),
+        tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: toggle_pedestrian_light(canvas, "ped_light_4")),
+    ]
+
+    for i, button in enumerate(traffic_light_buttons, start=1):
+        button.grid(row=3, column=i)
+
+    for i, button in enumerate(pedestrian_light_buttons, start=1):
+        button.grid(row=4, column=i)
+
+   
+
 def create_intersection():
     window = tk.Tk()
     window.title("Intersection")
@@ -53,17 +137,32 @@ def create_intersection():
     create_dashed_yellow_line(canvas, 0, 450, 800, 450)     # Left horizontal line
 
     # Traffic lights
-    create_traffic_light(canvas, 385, 300, "red")  # Top c
-    create_traffic_light(canvas, 250, 435, "red")  # Left
-    create_traffic_light(canvas, 385, 600, "red")  # Bottom
-    create_traffic_light(canvas, 550, 435, "red")  # Right
+    create_traffic_light(canvas, 385, 300, "red", "traffic_light_1")  # Top
+    create_traffic_light(canvas, 250, 435, "red", "traffic_light_2")  # Left
+    create_traffic_light(canvas, 385, 600, "red", "traffic_light_3")  # Bottom
+    create_traffic_light(canvas, 550, 435, "red", "traffic_light_4")  # Right
+
+# Pedestrian lights
+    create_pedestrian_light(canvas, 550, 600, "green", "ped_light_1")  # Bottom Right
+    create_pedestrian_light(canvas, 250, 300, "green", "ped_light_2")  # Top Left
+    create_pedestrian_light(canvas, 250, 600, "green", "ped_light_3")  # Bottom Left
+    create_pedestrian_light(canvas, 550, 300, "green", "ped_light_4")  # Top Right
+
+    create_pedestrian_light(canvas, 550, 570, "green", "ped_light_5")  # Bottom Right 2
+    create_pedestrian_light(canvas, 250, 270, "green", "ped_light_6")  # Top Left 2
+    create_pedestrian_light(canvas, 250, 570, "green", "ped_light_7")  # Bottom Left 2
+    create_pedestrian_light(canvas, 550, 270, "green", "ped_light_8")  # Top Right 2
 
 
+    pedestrian_count = 0
+    car_count = 0
 
-    create_pedestrian_light(canvas, 550 , 600, "green")  # BOT R
-    create_pedestrian_light(canvas, 250 , 300, "green")  # TOP L 
-    create_pedestrian_light(canvas, 250 , 600, "green")  # BOT L
-    create_pedestrian_light(canvas, 550 , 300, "green")  # TOP R
+    display_pedestrian_count(canvas, 250, 290, pedestrian_count)
+    display_car_count(canvas, 570, 290, car_count)
+
+    create_arrow(canvas, 300, 300, 300, 300)     
+                 
+    create_arrow(canvas, 100, 450, 200, 450)
 
     # Center the window on the screen
     window.update_idletasks()
@@ -74,6 +173,7 @@ def create_intersection():
     window.geometry("{}x{}+{}+{}".format(width, height, x, y))
 
     create_legend(canvas)
+    create_admin_panel(window, canvas)
 
     window.mainloop()
 

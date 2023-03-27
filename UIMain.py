@@ -14,7 +14,14 @@ def create_pedestrian_light(canvas, x, y, clr):
 
 
 def create_arrow(canvas, x1, y1, x2, y2):
-    canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)    
+    canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+
+
+def display_pedestrian_count(canvas, x, y, count):
+    canvas.create_text(x, y, text=f"Pedestrians: {count}", font=("Arial", 10))
+
+def display_car_count(canvas, x, y, count):
+    canvas.create_text(x, y, text=f"Cars: {count}", font=("Arial", 10))    
 
 def create_legend(canvas):
     # Legend title
@@ -64,6 +71,16 @@ def create_intersection():
     create_pedestrian_light(canvas, 250 , 300, "green")  # TOP L 
     create_pedestrian_light(canvas, 250 , 600, "green")  # BOT L
     create_pedestrian_light(canvas, 550 , 300, "green")  # TOP R
+
+    pedestrian_count = 10
+    car_count = 5
+
+    display_pedestrian_count(canvas, 250, 290, pedestrian_count)
+    display_car_count(canvas, 570, 290, car_count)
+
+    create_arrow(canvas, 300, 300, 300, 300)     
+                 
+    create_arrow(canvas, 100, 450, 200, 450)
 
     # Center the window on the screen
     window.update_idletasks()
