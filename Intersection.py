@@ -2,6 +2,7 @@ import threading
 from threading import Thread
 import time                                    
 import random
+import string
 from Road import *
 from Sidewalk import *
 from TrafficLight import *
@@ -13,22 +14,22 @@ from Pedestrian import *
 class Intersection:
 
     def __init__(self, trafficlightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
-        pedestrianCount: int = 0, vehicleCount: int = 0, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
+        pedestrianCount: int = 0, totalVehicleCount: int = 20, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
 
 
         # REGULAR INSTANCE VARIABLES----------------------------------------------------------------------------
         self.trafficlightTiming = trafficlightTiming
-        # TrafficLight.signalTime = trafficlightTiming #for some reason it doesnt work down there --------------------------------------
         self.pedestrianLightTiming = pedestrianLightTiming
         self.pedestrianCount = pedestrianCount
-        self.vehicleCount = vehicleCount
+        self.vehicleCount = 0
+        self.totalVehicleCount = totalVehicleCount
         self.weather = weather
         self.running = True   #running
         self.incident = incident
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
         self.passedVehicles = [] #holds all vehicles which have passed through the intersection, allows data gathering
-        self.idIterator = 0  #variable for the IDs of the vehicles
+        self.vehicleId = 0  #variable for the IDs of the vehicles
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -64,8 +65,8 @@ class Intersection:
 
 
 
-        # self.temp = 0
-
+        self.count = 0 #variable used to iterate 10 times before creating new vehicles in the system
+        self.temp = 0
 
 
 
@@ -82,7 +83,6 @@ class Intersection:
         PedestrianLight.signalTime = self.pedestrianLightTiming
         self.pedLightObj.append(PedestrianLight(True, True, "stop"))  #Pedestrian Lights for rd1 (for signalling across rd1)
         self.pedLightObj.append(PedestrianLight(True, True, "stop"))  #Pedestrian Lights for rd2 (for signalling across rd2)
-                    #operational, hasAudibleSignal, signalColour, timeToWalk, walkTiming
 
 
 
@@ -109,7 +109,10 @@ class Intersection:
         self.trafficLightThreads[1].start()
 
     def createPedestrianLightThreads(self):
-        pass
+        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[0].cycleLight1))  #PedestrianLight for going across rd1
+        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[1].cycleLight2))  #PedestrianLight for going across rd2
+        self.pedLightThreads[0].start()
+        self.pedLightThreads[1].start()
 
 
     #Thread function to keep decreasing variable until its <= 0, decreasing by 1 each time, and waiting 1 second each time
@@ -133,7 +136,12 @@ class Intersection:
 
             #STARTING THREADS FOR LIGHTS
             self.createTrafficLightThreads()
-            self.running =False #-----------------------------------------------------------------------------------delete thisfaejfoqejaejofoj
+            self.createPedestrianLightThreads()
+            
+            #Adding all the random vehicles before starting
+            self.addVehicles()
+            
+            self.running = False
             #MAIN LOOP FOR THE INTERSECTION--------------------------------------
             while(self.running):
                 #Pinging every car first in the queue for each car array in the two roads
@@ -160,30 +168,38 @@ class Intersection:
                 if (len(self.roadsObj[1].vehiclesInLane2) > 0):
                     self.roadsObj[1].vehiclesInLane2[0].doAction()
 
-                print(self.occ) #TESTING
+                # print(self.occ) #TESTING
                 print(self.roadsObj[0].vehiclesInLane1)  
 
-                #.25 wait between pings (Tick rate of the simulation)
-                time.sleep(.25)
-                #self.addVehicles() #Adds back any more vehicles into the system
+                #.5 second wait between pings (Tick rate of the simulation)
+                time.sleep(.5)
+                #adding vehicles back into the system every 10 seconds
+                self.count = self.count + 1
+                if(self.count >= 20):
+                    self.addVehicles()
+
+                #Currently running the system for 50 seconds before halting the while loop
                 self.temp = self.temp + 1
                 if(self.temp == 100):
                     self.running = False
-                print(self.occ) #TESTING
+
+                #Testing prints
+                print(self.occ)
                 print(self.passedVehicles)
                 print("---------")
             
             #FOR TESTING THREADS++++++++++++++++++++++++++++++++++
-            for i in range(100):
-                print("1", end="", flush=True)
-                # print(self.checkTrafficSignal(self.roadsObj[1]))
-                time.sleep(.25)
-
+            # for i in range(100):
+            #     print("1", end="", flush=True)
+            #     # print(self.checkTrafficSignal(self.roadsObj[1]))
+            #     time.sleep(.25)
         except KeyboardInterrupt:
             #ENDING AND CATCHING THREADS
             #ending the trafficlight cycling threads
             self.trafficLightObj[0].operational = False
             self.trafficLightObj[1].operational = False
+            self.pedLightObj[0].operational = False
+            self.pedLightObj[1].operational = False
             #MAYBE INSTALL PACKAGE WHICH ENDS THE THREADS BY THROWING EXCEPTION IN THEM
         #else:
 
@@ -194,18 +210,49 @@ class Intersection:
         return None
 
 
-    #Function which creates and add vehicles randomly to appropriate roads and vehicle lists
+    
+    #method which calls the randomize vehicles function based on how many more vehicles are needed in the system
     def addVehicles(self):
-        #looks at totalVehicleCount instance variable --- TO ADD THIS and based onthat 
-        #for loop running     totalVehicleCount-vehicleCount  times 
-        #randomly creating and adding vehicles
-        #every increment, increase vehicleCount
+        for i in range(self.totalVehicleCount-self.vehicleCount):
+            self.randomizeVehicle()
 
-        #ids are just incrementing a number 1->infinity
-        
-        #IMPLEMENT RANDOMIZATION SINCE FOR NOW THIS IS A TESTER FUNCTION
+    #Vehicle parameters randomiser, creates then adds vehicle object which has been created with random paramteres with set probabilities for some
+    def randomizeVehicle(self):   
+        newId = self.vehicleId
+        self.vehicleId += 1
+
+        x = random.randint(1,100)
+        if x <= 88:
+            randType = "car"
+        elif x <= 98:
+            randType = "publicTransit"
+        else:
+            randType = "emergencyVehicle"
+
+        y = random.randint(1,10)
+        randAction = 2
+        if y == 9:
+            randAction = 1
+        elif y == 10:
+            randAction = 3
+        else:
+            randAction = 2
+
+        randPlate = (''.join(random.choices(string.ascii_uppercase + string.digits, k=7)))
+        randRd = (random.randint(0, 1))
+        randCarArrayNum = (random.randint(1,4))
+
+        #Adding vehicle to the respective arrays in the roads
+        if(randCarArrayNum == 1 or randCarArrayNum == 2): #if car is in vehicle arrays 1
+            self.roadsObj[randRd].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+        else: #if cars are in vehicle arrays 2
+            self.roadsObj[randRd].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+        self.vehicleCount = self.vehicleCount + 1
 
 
+
+    #Function which holds an example of a vehicle in each location doing each action
+    def testVehicles(self):
         #TESTING
         #cars in C1
         self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  

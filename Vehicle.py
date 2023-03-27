@@ -49,6 +49,7 @@ class Vehicle:
                         self.inter.updateAfterTime(0)
                         #delete car from C1 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action1")
 
                 #if going straight (ARROW #2)
@@ -62,6 +63,7 @@ class Vehicle:
                         self.inter.updateAfterTime(1)
                         #delete car from C1 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action2")
                 
                 #if turning right (ARROW #3)
@@ -75,6 +77,7 @@ class Vehicle:
                         self.inter.updateAfterTime(2)
                         #delete car from C1 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action3")
         
         #If car is in rd 2, C2
@@ -94,6 +97,7 @@ class Vehicle:
                         self.inter.updateAfterTime(4)
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action1")
 
                 #if going straight (ARROW #6)
@@ -107,6 +111,7 @@ class Vehicle:
                         self.inter.updateAfterTime(5)
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action2")
                 
                 #if turning right (ARROW #7)
@@ -120,6 +125,7 @@ class Vehicle:
                         self.inter.updateAfterTime(6)
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action3")
 
         #If car is in rd 1, C3
@@ -139,6 +145,7 @@ class Vehicle:
                         self.inter.updateAfterTime(8)
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action1")
 
                 #if going straight (ARROW #10)
@@ -152,6 +159,7 @@ class Vehicle:
                         self.inter.updateAfterTime(9)
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action2")
                 
                 #if turning right (ARROW #11)
@@ -165,6 +173,7 @@ class Vehicle:
                         self.inter.updateAfterTime(10)
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action3")
         
         #If car is in rd 2, C4
@@ -184,6 +193,7 @@ class Vehicle:
                         self.inter.updateAfterTime(12)
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action1")
 
                 #if going straight (ARROW #14)
@@ -197,6 +207,7 @@ class Vehicle:
                         self.inter.updateAfterTime(13)
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action2")
                 
                 #if turning right (ARROW #15)
@@ -210,6 +221,7 @@ class Vehicle:
                         self.inter.updateAfterTime(14)
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
+                        self.inter.vehicleCount = self.inter.vehicleCount - 1
                         print("Action3")
 
 

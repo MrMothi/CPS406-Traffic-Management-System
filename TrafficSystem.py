@@ -30,6 +30,6 @@ class TrafficSystem:
     #Function to create the intersection, and returns a reference to it
     @classmethod
     def initializeIntersection(cls):
-        inter = Intersection(5, 4, "", pedestrianCount=10, vehicleCount=10)
+        inter = Intersection(10, 4, "", pedestrianCount=10, totalVehicleCount=10)
         return inter
 

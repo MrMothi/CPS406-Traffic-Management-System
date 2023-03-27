@@ -2,7 +2,7 @@ import time
 
 class TrafficLight:
     
-    signalTime = 5 #default class variable for the traffic signal timings, can be edited globally by the intersection class
+    signalTime = 10 #default class variable for the traffic signal timings, can be edited globally by the intersection class
 
     def __init__(self, operational, signalColour):   
         self.operational = operational #bool
