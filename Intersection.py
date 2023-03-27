@@ -1,4 +1,5 @@
 import threading
+from threading import Thread
 import time                                    
 import random
 from Road import *
@@ -27,6 +28,7 @@ class Intersection:
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
         self.passedVehicles = [] #holds all vehicles which have passed through the intersection, allows data gathering
+        self.idIterator = 0
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -105,11 +107,20 @@ class Intersection:
     def createPedestrianLightThreads(self):
         pass
 
+
     #Thread function to keep decreasing variable until its <= 0, decreasing by 1 each time, and waiting 1 second each time
     def updateAfterTime(self, var):        #pass in reference to instance variable
+        self.otherThreads.append(threading.Thread(target=self.updateVar, args=[var]))
+        self.otherThreads[-1].start()
+
+
+    #Thread function, called by the updateAfterTime function
+    def updateVar(self, var):  
         while(self.occ[var]>0):
+            print("THIS IS THE THREAD FOR OCCC")
             self.occ[var] = self.occ[var]-1
-            time.sleep(1)                     
+            time.sleep(1)
+        return                     
 
 
     #Main loop for the intersection
@@ -152,9 +163,11 @@ class Intersection:
                 time.sleep(.25)
                 #self.addVehicles() #Adds back any more vehicles into the system
                 self.temp = self.temp + 1
-                if(self.temp == 30):
+                if(self.temp == 100):
                     self.running = False
                 print(self.occ) #TESTING
+                print(self.passedVehicles)
+                print("---------")
             
             #FOR TESTING THREADS++++++++++++++++++++++++++++++++++
             for i in range(100):
@@ -172,6 +185,7 @@ class Intersection:
 
         #Printing done when the main loop is ended
         print("Done")
+        print(self.passedVehicles)
         #HAVE FUNCTION WHICH STOPS ALL THE OBJECTS &  THREADS? THOUGH THE LOOP NOT PINGING DOES THAT ANYWAY
         return None
 
@@ -188,9 +202,9 @@ class Intersection:
         #IMPLEMENT RANDOMIZATION SINCE FOR NOW THIS IS A TESTER FUNCTION
 
         #cars in C1
-        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
-
-
+        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
+        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 2, 1))   #going straight from c1
+        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 3, 1))   #going right from c1
 
 
     #methods from UML
