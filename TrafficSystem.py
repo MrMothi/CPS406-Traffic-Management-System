@@ -1,4 +1,5 @@
 from Intersection import *
+from TitleScreen import *
 
 class TrafficSystem:
     intersectionName = "MetroFloRoad"
@@ -8,28 +9,21 @@ class TrafficSystem:
         "Admin2" : "traffic"
     }
 
-
-    #implement login system here, backend for the frontend
-    
-    #prototype
     loggedIn = False
     
     @classmethod
-    def login(cls):
-        username = str(input("Username: "))
-        password = str(input("Password: "))
-        
-        if username in TrafficSystem.userInfoDict.keys() and TrafficSystem.userInfoDict[username] == password:
-            TrafficSystem.loggedIn = True
+    def login(cls, username:str = "", password: str = ""):
+        if username in cls.userInfoDict.keys() and cls.userInfoDict[username] == password:
+            cls.loggedIn = True
         else:
-            TrafficSystem.loggedIn = False
-        return
-
-
+            cls.loggedIn = False
+        return cls.loggedIn
 
     #Function to create the intersection, and returns a reference to it
     @classmethod
     def initializeIntersection(cls):
-        inter = Intersection(5, 4, "", pedestrianCount=10, vehicleCount=10)
-        return inter
-
+        cls.inter = Intersection(10, 4, "", pedestrianCount=10, totalVehicleCount=10)
+        return cls.inter
+    
+if __name__ == "__main__":
+    create_title_screen()
