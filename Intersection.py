@@ -28,7 +28,7 @@ class Intersection:
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
         self.passedVehicles = [] #holds all vehicles which have passed through the intersection, allows data gathering
-        self.idIterator = 0
+        self.idIterator = 0  #variable for the IDs of the vehicles
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -64,7 +64,7 @@ class Intersection:
 
 
 
-        self.temp = 0
+        # self.temp = 0
 
 
 
@@ -78,9 +78,13 @@ class Intersection:
         self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road1
         self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road2
         
-        # #making pedestrianlights
-        # self.pedLightObj.append(PedestrianLight())  #Pedestrian Lights for rd1 (for signalling across rd1)
-        # self.pedLightObj.append(PedestrianLight())  #Pedestrian Lights for rd2 (for signalling across rd2)
+        #making pedestrianlights
+        PedestrianLight.signalTime = self.pedestrianLightTiming
+        self.pedLightObj.append(PedestrianLight(True, True, "stop"))  #Pedestrian Lights for rd1 (for signalling across rd1)
+        self.pedLightObj.append(PedestrianLight(True, True, "stop"))  #Pedestrian Lights for rd2 (for signalling across rd2)
+                    #operational, hasAudibleSignal, signalColour, timeToWalk, walkTiming
+
+
 
         # #making sidewalks (Passing in intersection object reference)
         # self.sidewalksObj.append(SideWalk())   #Sidewalk #1  for rd1      parallel to respectively numbered vehicle array       -----------implement more after car stuff finished---------
@@ -117,7 +121,6 @@ class Intersection:
     #Thread function, called by the updateAfterTime function
     def updateVar(self, var):  
         while(self.occ[var]>0):
-            print("THIS IS THE THREAD FOR OCCC")
             self.occ[var] = self.occ[var]-1
             time.sleep(1)
         return                     
@@ -125,11 +128,12 @@ class Intersection:
 
     #Main loop for the intersection
     def run(self):
-        try:#maybe keep this for error proofing
+        #Try Catch block for breaking out of the loop via ctrl-c, and error catching
+        try:
 
             #STARTING THREADS FOR LIGHTS
             self.createTrafficLightThreads()
-
+            self.running =False #-----------------------------------------------------------------------------------delete thisfaejfoqejaejofoj
             #MAIN LOOP FOR THE INTERSECTION--------------------------------------
             while(self.running):
                 #Pinging every car first in the queue for each car array in the two roads
@@ -204,21 +208,21 @@ class Intersection:
 
         #TESTING
         #cars in C1
-        # self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
-        # self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"2",20,"type","ABC",self, self.roadsObj[0], 2, 1))   #going straight from c1
-        # self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"3",20,"type","ABC",self, self.roadsObj[0], 3, 1))   #going right from c1
-        # #cars in C2
-        # self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"4",20,"type","ABC",self, self.roadsObj[1], 1, 2))   #going left from c2  
-        # self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"5",20,"type","ABC",self, self.roadsObj[1], 2, 2))   #going straight from c2
-        # self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"6",20,"type","ABC",self, self.roadsObj[1], 3, 2))   #going right from c2
-        #cars in C3
-        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"7",20,"type","ABC",self, self.roadsObj[0], 1, 3))   #going left from c2  
-        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"8",20,"type","ABC",self, self.roadsObj[0], 2, 3))   #going straight from c2
-        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"9",20,"type","ABC",self, self.roadsObj[0], 3, 3))   #going right from c2
+        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
+        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"2",20,"type","ABC",self, self.roadsObj[0], 2, 1))   #going straight from c1
+        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"3",20,"type","ABC",self, self.roadsObj[0], 3, 1))   #going right from c1
+        #cars in C2
+        self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"4",20,"type","ABC",self, self.roadsObj[1], 1, 2))   #going left from c2  
+        self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"5",20,"type","ABC",self, self.roadsObj[1], 2, 2))   #going straight from c2
+        self.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"6",20,"type","ABC",self, self.roadsObj[1], 3, 2))   #going right from c2
+        # cars in C3
+        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"7",20,"type","ABC",self, self.roadsObj[0], 1, 3))   #going left from c3  
+        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"8",20,"type","ABC",self, self.roadsObj[0], 2, 3))   #going straight from c3
+        self.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"9",20,"type","ABC",self, self.roadsObj[0], 3, 3))   #going right from c3
         #cars in C4
-        # self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"10",20,"type","ABC",self, self.roadsObj[1], 1, 4))   #going left from c2  
-        # self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"11",20,"type","ABC",self, self.roadsObj[1], 2, 4))   #going straight from c2
-        # self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"12",20,"type","ABC",self, self.roadsObj[1], 3, 4))   #going right from c2
+        self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"10",20,"type","ABC",self, self.roadsObj[1], 1, 4))   #going left from c4  
+        self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"11",20,"type","ABC",self, self.roadsObj[1], 2, 4))   #going straight from c4
+        self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"12",20,"type","ABC",self, self.roadsObj[1], 3, 4))   #going right from c4
 
 
 
@@ -232,7 +236,7 @@ class Intersection:
     
     def checkPedestrianSignal(self, rd: Road):
         # checks for pSignal from sidewalk linked to rd
-        return
+        return self.pedLightObj[rd.rdNum-1].signalColour
     
     def requestEmergencySignal(self, rd: Road):
         return
