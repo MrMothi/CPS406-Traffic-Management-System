@@ -49,22 +49,12 @@ class Intersection:
         self.otherThreads = []
 
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
-        self.occ1 = 0                                               #   occ# occupancy where  #mod4 = 
-        self.occ2 = 0                                               # 1 is turning left
-        self.occ3 = 0                                               # 2 is going straight
-        self.occ4 = 0                                               # 3 is turning right
-        self.occ5 = 0                                               # 4 is pedestrian walking
-        self.occ6 = 0     
-        self.occ7 = 0                                               # <=0 means open, >0 means occupied for x seconds more 
-        self.occ8 = 0
-        self.occ9 = 0
-        self.occ10 = 0
-        self.occ11 = 0
-        self.occ12 = 0
-        self.occ13 = 0
-        self.occ14 = 0
-        self.occ15 = 0
-        self.occ16 = 0
+        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]              #   occ# occupancy where  #mod4+1 = 
+        # 1 is turning left
+        # 2 is going straight
+        # 3 is turning right
+        # 4 is pedestrian walking
+        # <=0 means open, >0 means occupied for x seconds more 
 
 
 
@@ -104,8 +94,8 @@ class Intersection:
 
     #Thread function to keep decreasing variable until its <= 0, decreasing by 1 each time, and waiting 1 second each time
     def updateAfterTime(self, var):        #pass in reference to instance variable
-        while(t>0):
-            t = t-1
+        while(self.occ[var]>0):
+            self.occ[var] = self.occ[var]-1
             time.sleep(1)                     
 
 
@@ -118,7 +108,32 @@ class Intersection:
 
             #MAIN LOOP FOR THE INTERSECTION--------------------------------------
             while(self.running):
+                #Pinging every car first in the queue for each car array in the two roads
+                #Going clockwise from C1, C2, C3, C4 : where C1 and C3 are in rd1 and C2 and C4 are in rd2
+                print(self.roadsObj[0].vehiclesInLane1)   
+                print(self.roadsObj[0].vehiclesInLane2)
+                print(self.roadsObj[1].vehiclesInLane1)
+                print(self.roadsObj[1].vehiclesInLane2)
+                
+                #calling C1
+                if (len(self.roadsObj[0].vehiclesInLane1) > 0):           #arrays are checked if they have any cars, if so then prompts first car from [0]
+                    self.roadsObj[0].vehiclesInLane1[0].doAction()
+
+                #calling C2
+                if (len(self.roadsObj[1].vehiclesInLane1) > 0):
+                    self.roadsObj[1].vehiclesInLane1[0].doAction()
+
+                #calling C3
+                if (len(self.roadsObj[0].vehiclesInLane2) > 0):
+                    self.roadsObj[0].vehiclesInLane2[0].doAction()
+
+                #calling C4
+                if (len(self.roadsObj[1].vehiclesInLane2) > 0):
+                    self.roadsObj[1].vehiclesInLane2[0].doAction()
+
                 self.running = False
+            
+            #FOR TESTING ++++++++++++++++++++++++++++++++++
             for i in range(100):
                 print("1", end="", flush=True)
                 # print(self.checkTrafficSignal(self.roadsObj[1]))
