@@ -5,6 +5,8 @@ from Road import *
 from Sidewalk import *
 from TrafficLight import *
 from PedestrianLight import *
+from Vehicle import *
+from Pedestrian import *
 
 
 class Intersection:
@@ -24,7 +26,7 @@ class Intersection:
         self.incident = incident
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
-    
+        self.passedVehicles = [] #holds all vehicles which have passed through the intersection, allows data gathering
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -49,12 +51,19 @@ class Intersection:
         self.otherThreads = []
 
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
-        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]              #   occ# occupancy where  #mod4+1 = 
+        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]     #[0,0,0,0,1,0,1,1,1,1,1,1,1,1,1,1] #         
+        #   occ# occupancy where  #mod4+1 = 
         # 1 is turning left
         # 2 is going straight
         # 3 is turning right
         # 4 is pedestrian walking
         # <=0 means open, >0 means occupied for x seconds more 
+
+
+
+
+        self.temp = 0
+
 
 
 
@@ -80,6 +89,10 @@ class Intersection:
         #making roads  (Passing in intersection object reference)
         self.roadsObj.append(Road(self, True, False, False, ['''sidewalks?'''], [], [], 1))     #has vehicle arrays 1 and 3   
         self.roadsObj.append(Road(self, True, False, False, [], [], [], 2))     #has vehicle arrays 2 and 4
+
+        #method which creates random vehicles to appropirate vehicles and vehicle lists
+        self.addVehicles()
+
         return None
 
     #Creates threads for the two trafficlights, cycling through colours while also being opposite
@@ -114,6 +127,7 @@ class Intersection:
                 print(self.roadsObj[0].vehiclesInLane2)
                 print(self.roadsObj[1].vehiclesInLane1)
                 print(self.roadsObj[1].vehiclesInLane2)
+                print(self.occ)
                 
                 #calling C1
                 if (len(self.roadsObj[0].vehiclesInLane1) > 0):           #arrays are checked if they have any cars, if so then prompts first car from [0]
@@ -131,9 +145,18 @@ class Intersection:
                 if (len(self.roadsObj[1].vehiclesInLane2) > 0):
                     self.roadsObj[1].vehiclesInLane2[0].doAction()
 
-                self.running = False
+                print(self.occ) #TESTING
+                print(self.roadsObj[0].vehiclesInLane1)  
+
+                #.25 wait between pings (Tick rate of the simulation)
+                time.sleep(.25)
+                #self.addVehicles() #Adds back any more vehicles into the system
+                self.temp = self.temp + 1
+                if(self.temp == 30):
+                    self.running = False
+                print(self.occ) #TESTING
             
-            #FOR TESTING ++++++++++++++++++++++++++++++++++
+            #FOR TESTING THREADS++++++++++++++++++++++++++++++++++
             for i in range(100):
                 print("1", end="", flush=True)
                 # print(self.checkTrafficSignal(self.roadsObj[1]))
@@ -149,11 +172,23 @@ class Intersection:
 
         #Printing done when the main loop is ended
         print("Done")
+        #HAVE FUNCTION WHICH STOPS ALL THE OBJECTS &  THREADS? THOUGH THE LOOP NOT PINGING DOES THAT ANYWAY
         return None
 
 
+    #Function which creates and add vehicles randomly to appropriate roads and vehicle lists
+    def addVehicles(self):
+        #looks at totalVehicleCount instance variable --- TO ADD THIS and based onthat 
+        #for loop running     totalVehicleCount-vehicleCount  times 
+        #randomly creating and adding vehicles
+        #every increment, increase vehicleCount
 
+        #ids are just incrementing a number 1->infinity
+        
+        #IMPLEMENT RANDOMIZATION SINCE FOR NOW THIS IS A TESTER FUNCTION
 
+        #cars in C1
+        self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
 
 
 
