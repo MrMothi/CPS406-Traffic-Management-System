@@ -1,18 +1,18 @@
 import tkinter as tk
 import subprocess
-import UITraffic
+import Normal_login
+import Admin_login
 
 def admin_login(root):
     print("Admin Login")
     root.destroy()
-    UITraffic.main()
+    Admin_login.main()
     
 
 def normal_login(root):
     print("Normal Login")
     root.destroy()
-    UITraffic.main()
-    
+    Normal_login.main()
     
 
 def create_title_screen():

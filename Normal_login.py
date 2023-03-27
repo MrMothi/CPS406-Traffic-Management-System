@@ -1,13 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk, ImageDraw
+import UIMain
 
 def main():
-    def login():
+    def login(root):
         username = username_entry.get()
         password = password_entry.get()
         print("Username:", username)
         print("Password:", password)
+        UIMain.main()
 
     # Create a logo
     def create_arrow_image(size, fill_color):
@@ -89,7 +91,7 @@ def main():
     password_entry = ttk.Entry(main_frame, show="*", font=("Helvetica Neue", 16))
 
     # Add a login button with some styling
-    login_button = ttk.Button(main_frame, text="Login", command=login)
+    login_button = ttk.Button(main_frame, text="Login", command=lambda:login(root))
 
     # Create a custom ttk style
     style = ttk.Style()

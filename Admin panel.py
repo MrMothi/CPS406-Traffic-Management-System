@@ -37,6 +37,22 @@ def create_admin_panel(window, canvas):
     admin_panel = tk.Frame(window)
     admin_panel.pack(side=tk.LEFT, padx=10)
 
+def display_pedestrian_count(canvas, x, y, count, tag):
+    canvas.create_text(x, y, text=f"Pedestrians: {count}", font=("Arial", 10), tags=tag)
+
+def update_pedestrian_count(canvas, entry, x, y, tag):
+    count = int(entry.get())
+    canvas.delete(tag)
+    display_pedestrian_count(canvas, x, y, count, tag)
+
+def update_car_count(canvas, entry, x, y, tag):
+    count = int(entry.get())
+    canvas.delete(tag)
+    display_car_count(canvas, x, y, count, tag)
+
+def display_car_count(canvas, x, y, count, tag):
+    canvas.create_text(x, y, text=f"Cars: {count}", font=("Arial", 10), tags=tag)
+
 def create_legend(canvas):
     # Legend title
     canvas.create_text(50, 20, text="Legend", font=("Arial", 14, "bold"))
@@ -85,6 +101,13 @@ def create_admin_panel(window, canvas):
     tk.Label(admin_panel, text="Admin Panel", font=("Arial", 14, "bold"), bg="white").grid(row=0, column=0, columnspan=2, pady=10)
 
     # Change Pedestrian Count
+    for i in range(1, 5):
+        tk.Label(admin_panel, text=f"Pedestrians {i}:", font=("Arial", 10), bg="white").grid(row=i, column=0)
+        pedestrian_entry = tk.Entry(admin_panel, width=5)
+        pedestrian_entry.grid(row=i, column=1)
+        pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_pedestrian_count(canvas, pedestrian_entry, *pedestrian_count_positions[i-1], f"ped_count_text_{i}"))
+        pedestrian_button.grid(row=i, column=2)
+
     tk.Label(admin_panel, text="Pedestrians:", font=("Arial", 10), bg="white").grid(row=1, column=0)
     pedestrian_entry = tk.Entry(admin_panel, width=5)
     pedestrian_entry.grid(row=1, column=1)
@@ -92,6 +115,13 @@ def create_admin_panel(window, canvas):
     pedestrian_button.grid(row=1, column=2)
 
     # Change Car Count
+    for i in range(1, 5):
+        tk.Label(admin_panel, text=f"Cars {i}:", font=("Arial", 10), bg="white").grid(row=i+4, column=0)
+        car_entry = tk.Entry(admin_panel, width=5)
+        car_entry.grid(row=i+4, column=1)
+        car_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_car_count(canvas, car_entry, *car_count_positions[i-1], f"car_count_text_{i}"))
+        car_button.grid(row=i+4, column=2)
+
     tk.Label(admin_panel, text="Cars:", font=("Arial", 10), bg="white").grid(row=2, column=0)
     car_entry = tk.Entry(admin_panel, width=5)
     car_entry.grid(row=2, column=1)
@@ -110,7 +140,30 @@ def create_admin_panel(window, canvas):
         tk.Button(admin_panel, text="Pedestrian Light 2", command=lambda: toggle_pedestrian_light(canvas, "ped_light_2")),
         tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: toggle_pedestrian_light(canvas, "ped_light_3")),
         tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: toggle_pedestrian_light(canvas, "ped_light_4")),
+        tk.Button(admin_panel, text="Pedestrian Light 5", command=lambda: toggle_pedestrian_light(canvas, "ped_light_5")),
+        tk.Button(admin_panel, text="Pedestrian Light 6", command=lambda: toggle_pedestrian_light(canvas, "ped_light_6")),
+        tk.Button(admin_panel, text="Pedestrian Light 7", command=lambda: toggle_pedestrian_light(canvas, "ped_light_7")),
+        tk.Button(admin_panel, text="Pedestrian Light 8", command=lambda: toggle_pedestrian_light(canvas, "ped_light_8")),
     ]
+    pedestrian_count_positions = [
+    (250, 290),
+    (570, 290),
+    (250, 610),
+    (570, 610)
+    ]
+
+    car_count_positions = [
+    (50, 450),
+    (750, 450),
+    (400, 100),
+    (400, 800)
+    ]   
+
+    for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
+        display_pedestrian_count(canvas, x, y, 0, f"ped_count_text_{i}")
+
+    for i, (x, y) in enumerate(car_count_positions, start=1):
+        display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
 
     for i, button in enumerate(traffic_light_buttons, start=1):
         button.grid(row=3, column=i)
@@ -157,8 +210,10 @@ def create_intersection():
     pedestrian_count = 0
     car_count = 0
 
-    display_pedestrian_count(canvas, 250, 290, pedestrian_count)
-    display_car_count(canvas, 570, 290, car_count)
+    
+
+  
+    
 
     create_arrow(canvas, 300, 300, 300, 300)     
                  
