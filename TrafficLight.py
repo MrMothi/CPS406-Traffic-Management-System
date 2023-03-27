@@ -17,20 +17,20 @@ class TrafficLight:
             time.sleep(self.signalTime)
             self.signalColour = "green"
             print("Now green1", flush=True)
-            time.sleep(self.signalTime - (self.signalTime/2))
+            time.sleep(self.signalTime - (self.signalTime/4))
             print("Now yellow1", flush=True)
             self.signalColour = "yellow"
-            time.sleep(self.signalTime/2)
+            time.sleep(self.signalTime/4)
         return
     
     def cycleLight2(self):
         while (self.operational):
             self.signalColour = "green"
             print("Now green2", flush=True)
-            time.sleep(self.signalTime - (self.signalTime/2))
+            time.sleep(self.signalTime - (self.signalTime/4))
             self.signalColour = "yellow"
             print("Now yellow2", flush=True)
-            time.sleep(self.signalTime/2)
+            time.sleep(self.signalTime/4)
             self.signalColour = "red"
             print("Now red2", flush=True)
             time.sleep(self.signalTime)

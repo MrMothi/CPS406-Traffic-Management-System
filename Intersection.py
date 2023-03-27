@@ -53,7 +53,7 @@ class Intersection:
         self.otherThreads = []
 
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
-        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]     #[0,0,0,0,1,0,1,1,1,1,1,1,1,1,1,1] #         
+        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]     #Test [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1]          
         #   occ# occupancy where  #mod4+1 = 
         # 1 is turning left
         # 2 is going straight

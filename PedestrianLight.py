@@ -4,7 +4,8 @@ class PedestrianLight:
     def __init__(self, operational, hasAudibleSignal, signalColour):           #timeToWalk, walkTiming
         self.operational = operational
         self.hasAudibleSignal = hasAudibleSignal #bool
-        self.signalColour = signalColour #string
+        self.signalColour = signalColour #string either walk or stop
+        self.walkTimeRemaining = 0
         # self.timeToWalk = timeToWalk #int
         # self.walkTiming = walkTiming #int
     
@@ -12,16 +13,13 @@ class PedestrianLight:
 
     #Two cycleLight methods to have two separate running loops which are opposite to eachother in signal colour
     def cycleLight1(self):
-        while (self.operational):
-            self.signalColour = "red"
+        while (self.operational):                       #trafficlight is signaltime 
+            self.signalColour = "stop"
             print("Now red1", flush=True)
-            time.sleep(self.signalTime)
+            time.sleep(self.signalTime)      
             self.signalColour = "green"
             print("Now green1", flush=True)
             time.sleep(self.signalTime - (self.signalTime/2))
-            print("Now yellow1", flush=True)
-            self.signalColour = "yellow"
-            time.sleep(self.signalTime/2)
         return
     
     def cycleLight2(self):
@@ -29,9 +27,6 @@ class PedestrianLight:
             self.signalColour = "green"
             print("Now green2", flush=True)
             time.sleep(self.signalTime - (self.signalTime/2))
-            self.signalColour = "yellow"
-            print("Now yellow2", flush=True)
-            time.sleep(self.signalTime/2)
             self.signalColour = "red"
             print("Now red2", flush=True)
             time.sleep(self.signalTime)
