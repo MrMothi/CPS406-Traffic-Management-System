@@ -1,18 +1,12 @@
-import Intersection
+from Intersection import *
 
 class TrafficSystem:
     intersectionName = "MetroFloRoad"
-    Intersection inter
+    inter = None  #variable for the intersection object (Future expansion to list of intersections)
     userInfoDict = {
         "Admin1" : "Pa55word",
         "Admin2" : "traffic"
     }
-
-
-    #Function to create the intersection
-    def initializeIntersection():
-        inter = Intersection()
-
 
 
     #implement login system here, backend for the frontend
@@ -31,5 +25,11 @@ class TrafficSystem:
             TrafficSystem.loggedIn = False
         return
 
-#not object class
-#fjfjfeof
+
+
+    #Function to create the intersection, and returns a reference to it
+    @classmethod
+    def initializeIntersection(cls):
+        inter = Intersection(5, 4, "", pedestrianCount=10, vehicleCount=10)
+        return inter
+
