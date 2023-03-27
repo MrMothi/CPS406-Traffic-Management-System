@@ -164,8 +164,8 @@ def create_admin_panel(window, canvas):
     for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
         display_pedestrian_count(canvas, x, y, 0, f"ped_count_text_{i}")
 
-    for i, (x, y) in enumerate(car_count_positions, start=1):
-        display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
+    # for i, (x, y) in enumerate(car_count_positions, start=1):
+    #     display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
 
     for i, button in enumerate(traffic_light_buttons, start=1):
         button.grid(row=3, column=i)
@@ -212,9 +212,14 @@ def create_intersection():
 
         pedestrian_count = 0
         car_count = 0
-
-        
-
+        display_car_count(canvas, 50, 450, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane2), "C4")
+        display_car_count(canvas, 750, 450, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C2")
+        display_car_count(canvas, 400, 100, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C1")
+        display_car_count(canvas, 400, 800, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane2), "C3")
+    # (50, 450),
+    # (750, 450),
+    # (400, 100),
+    # (400, 800)
     
         
 

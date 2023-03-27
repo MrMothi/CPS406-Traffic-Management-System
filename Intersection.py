@@ -141,7 +141,7 @@ class Intersection:
             #Adding all the random vehicles before starting
             self.addVehicles()
             
-            self.running = False
+            self.running = True
             #MAIN LOOP FOR THE INTERSECTION--------------------------------------
             while(self.running):
                 #Pinging every car first in the queue for each car array in the two roads
@@ -172,7 +172,7 @@ class Intersection:
                 print(self.roadsObj[0].vehiclesInLane1)  
 
                 #.5 second wait between pings (Tick rate of the simulation)
-                time.sleep(.5)
+                time.sleep(1)
                 #adding vehicles back into the system every 10 seconds
                 self.count = self.count + 1
                 if(self.count >= 20):

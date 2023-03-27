@@ -3,6 +3,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk, ImageDraw
 import AdminPanel
 from TrafficSystem import *
+from threading import thread
 
 def main():
     def login(root):
