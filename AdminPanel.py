@@ -183,13 +183,24 @@ def create_intersection():
     canvas = tk.Canvas(window, width=900, height=800)
     canvas.pack()
 
-        # Roads
+    # Roads
     create_road(canvas, 250, 50, 550, 850)   # Vertical road
     create_road(canvas, 0, 300, 800, 600)   # Horizontal road
 
     # Dashed yellow lines
     create_dashed_yellow_line(canvas, 400, 50, 400, 850)     # Top vertical line
     create_dashed_yellow_line(canvas, 0, 450, 800, 450)     # Left horizontal line
+
+    # Center the window on the screen
+    window.update_idletasks()
+    width = window.winfo_width()
+    height = window.winfo_height()
+    x = (window.winfo_screenwidth() // 2) - (width // 2)
+    y = (window.winfo_screenheight() // 2) - (height // 2)
+    window.geometry("{}x{}+{}+{}".format(width, height, x, y))
+
+    create_legend(canvas)
+    create_admin_panel(window, canvas)
 
     while True:
         # Traffic lights
@@ -198,7 +209,7 @@ def create_intersection():
         create_traffic_light(canvas, 385, 600, TrafficSystem.inter.trafficLightObj[0].signalColour, "traffic_light_3")  # Bottom
         create_traffic_light(canvas, 540, 435, TrafficSystem.inter.trafficLightObj[1].signalColour, "traffic_light_4")  # Right
 
-    # Pedestrian lights
+        # Pedestrian lights
         create_pedestrian_light(canvas, 550, 615, TrafficSystem.inter.pedLightObj[0].signalColour, "ped_light_1")  # Bottom Right
         create_pedestrian_light(canvas, 235, 300, TrafficSystem.inter.pedLightObj[1].signalColour, "ped_light_2")  # Top Left
         create_pedestrian_light(canvas, 250, 615, TrafficSystem.inter.pedLightObj[0].signalColour, "ped_light_3")  # Bottom Left
@@ -232,17 +243,6 @@ def create_intersection():
         create_arrow(canvas, 300, 300, 300, 300)     
                     
         create_arrow(canvas, 100, 450, 200, 450)
-
-        # Center the window on the screen
-        window.update_idletasks()
-        width = window.winfo_width()
-        height = window.winfo_height()
-        x = (window.winfo_screenwidth() // 2) - (width // 2)
-        y = (window.winfo_screenheight() // 2) - (height // 2)
-        window.geometry("{}x{}+{}+{}".format(width, height, x, y))
-
-        create_legend(canvas)
-        create_admin_panel(window, canvas)
 
         window.update()
 
