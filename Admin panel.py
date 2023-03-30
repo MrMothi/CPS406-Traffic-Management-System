@@ -1,4 +1,5 @@
 import tkinter as tk
+import math
 
 def create_road(canvas, x1, y1, x2, y2):
     canvas.create_rectangle(x1, y1, x2, y2, fill="dark grey", outline="")
@@ -12,8 +13,84 @@ def create_traffic_light(canvas, x, y, clr, tag):
 def create_pedestrian_light(canvas, x, y, clr, tag):
     canvas.create_polygon(x, y, x - 10, y + 30, x + 10, y + 30, fill=clr, outline="", tags=tag)
 
-def create_arrow(canvas, x1, y1, x2, y2):
-    canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+
+
+
+def create_arrow(canvas, road, rotation):
+    arrow_length = 100  # You can adjust the length of the arrow
+
+    road_positions = {
+        "left": (250, 450),
+        "right": (550, 450),
+        "top": (400, 300),
+        "bottom": (400, 600),
+    }
+
+
+
+    x1, y1 = road_positions[road]
+
+    if road == "left":
+        if rotation == 90:
+            x_mid, y_mid = x1 + arrow_length, y1
+            x2, y2 = x_mid, y_mid - arrow_length
+        elif rotation == 180:
+            x_mid, y_mid = x1 + arrow_length + 40, y1
+            x2, y2 = x_mid + arrow_length + 40, y_mid
+        elif rotation == 270:
+            x_mid, y_mid = x1 + arrow_length, y1
+            x2, y2 = x_mid, y_mid + arrow_length
+    elif road == "right":
+        if rotation == 90:
+            x_mid, y_mid = x1 - arrow_length, y1
+            x2, y2 = x_mid, y_mid - arrow_length
+        elif rotation == 180:
+            x_mid, y_mid = x1 - arrow_length + 40, y1
+            x2, y2 = x_mid - arrow_length + 40, y_mid
+        elif rotation == 270:
+            x_mid, y_mid = x1 - arrow_length, y1
+            x2, y2 = x_mid, y_mid + arrow_length
+    elif road == "top":
+        if rotation == 90:
+            x_mid, y_mid = x1, y1 + arrow_length
+            x2, y2 = x_mid + arrow_length, y_mid
+        elif rotation == 180:
+            x_mid, y_mid = x1, y1 + arrow_length + 40
+            x2, y2 = x_mid, y_mid + arrow_length + 40
+        elif rotation == 270:
+            x_mid, y_mid = x1, y1 + arrow_length
+            x2, y2 = x_mid - arrow_length, y_mid
+    elif road == "bottom":
+        if rotation == 90:
+            x_mid, y_mid = x1, y1 - arrow_length
+            x2, y2 = x_mid + arrow_length, y_mid
+        elif rotation == 180:
+            x_mid, y_mid = x1, y1 - arrow_length + 40
+            x2, y2 = x_mid, y_mid - arrow_length + 40
+        elif rotation == 270:
+            x_mid, y_mid = x1, y1 - arrow_length
+            x2, y2 = x_mid - arrow_length, y_mid
+
+    # Create the first arrow (horizontal)
+    canvas.create_line(x1, y1, x_mid, y_mid, width=5, arrow=tk.LAST, arrowshape=(15, 20, 10))
+    canvas.create_line(x_mid, y_mid, x2, y2, width=5, arrow=tk.LAST, arrowshape=(15, 20, 10))
+
+
+
+
+
+   # if rotation == 90:
+   #     canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+   #     canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+   # elif rotation == 180:
+   #     canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+   #     canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+   # elif rotation == 270:
+   #     canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+   #     canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+
+
+   # canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
 
 def display_pedestrian_count(canvas, x, y, count):
     canvas.create_text(x, y, text=f"Pedestrians: {count}", font=("Arial", 10), tags="ped_count_text")
@@ -206,19 +283,10 @@ def create_intersection():
     create_pedestrian_light(canvas, 250, 570, "green", "ped_light_7")  # Bottom Left 2
     create_pedestrian_light(canvas, 550, 270, "green", "ped_light_8")  # Top Right 2
 
-
+    create_arrow(canvas, "top", 180)
     pedestrian_count = 0
     car_count = 0
-
-    
-
-  
-    
-
-    create_arrow(canvas, 300, 300, 300, 300)     
-                 
-    create_arrow(canvas, 100, 450, 200, 450)
-
+ 
     # Center the window on the screen
     window.update_idletasks()
     width = window.winfo_width()

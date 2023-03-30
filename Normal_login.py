@@ -1,15 +1,16 @@
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk, ImageDraw
-import UIMain
+import UIMain.py
 
 def main():
     def login(root):
         username = username_entry.get()
         password = password_entry.get()
+        UIMain.main()
         print("Username:", username)
         print("Password:", password)
-        UIMain.main()
+        UIMain.create_intersection()
 
     # Create a logo
     def create_arrow_image(size, fill_color):
