@@ -24,7 +24,7 @@ class Pedestrian:
                 self.sidew.sidewalk1.pop(0) #removing pedestrian from sidewalk1 array within sidewalk obj
             else:
                 self.sidew.sidewalk2.pop(0) #removing from sidewalk2
-        self.inter.pedestrianCount = self.inter.pedestrianCount - 1
+            self.inter.pedestrianCount = self.inter.pedestrianCount - 1
         return True
     
 

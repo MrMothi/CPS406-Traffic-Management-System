@@ -217,12 +217,14 @@ class Intersection:
                 self.countForCarAdd = self.countForCarAdd + 1
                 if(self.countForCarAdd >= 15):
                     self.addVehicles()
+                    self.countForCarAdd = 0
 
 
                 #adding pedestrians back into system every 30 seconds        was>=30                   
                 self.countForPedAdd = self.countForPedAdd + 1
                 if(self.countForPedAdd >= 30):
                     self.addPedestrians()
+                    self.countForPedAdd = 0
 
 
                 #Currently running the system for 50 seconds before halting the while loop
@@ -262,8 +264,9 @@ class Intersection:
     
     #method which calls the randomize vehicles function based on how many more vehicles are needed in the system
     #Vehicle parameters randomiser, creates then adds vehicle object which has been created with random paramteres with set probabilities for some
-    def addVehicles(self):   
-        for i in range(self.totalVehicleCount-self.vehicleCount):
+    def addVehicles(self):
+        tem = self.totalVehicleCount-self.vehicleCount   
+        for i in range(tem):
             newId = self.vehicleId
             self.vehicleId += 1
 
@@ -322,7 +325,9 @@ class Intersection:
 
     #Method to randomly add pedestrians
     def addPedestrians(self):
-        for i in range(self.totalPedestrianCount-self.pedestrianCount):
+        tem = self.totalPedestrianCount-self.pedestrianCount
+        for i in range(tem):
+            print(self.totalPedestrianCount, "   ",  self.pedestrianCount)
             #getting and updating ID variable
             newId = self.pedId
             self.pedId += 1
