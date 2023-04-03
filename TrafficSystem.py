@@ -6,7 +6,8 @@ class TrafficSystem:
     inter = None  #variable for the intersection object (Future expansion to list of intersections)
     userInfoDict = {
         "Admin1" : "Pa55word",
-        "Admin2" : "traffic"
+        "Admin2" : "traffic",
+        "a" : "a"
     }
 
     loggedIn = False
@@ -22,7 +23,7 @@ class TrafficSystem:
     #Function to create the intersection, and returns a reference to it
     @classmethod
     def initializeIntersection(cls):
-        cls.inter = Intersection(10, 4, "", pedestrianCount=10, totalVehicleCount=10)
+        cls.inter = Intersection(10, 4, "", totalPedestrianCount=10, totalVehicleCount=10) #need to check if params even do anything
         return cls.inter
     
 if __name__ == "__main__":

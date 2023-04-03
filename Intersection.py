@@ -14,13 +14,13 @@ from Pedestrian import *
 class Intersection:
 
     def __init__(self, trafficlightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
-        pedestrianCount: int = 0, totalVehicleCount: int = 20, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
-
+        totalPedestrianCount: int = 6, totalVehicleCount: int = 20, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
 
         # REGULAR INSTANCE VARIABLES----------------------------------------------------------------------------
         self.trafficlightTiming = trafficlightTiming
         self.pedestrianLightTiming = pedestrianLightTiming
-        self.pedestrianCount = pedestrianCount
+        self.pedestrianCount = 0 
+        self.totalPedestrianCount = totalPedestrianCount
         self.vehicleCount = 0
         self.totalVehicleCount = totalVehicleCount
         self.weather = weather
@@ -30,6 +30,7 @@ class Intersection:
         self.speedsData = speedsData
         self.passedVehicles = [] #holds all vehicles which have passed through the intersection, allows data gathering
         self.vehicleId = 0  #variable for the IDs of the vehicles
+        self.pedId = 0 #variable for the IDs of the pedestrians
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -38,8 +39,8 @@ class Intersection:
         self.pedLightObj = []
         #array holding Roads
         self.roadsObj = [] #roads: tuple(Road, Road)
-        #array holding Sidewalks
-        self.sidewalkObj = []
+        #array holding Sidewalks (Acting as crosswalks)
+        self.sidewalksObj = []
         
         #calling method to create all objects
         self.constructObjects()
@@ -63,10 +64,10 @@ class Intersection:
         # <=0 means open, >0 means occupied for x seconds more 
 
 
-
-
-        self.count = 0 #variable used to iterate 10 times before creating new vehicles in the system
+        self.countForCarAdd = 0 #variable used to iterate 15 times before creating new vehicles in the system
+        self.countForPedAdd = 0 #variable used to iterate 30 times before creating new vehlices in the system
         self.temp = 0
+
 
 
 
@@ -81,16 +82,14 @@ class Intersection:
         
         #making pedestrianlights
         PedestrianLight.signalTime = self.pedestrianLightTiming
-        self.pedLightObj.append(PedestrianLight(True, True, "stop"))  #Pedestrian Lights for rd1 (for signalling across rd1)
-        self.pedLightObj.append(PedestrianLight(True, True, "stop"))  #Pedestrian Lights for rd2 (for signalling across rd2)
-
-
+        self.pedLightObj.append(PedestrianLight(True, True, "red"))  #Pedestrian Lights for rd1 (for signalling across rd1)
+        self.pedLightObj.append(PedestrianLight(True, True, "red"))  #Pedestrian Lights for rd2 (for signalling across rd2)
 
         # #making sidewalks (Passing in intersection object reference)
-        # self.sidewalksObj.append(SideWalk())   #Sidewalk #1  for rd1      parallel to respectively numbered vehicle array       -----------implement more after car stuff finished---------
-        # self.sidewalksObj.append(SideWalk())   #Sidewalk #2  for rd2
-        # self.sidewalksObj.append(SideWalk())   #Sidewalk #3  for rd1
-        # self.sidewalksObj.append(SideWalk())   #Sidewalk #4  for rd2
+        self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #1  for rd1      parallel to respectively numbered vehicle array
+        self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #2  for rd2      each sidewalk has two arrays which, represent pedestrians on either side of the road
+        self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #3  for rd1
+        self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #4  for rd2
 
         #making roads  (Passing in intersection object reference)
         self.roadsObj.append(Road(self, True, False, False, ['''sidewalks?'''], [], [], 1))     #has vehicle arrays 1 and 3   
@@ -100,6 +99,10 @@ class Intersection:
         self.addVehicles()
 
         return None
+
+
+
+
 
     #Creates threads for the two trafficlights, cycling through colours while also being opposite
     def createTrafficLightThreads(self):
@@ -114,12 +117,10 @@ class Intersection:
         self.pedLightThreads[0].start()
         self.pedLightThreads[1].start()
 
-
     #Thread function to keep decreasing variable until its <= 0, decreasing by 1 each time, and waiting 1 second each time
     def updateAfterTime(self, var):        #pass in reference to instance variable
         self.otherThreads.append(threading.Thread(target=self.updateVar, args=[var]))
         self.otherThreads[-1].start()
-
 
     #Thread function, called by the updateAfterTime function
     def updateVar(self, var):  
@@ -127,6 +128,9 @@ class Intersection:
             self.occ[var] = self.occ[var]-1
             time.sleep(1)
         return                     
+
+
+
 
 
     #Main loop for the intersection
@@ -140,7 +144,10 @@ class Intersection:
             
             #Adding all the random vehicles before starting
             self.addVehicles()
-            
+            #Adding all the random pedestrians before starting
+            self.addPedestrians() #self.addPedestrians()
+
+
             self.running = True
             #MAIN LOOP FOR THE INTERSECTION--------------------------------------
             while(self.running):
@@ -152,6 +159,7 @@ class Intersection:
                 print(self.roadsObj[1].vehiclesInLane2)
                 print(self.occ)
                 
+                #Prompting Vehicles to go through intersection
                 #calling C1
                 if (len(self.roadsObj[0].vehiclesInLane1) > 0):           #arrays are checked if they have any cars, if so then prompts first car from [0]
                     self.roadsObj[0].vehiclesInLane1[0].doAction()
@@ -171,12 +179,51 @@ class Intersection:
                 # print(self.occ) #TESTING
                 print(self.roadsObj[0].vehiclesInLane1)  
 
-                #.5 second wait between pings (Tick rate of the simulation)
+
+                #Prompting pedestrians to go if the way is clear and light is green
+                #SIDEWALK1(TOP)
+                if(len(self.sidewalksObj[0].sidewalk1) > 0):
+                    self.sidewalksObj[0].sidewalk1[0].tryCrossRoad()
+                
+                if(len(self.sidewalksObj[0].sidewalk2) > 0):
+                    self.sidewalksObj[0].sidewalk2[0].tryCrossRoad()
+
+                #SIDEWALK2(RIGHT)
+                if(len(self.sidewalksObj[1].sidewalk1) > 0):
+                    self.sidewalksObj[1].sidewalk1[0].tryCrossRoad()
+                
+                if(len(self.sidewalksObj[1].sidewalk2) > 0):
+                    self.sidewalksObj[1].sidewalk2[0].tryCrossRoad()
+
+                #SIDEWALK3(BOTTOM)
+                if(len(self.sidewalksObj[2].sidewalk1) > 0):
+                    self.sidewalksObj[2].sidewalk1[0].tryCrossRoad()
+                
+                if(len(self.sidewalksObj[2].sidewalk2) > 0):
+                    self.sidewalksObj[2].sidewalk2[0].tryCrossRoad()
+
+                #SIDEWALK4(LEFT)
+                if(len(self.sidewalksObj[3].sidewalk1) > 0):
+                    self.sidewalksObj[3].sidewalk1[0].tryCrossRoad()
+                
+                if(len(self.sidewalksObj[3].sidewalk2) > 0):
+                    self.sidewalksObj[3].sidewalk2[0].tryCrossRoad()
+
+
+                #1 second wait between pings (Tick rate of the simulation)
                 time.sleep(1)
-                #adding vehicles back into the system every 10 seconds
-                self.count = self.count + 1
-                if(self.count >= 20):
+                
+                # adding vehicles back into the system every 15 seconds
+                self.countForCarAdd = self.countForCarAdd + 1
+                if(self.countForCarAdd >= 15):
                     self.addVehicles()
+
+
+                #adding pedestrians back into system every 30 seconds        was>=30                   
+                self.countForPedAdd = self.countForPedAdd + 1
+                if(self.countForPedAdd >= 30):
+                    self.addPedestrians()
+
 
                 #Currently running the system for 50 seconds before halting the while loop
                 self.temp = self.temp + 1
@@ -199,8 +246,8 @@ class Intersection:
             self.trafficLightObj[0].operational = False
             self.trafficLightObj[1].operational = False
             self.pedLightObj[0].operational = False
-            self.pedLightObj[1].operational = False
-            #MAYBE INSTALL PACKAGE WHICH ENDS THE THREADS BY THROWING EXCEPTION IN THEM
+            self.pedLightObj[1].operational = False                                
+            #MAYBE INSTALL PACKAGE WHICH ENDS THE THREADS BY THROWING EXCEPTION IN THEM                    -------------------------------------
         #else:
 
         #Printing done when the main loop is ended
@@ -210,45 +257,43 @@ class Intersection:
         return None
 
 
+
+
     
     #method which calls the randomize vehicles function based on how many more vehicles are needed in the system
-    def addVehicles(self):
-        for i in range(self.totalVehicleCount-self.vehicleCount):
-            self.randomizeVehicle()
-
     #Vehicle parameters randomiser, creates then adds vehicle object which has been created with random paramteres with set probabilities for some
-    def randomizeVehicle(self):   
-        newId = self.vehicleId
-        self.vehicleId += 1
+    def addVehicles(self):   
+        for i in range(self.totalVehicleCount-self.vehicleCount):
+            newId = self.vehicleId
+            self.vehicleId += 1
 
-        x = random.randint(1,100)
-        if x <= 88:
-            randType = "car"
-        elif x <= 98:
-            randType = "publicTransit"
-        else:
-            randType = "emergencyVehicle"
+            x = random.randint(1,100)
+            if x <= 88:
+                randType = "car"
+            elif x <= 98:
+                randType = "publicTransit"
+            else:
+                randType = "emergencyVehicle"
 
-        y = random.randint(1,10)
-        randAction = 2
-        if y == 9:
-            randAction = 1
-        elif y == 10:
-            randAction = 3
-        else:
+            y = random.randint(1,10)
             randAction = 2
+            if y == 9:
+                randAction = 1
+            elif y == 10:
+                randAction = 3
+            else:
+                randAction = 2
 
-        randPlate = (''.join(random.choices(string.ascii_uppercase + string.digits, k=7)))
-        randRd = (random.randint(0, 1))
-        randCarArrayNum = (random.randint(1,4))
+            randPlate = (''.join(random.choices(string.ascii_uppercase + string.digits, k=7)))
+            randRd = (random.randint(0, 1))
+            randCarArrayNum = (random.randint(1,4))
 
-        #Adding vehicle to the respective arrays in the roads
-        if(randCarArrayNum == 1 or randCarArrayNum == 2): #if car is in vehicle arrays 1
-            self.roadsObj[randRd].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
-        else: #if cars are in vehicle arrays 2
-            self.roadsObj[randRd].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
-        self.vehicleCount = self.vehicleCount + 1
-
+            #Adding vehicle to the respective arrays in the roads
+            if(randCarArrayNum == 1 or randCarArrayNum == 2): #if car is in vehicle arrays 1
+                self.roadsObj[randRd].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+            else: #if cars are in vehicle arrays 2
+                self.roadsObj[randRd].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+            self.vehicleCount = self.vehicleCount + 1
 
 
     #Function which holds an example of a vehicle in each location doing each action
@@ -270,6 +315,64 @@ class Intersection:
         self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"10",20,"type","ABC",self, self.roadsObj[1], 1, 4))   #going left from c4  
         self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"11",20,"type","ABC",self, self.roadsObj[1], 2, 4))   #going straight from c4
         self.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"12",20,"type","ABC",self, self.roadsObj[1], 3, 4))   #going right from c4
+
+
+
+
+
+    #Method to randomly add pedestrians
+    def addPedestrians(self):
+        for i in range(self.totalPedestrianCount-self.pedestrianCount):
+            #getting and updating ID variable
+            newId = self.pedId
+            self.pedId += 1
+            #getting random sidewalk obj number
+            sidewalkNum = random.randint(0,3)
+            #getting random sidewalk array number
+            arrNum = random.randint(1,2)
+            
+            #if statements for each possibility
+            if(sidewalkNum == 0): #adding to road 1, sidewalk obj 1
+                if(arrNum == 1):
+                    self.sidewalksObj[0].sidewalk1.append(Pedestrian(newId, self, 0, self.sidewalksObj[0], 1, 8))
+                else:
+                    self.sidewalksObj[0].sidewalk2.append(Pedestrian(newId, self, 0, self.sidewalksObj[0], 2, 8))
+            elif(sidewalkNum == 1): #sidewalk obj2
+                if(arrNum == 1):
+                    self.sidewalksObj[1].sidewalk1.append(Pedestrian(newId, self, 1, self.sidewalksObj[1], 1, 12))   
+                else:
+                    self.sidewalksObj[1].sidewalk2.append(Pedestrian(newId, self, 1, self.sidewalksObj[1], 2, 12))
+            elif(sidewalkNum == 2): #sidewalk obj3
+                if(arrNum == 1):
+                    self.sidewalksObj[2].sidewalk1.append(Pedestrian(newId, self, 0, self.sidewalksObj[2], 1, 16))  
+                else:
+                    self.sidewalksObj[2].sidewalk2.append(Pedestrian(newId, self, 0, self.sidewalksObj[2], 2, 16))
+            elif(sidewalkNum == 3): #sidewalk obj4
+                if(arrNum == 1):
+                    self.sidewalksObj[3].sidewalk1.append(Pedestrian(newId, self, 1, self.sidewalksObj[3], 1, 4))   
+                else:
+                    self.sidewalksObj[3].sidewalk2.append(Pedestrian(newId, self, 1, self.sidewalksObj[3], 2, 4))
+            self.pedestrianCount = self.pedestrianCount + 1
+        
+
+    def testPedestrians(self):
+        #TESTING
+        #Adding Pedestrians to every sidewalk array within the 4 sidewalk objects (2 per obj)
+        #using indexes to denote rdnum/rdcross in pedestrian
+        #rd1 [0] has sidewalk obj of index 0 and 2   #aka c1 and c3
+        #rd2 [1] has sidewalk obj of index 1 and 3   #aka c2 and c4
+        #pedestrians in sidewalk 1
+        self.sidewalksObj[0].sidewalk1.append(Pedestrian(1, self, 0, self.sidewalksObj[0], 1, 8))                         #make sure about rdcross corresponding to sidew (need to be from same part of intersection)
+        self.sidewalksObj[0].sidewalk2.append(Pedestrian(2, self, 0, self.sidewalksObj[0], 2, 8))
+        #pedestrians in sidewalk 2
+        self.sidewalksObj[1].sidewalk1.append(Pedestrian(3, self, 1, self.sidewalksObj[1], 1, 12))                       
+        self.sidewalksObj[1].sidewalk2.append(Pedestrian(4, self, 1, self.sidewalksObj[1], 2, 12))
+        #pedestrians in sidewalk 3
+        self.sidewalksObj[2].sidewalk1.append(Pedestrian(5, self, 0, self.sidewalksObj[2], 1, 16))                       
+        self.sidewalksObj[2].sidewalk2.append(Pedestrian(6, self, 0, self.sidewalksObj[2], 2, 16))
+        #pedestrians in sidewalk 4
+        self.sidewalksObj[3].sidewalk1.append(Pedestrian(7, self, 1, self.sidewalksObj[3], 1, 4))                       
+        self.sidewalksObj[3].sidewalk2.append(Pedestrian(8, self, 1, self.sidewalksObj[3], 2, 4))
 
 
 

@@ -227,9 +227,3 @@ class Vehicle:
 
         #if None of the if statements match, then print wait and do nothing
         print("Waiting", self.name)
-
-
-    def getRandomAction():
-        #maybe 80% of the time is straight
-        #10% left and right respectively
-        pass

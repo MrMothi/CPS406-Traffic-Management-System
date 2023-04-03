@@ -161,8 +161,8 @@ def create_admin_panel(window, canvas):
     (400, 800)
     ]   
 
-    for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
-        display_pedestrian_count(canvas, x, y, 0, f"ped_count_text_{i}")
+    # for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
+    #     display_pedestrian_count(canvas, x, y, 1, f"ped_count_text_{i}")
 
     # for i, (x, y) in enumerate(car_count_positions, start=1):
     #     display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
@@ -224,6 +224,8 @@ def create_intersection():
         pedestrian_count = 0
         car_count = 0
         
+
+        #DISPLAYING AND UPDATING CAR COUNTS
         canvas.delete("C4")
         canvas.delete("C2")
         canvas.delete("C1")
@@ -233,12 +235,29 @@ def create_intersection():
         display_car_count(canvas, 400, 100, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C1")
         display_car_count(canvas, 400, 780, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C2")
 
-    # (50, 450),
-    # (750, 450),
-    # (400, 100),
-    # (400, 800)
+        #DISPLAYING AND UPDATING PEDESTRIAN COUNTS
+        canvas.delete("PTL")  #pedestrianTopLeft
+        canvas.delete("PTR")
+        canvas.delete("PBL")  #pedestrianBottomLeft
+        canvas.delete("PBR")
+        display_pedestrian_count(canvas, 250, 290, (len(TrafficSystem.inter.sidewalksObj[0].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[3].sidewalk2)), "PTL") #adds sidewalkobj1 arr1 with sidewalkobj4 arr2
+        display_pedestrian_count(canvas, 570, 290, (len(TrafficSystem.inter.sidewalksObj[1].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[0].sidewalk2)), "PTR") #adds sidewalkobj1 arr2 with sidewalkobj2 arr1
+        display_pedestrian_count(canvas, 250, 610, (len(TrafficSystem.inter.sidewalksObj[3].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[2].sidewalk2)), "PBL") #adds sidewalkobj3 arr2 with sidewalkobj4 arr1
+        display_pedestrian_count(canvas, 570, 610, (len(TrafficSystem.inter.sidewalksObj[2].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[1].sidewalk2)), "PBR") #adds sidewalkonj3 arr1 with sidewalkobj2 arr2
+
+
+
+    # pedestrian_count_positions = [
+    # (250, 290), tlef
+    # (570, 290), trigh
+    # (250, 610), bleft
+    # (570, 610)  brigh
+    # ]
+
+
     
-        
+    # def display_pedestrian_count(canvas, x, y, count):
+    # canvas.create_text(x, y, text=f"Pedestrians: {count}", font=("Arial", 10), tags="ped_count_text")
 
         create_arrow(canvas, 300, 300, 300, 300)     
                     
