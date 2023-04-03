@@ -14,8 +14,64 @@ def create_traffic_light(canvas, x, y, clr, tag):
 def create_pedestrian_light(canvas, x, y, clr, tag):
     canvas.create_polygon(x, y, x - 10, y + 30, x + 10, y + 30, fill=clr, outline="", tags=tag)
 
-def create_arrow(canvas, x1, y1, x2, y2):
-    canvas.create_line(x1, y1, x2, y2, arrow=tk.LAST, fill="black", width=3)
+def create_arrow(canvas, road, rotation):
+    arrow_length = 100  # You can adjust the length of the arrow
+
+    road_positions = {
+        "left": (250, 550),   #450
+        "right": (550, 350),  #450
+        "top": (300, 300),    #x 400
+        "bottom": (500, 600), #x 400
+    }
+
+
+
+    x1, y1 = road_positions[road]
+
+    if road == "left":
+        if rotation == 90:
+            x_mid, y_mid = x1 + arrow_length, y1
+            x2, y2 = x_mid, y_mid - arrow_length
+        elif rotation == 180:
+            x_mid, y_mid = x1 + arrow_length + 40, y1
+            x2, y2 = x_mid + arrow_length + 40, y_mid
+        elif rotation == 270:
+            x_mid, y_mid = x1 + arrow_length, y1
+            x2, y2 = x_mid, y_mid + arrow_length
+    elif road == "right":
+        if rotation == 90:
+            x_mid, y_mid = x1 - arrow_length, y1
+            x2, y2 = x_mid, y_mid - arrow_length
+        elif rotation == 180:
+            x_mid, y_mid = x1 - arrow_length + 40, y1
+            x2, y2 = x_mid - arrow_length + 40, y_mid
+        elif rotation == 270:
+            x_mid, y_mid = x1 - arrow_length, y1
+            x2, y2 = x_mid, y_mid + arrow_length
+    elif road == "top":
+        if rotation == 90:
+            x_mid, y_mid = x1, y1 + arrow_length
+            x2, y2 = x_mid + arrow_length, y_mid
+        elif rotation == 180:
+            x_mid, y_mid = x1, y1 + arrow_length + 40
+            x2, y2 = x_mid, y_mid + arrow_length + 40
+        elif rotation == 270:
+            x_mid, y_mid = x1, y1 + arrow_length
+            x2, y2 = x_mid - arrow_length, y_mid
+    elif road == "bottom":
+        if rotation == 90:
+            x_mid, y_mid = x1, y1 - arrow_length
+            x2, y2 = x_mid + arrow_length, y_mid
+        elif rotation == 180:
+            x_mid, y_mid = x1, y1 - arrow_length + 40
+            x2, y2 = x_mid, y_mid - arrow_length + 40
+        elif rotation == 270:
+            x_mid, y_mid = x1, y1 - arrow_length
+            x2, y2 = x_mid - arrow_length, y_mid
+
+    # Create the first arrow (horizontal)
+    canvas.create_line(x1, y1, x_mid, y_mid, width=5, arrow=tk.LAST, arrowshape=(15, 20, 10))
+    canvas.create_line(x_mid, y_mid, x2, y2, width=5, arrow=tk.LAST, arrowshape=(15, 20, 10))
 
 def display_pedestrian_count(canvas, x, y, count):
     canvas.create_text(x, y, text=f"Pedestrians: {count}", font=("Arial", 10), tags="ped_count_text")
@@ -259,9 +315,11 @@ def create_intersection():
     # def display_pedestrian_count(canvas, x, y, count):
     # canvas.create_text(x, y, text=f"Pedestrians: {count}", font=("Arial", 10), tags="ped_count_text")
 
-        create_arrow(canvas, 300, 300, 300, 300)     
+        # create_arrow(canvas, "left", 90)
+        # create_arrow(canvas, "right", 180)    
+        # create_arrow(canvas, "bottom", 90)      
                     
-        create_arrow(canvas, 100, 450, 200, 450)
+        # create_arrow(canvas, 100, 450, 200, 450)
 
         window.update()
 

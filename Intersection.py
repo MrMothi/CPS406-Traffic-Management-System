@@ -29,6 +29,7 @@ class Intersection:
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
         self.passedVehicles = [] #holds all vehicles which have passed through the intersection, allows data gathering
+        self.passedPedestrians = [] #holds all the pedestrians that have passed through the intersection
         self.vehicleId = 0  #variable for the IDs of the vehicles
         self.pedId = 0 #variable for the IDs of the pedestrians
 
@@ -302,44 +303,46 @@ class Intersection:
 
 
 
-    
 
-    
-    #method which calls the randomize vehicles function based on how many more vehicles are needed in the system
-    #Vehicle parameters randomiser, creates then adds vehicle object which has been created with random paramteres with set probabilities for some
+    #Function to create multiple vehicles
     def addVehicles(self):
         tem = self.totalVehicleCount-self.vehicleCount   
         for i in range(tem):
-            newId = self.vehicleId
-            self.vehicleId += 1
+            self.addSingleVehicle()
+    
+    #method which calls the randomize vehicles function based on how many more vehicles are needed in the system
+    #Vehicle parameters randomiser, creates then adds vehicle object which has been created with random paramteres with set probabilities for some
+    def addSingleVehicle(self):
+        newId = self.vehicleId
+        self.vehicleId += 1
 
-            x = random.randint(1,100)
-            if x <= 88:
-                randType = "car"
-            elif x <= 98:
-                randType = "publicTransit"
-            else:
-                randType = "emergencyVehicle"
+        x = random.randint(1,100)
+        if x <= 88:
+            randType = "car"
+        elif x <= 98:
+            randType = "publicTransit"
+        else:
+            randType = "emergencyVehicle"
 
-            y = random.randint(1,10)
+        y = random.randint(1,10)
+        randAction = 2
+        if y == 9:
+            randAction = 1
+        elif y == 10:
+            randAction = 3
+        else:
             randAction = 2
-            if y == 9:
-                randAction = 1
-            elif y == 10:
-                randAction = 3
-            else:
-                randAction = 2
 
-            randPlate = (''.join(random.choices(string.ascii_uppercase + string.digits, k=7)))
-            randRd = (random.randint(0, 1))
-            randCarArrayNum = (random.randint(1,4))
+        randPlate = (''.join(random.choices(string.ascii_uppercase + string.digits, k=7)))
+        randRd = (random.randint(0, 1))
+        randCarArrayNum = (random.randint(1,4))
 
-            #Adding vehicle to the respective arrays in the roads
-            if(randCarArrayNum == 1 or randCarArrayNum == 2): #if car is in vehicle arrays 1
-                self.roadsObj[randRd].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
-            else: #if cars are in vehicle arrays 2
-                self.roadsObj[randRd].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
-            self.vehicleCount = self.vehicleCount + 1
+        #Adding vehicle to the respective arrays in the roads
+        if(randCarArrayNum == 1 or randCarArrayNum == 2): #if car is in vehicle arrays 1
+            self.roadsObj[randRd].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+        else: #if cars are in vehicle arrays 2
+            self.roadsObj[randRd].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+        self.vehicleCount = self.vehicleCount + 1
 
 
     #Function which holds an example of a vehicle in each location doing each action
@@ -366,42 +369,47 @@ class Intersection:
 
 
 
-    #Method to randomly add pedestrians
+    #function to create multiple pedestrians
     def addPedestrians(self):
         tem = self.totalPedestrianCount-self.pedestrianCount
         for i in range(tem):
-            print(self.totalPedestrianCount, "   ",  self.pedestrianCount)
-            #getting and updating ID variable
-            newId = self.pedId
-            self.pedId += 1
-            #getting random sidewalk obj number
-            sidewalkNum = random.randint(0,3)
-            #getting random sidewalk array number
-            arrNum = random.randint(1,2)
-            
-            #if statements for each possibility
-            if(sidewalkNum == 0): #adding to road 1, sidewalk obj 1
-                if(arrNum == 1):
-                    self.sidewalksObj[0].sidewalk1.append(Pedestrian(newId, self, 0, self.sidewalksObj[0], 1, 8))
-                else:
-                    self.sidewalksObj[0].sidewalk2.append(Pedestrian(newId, self, 0, self.sidewalksObj[0], 2, 8))
-            elif(sidewalkNum == 1): #sidewalk obj2
-                if(arrNum == 1):
-                    self.sidewalksObj[1].sidewalk1.append(Pedestrian(newId, self, 1, self.sidewalksObj[1], 1, 12))   
-                else:
-                    self.sidewalksObj[1].sidewalk2.append(Pedestrian(newId, self, 1, self.sidewalksObj[1], 2, 12))
-            elif(sidewalkNum == 2): #sidewalk obj3
-                if(arrNum == 1):
-                    self.sidewalksObj[2].sidewalk1.append(Pedestrian(newId, self, 0, self.sidewalksObj[2], 1, 16))  
-                else:
-                    self.sidewalksObj[2].sidewalk2.append(Pedestrian(newId, self, 0, self.sidewalksObj[2], 2, 16))
-            elif(sidewalkNum == 3): #sidewalk obj4
-                if(arrNum == 1):
-                    self.sidewalksObj[3].sidewalk1.append(Pedestrian(newId, self, 1, self.sidewalksObj[3], 1, 4))   
-                else:
-                    self.sidewalksObj[3].sidewalk2.append(Pedestrian(newId, self, 1, self.sidewalksObj[3], 2, 4))
-            self.pedestrianCount = self.pedestrianCount + 1
+            self.addSinglePedestrian()
+
+
+    #Method to randomly add pedestrians
+    def addSinglePedestrian(self):
+        print(self.totalPedestrianCount, "   ",  self.pedestrianCount)
+        #getting and updating ID variable
+        newId = self.pedId
+        self.pedId += 1
+        #getting random sidewalk obj number
+        sidewalkNum = random.randint(0,3)
+        #getting random sidewalk array number
+        arrNum = random.randint(1,2)
         
+        #if statements for each possibility
+        if(sidewalkNum == 0): #adding to road 1, sidewalk obj 1
+            if(arrNum == 1):
+                self.sidewalksObj[0].sidewalk1.append(Pedestrian(newId, self, 0, self.sidewalksObj[0], 1, 8))
+            else:
+                self.sidewalksObj[0].sidewalk2.append(Pedestrian(newId, self, 0, self.sidewalksObj[0], 2, 8))
+        elif(sidewalkNum == 1): #sidewalk obj2
+            if(arrNum == 1):
+                self.sidewalksObj[1].sidewalk1.append(Pedestrian(newId, self, 1, self.sidewalksObj[1], 1, 12))   
+            else:
+                self.sidewalksObj[1].sidewalk2.append(Pedestrian(newId, self, 1, self.sidewalksObj[1], 2, 12))
+        elif(sidewalkNum == 2): #sidewalk obj3
+            if(arrNum == 1):
+                self.sidewalksObj[2].sidewalk1.append(Pedestrian(newId, self, 0, self.sidewalksObj[2], 1, 16))  
+            else:
+                self.sidewalksObj[2].sidewalk2.append(Pedestrian(newId, self, 0, self.sidewalksObj[2], 2, 16))
+        elif(sidewalkNum == 3): #sidewalk obj4
+            if(arrNum == 1):
+                self.sidewalksObj[3].sidewalk1.append(Pedestrian(newId, self, 1, self.sidewalksObj[3], 1, 4))   
+            else:
+                self.sidewalksObj[3].sidewalk2.append(Pedestrian(newId, self, 1, self.sidewalksObj[3], 2, 4))
+        self.pedestrianCount = self.pedestrianCount + 1
+    
 
     def testPedestrians(self):
         #TESTING
@@ -436,8 +444,17 @@ class Intersection:
         # checks for pSignal from sidewalk linked to rd
         return self.pedLightObj[rd.rdNum-1].signalColour
     
-    def requestEmergencySignal(self, rd: Road):
-        return
+
+    #Function for emergency vehicle or accident on road, which immediately sets all lights to red, thus halting the intersection
+    #Run as thread, set all occupancy variables to 1, wait x amount of seconds before restarting loop
+    #spawn emergency vehicle to front of one of the vehicle arrays
+    def requestEmergency(self):
+        self.running = False
+        self.pedLightObj[0].signalColour = "red"
+        self.pedLightObj[1].signalColour = "red"
+        self.trafficLightObj[0].signalColour = "red"
+        self.trafficLightObj[1].signalColour = "red"
+
     
 
 #manages the creation of vehicles and pedestrians

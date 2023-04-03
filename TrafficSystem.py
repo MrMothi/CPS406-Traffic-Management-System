@@ -3,7 +3,7 @@ from TitleScreen import *
 
 class TrafficSystem:
     intersectionName = "MetroFloRoad"
-    inter = None  #variable for the intersection object (Future expansion to list of intersections)
+    inter = None #variable for the intersection object (Future expansion to list of intersections)
     userInfoDict = {
         "Admin1" : "Pa55word",
         "Admin2" : "traffic",
