@@ -78,7 +78,7 @@ class Intersection:
         #making trafficlights
         TrafficLight.signalTime = self.trafficlightTiming
         self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road1
-        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road2
+        self.trafficLightObj.append(TrafficLight(True, "green"))    #TrafficLight for road2
         
         #making pedestrianlights
         PedestrianLight.signalTime = self.pedestrianLightTiming
@@ -105,9 +105,9 @@ class Intersection:
 
 
     #Creates threads for the two trafficlights, cycling through colours while also being opposite
-    def createTrafficLightThreads(self):
-        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[0].cycleLight1))
-        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[1].cycleLight2))
+    def createTrafficLightThreads(self, modify1=False, modify2=False):
+        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[0].cycleLight, args=(modify1,)))
+        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[1].cycleLight, args=(modify2,)))
         self.trafficLightThreads[0].start()
         self.trafficLightThreads[1].start()
 
@@ -128,6 +128,47 @@ class Intersection:
             self.occ[var] = self.occ[var]-1
             time.sleep(1)
         return                     
+
+    # maybe another function to change lights seperately
+
+    def changeLights(self, colour1, colour2):
+        # this function essentially changes the lights of the intersection while in sync
+        # so if one light is red and the other is green, immediately change green to yellow
+        # and let the red one sit for the duration that yellow is idle, then switch red to
+        # green when yellow cycles to red
+        # note: trafficLights still run as threads so we can just kill them and remake them
+        # to instantly change the colours, but we would need to break the delay of red
+        # to shorten it so it stays only for the duration of yellow
+
+        # kill threads
+        self.trafficLightObj[0].operational = False
+        self.trafficLightObj[1].operational = False
+        self.trafficLightThreads = []
+
+        self.trafficLightObj[0].setColour(colour1)
+        self.trafficLightObj[1].setColour(colour2)
+        self.trafficLightObj[0].operational = True
+        self.trafficLightObj[1].operational = True
+        if colour1 == "yellow" and colour2 == "red":
+            self.createTrafficLightThreads(modify2=True)
+        elif colour1 == "red" and colour2 == "yellow":
+            self.createTrafficLightThreads(modify1=True)
+        else:
+            self.createTrafficLightThreads()
+
+
+    def accelLights(self):
+        # get the traffic light that is green
+        # accelerate both time until green becomes yellow
+        # set back time to regular (only green is accelerated, red time matches at the same time)
+        # this is basically a switch function for pedestrians ex. if there are pedestrians waiting
+        # or an admin button
+        # ideally admin will be able to automatically switch the lights so green will automatically change
+        # to yellow and follow the cycle for both sides
+        
+        # utilizes changeLight function after increasing the speed the lights
+
+        return
 
 
 
@@ -260,6 +301,8 @@ class Intersection:
 
 
 
+
+    
 
     
     #method which calls the randomize vehicles function based on how many more vehicles are needed in the system
