@@ -10,7 +10,6 @@ from PedestrianLight import *
 from Vehicle import *
 from Pedestrian import *
 
-
 class Intersection:
 
     def __init__(self, trafficlightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
