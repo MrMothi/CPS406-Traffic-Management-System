@@ -95,8 +95,8 @@ class Intersection:
         self.roadsObj.append(Road(self, True, False, False, ['''sidewalks?'''], [], [], 1))     #has vehicle arrays 1 and 3   
         self.roadsObj.append(Road(self, True, False, False, [], [], [], 2))     #has vehicle arrays 2 and 4
 
-        #method which creates random vehicles to appropirate vehicles and vehicle lists
-        self.addVehicles()
+        # #method which creates random vehicles to appropirate vehicles and vehicle lists
+        # self.addVehicles()
 
         return None
 
@@ -185,6 +185,7 @@ class Intersection:
             
             #Adding all the random vehicles before starting
             self.addVehicles()
+            # self.testVehicles()
             #Adding all the random pedestrians before starting
             self.addPedestrians() #self.addPedestrians()
 
@@ -192,6 +193,8 @@ class Intersection:
             self.running = True
             #MAIN LOOP FOR THE INTERSECTION--------------------------------------
             while(self.running):
+                # print(self.trafficLightObj[0].signalColour)
+                # print(self.trafficLightObj[1].signalColour)
                 #Pinging every car first in the queue for each car array in the two roads
                 #Going clockwise from C1, C2, C3, C4 : where C1 and C3 are in rd1 and C2 and C4 are in rd2
                 print(self.roadsObj[0].vehiclesInLane1)   
@@ -268,9 +271,9 @@ class Intersection:
                     self.countForPedAdd = 0
 
 
-                #Currently running the system for 50 seconds before halting the while loop
+                #Automatically ending the program after 100s (Just in case there is a infinite loop)
                 self.temp = self.temp + 1
-                if(self.temp == 100):
+                if(self.temp == 1000):
                     self.running = False
 
                 #Testing prints
@@ -338,9 +341,15 @@ class Intersection:
 
         #Adding vehicle to the respective arrays in the roads
         if(randCarArrayNum == 1 or randCarArrayNum == 2): #if car is in vehicle arrays 1
-            self.roadsObj[randRd].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+            if(randCarArrayNum == 1):
+                self.roadsObj[0].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[0], randAction, randCarArrayNum))
+            else:
+                self.roadsObj[1].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[1], randAction, randCarArrayNum))
         else: #if cars are in vehicle arrays 2
-            self.roadsObj[randRd].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+            if(randCarArrayNum == 3):
+                self.roadsObj[0].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[0], randAction, randCarArrayNum))
+            else:
+                self.roadsObj[1].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[1], randAction, randCarArrayNum))
         self.vehicleCount = self.vehicleCount + 1
 
 

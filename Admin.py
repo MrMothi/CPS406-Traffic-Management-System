@@ -12,3 +12,6 @@ class Admin:
 
 
 
+    #
+
+    #display arrows or not

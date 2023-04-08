@@ -13,7 +13,7 @@ class Vehicle:
         self.rd = rd #Road object reference which holds the vehicle
         self.actionType = actionType #if the car is given an action type to do
         self.carArrayNum = carArrayNum #Number to indicate which vehicle array the vehicle is in
-        self.moveTime = 2 #default movetime (Base on speed for future) =======================================
+        self.moveTime = 2 #default movetime (Base on speed for future 2) =======================================
 
     #Variable Numbering info
     #carArrayNum, based on the C# indicate which vehicle array the vehicle is in goes from 1-4
@@ -98,7 +98,7 @@ class Vehicle:
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action1")
+                        print("Action1 2")
 
                 #if going straight (ARROW #6)
                 elif(self.actionType == 2):
@@ -112,7 +112,7 @@ class Vehicle:
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action2")
+                        print("Action2 2")
                 
                 #if turning right (ARROW #7)
                 elif(self.actionType == 3):
@@ -126,7 +126,7 @@ class Vehicle:
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action3")
+                        print("Action3 2")
 
         #If car is in rd 1, C3
         elif(self.carArrayNum == 3):
@@ -146,7 +146,7 @@ class Vehicle:
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action1")
+                        print("Action1 3")
 
                 #if going straight (ARROW #10)
                 elif(self.actionType == 2):
@@ -160,7 +160,7 @@ class Vehicle:
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action2")
+                        print("Action2 3")
                 
                 #if turning right (ARROW #11)
                 elif(self.actionType == 3):
@@ -174,7 +174,7 @@ class Vehicle:
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action3")
+                        print("Action3 3")
         
         #If car is in rd 2, C4
         elif(self.carArrayNum == 4):
@@ -194,7 +194,7 @@ class Vehicle:
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action1")
+                        print("Action1 4")
 
                 #if going straight (ARROW #14)
                 elif(self.actionType == 2):
@@ -208,7 +208,7 @@ class Vehicle:
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action2")
+                        print("Action2 4")
                 
                 #if turning right (ARROW #15)
                 elif(self.actionType == 3):
@@ -222,7 +222,7 @@ class Vehicle:
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action3")
+                        print("Action3 4")
 
 
         #if None of the if statements match, then print wait and do nothing

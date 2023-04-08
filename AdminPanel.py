@@ -19,7 +19,7 @@ def create_arrow(canvas, road, rotation, arr1, arr2):
 
     road_positions = {
         "left": (250, 550),     
-        "right": (550, 550),
+        "right": (550, 350),
         "top": (300, 300),     #400
         "bottom": (500, 600),  #400 x
     }
@@ -41,8 +41,8 @@ def create_arrow(canvas, road, rotation, arr1, arr2):
             x_mid, y_mid = x1 - arrow_length, y1
             x2, y2 = x_mid, y_mid - arrow_length
         elif rotation == 180:
-            x_mid, y_mid = x1 - arrow_length + 40, y1
-            x2, y2 = x_mid - arrow_length + 40, y_mid
+            x_mid, y_mid = x1 - arrow_length - 40, y1   #-
+            x2, y2 = x_mid - arrow_length - 40, y_mid   #-
         elif rotation == 270:
             x_mid, y_mid = x1 - arrow_length, y1
             x2, y2 = x_mid, y_mid + arrow_length
@@ -61,8 +61,8 @@ def create_arrow(canvas, road, rotation, arr1, arr2):
             x_mid, y_mid = x1, y1 - arrow_length
             x2, y2 = x_mid + arrow_length, y_mid
         elif rotation == 180:
-            x_mid, y_mid = x1, y1 - arrow_length + 40
-            x2, y2 = x_mid, y_mid - arrow_length + 40
+            x_mid, y_mid = x1, y1 - arrow_length - 40
+            x2, y2 = x_mid, y_mid - arrow_length - 40
         elif rotation == 270:
             x_mid, y_mid = x1, y1 - arrow_length
             x2, y2 = x_mid - arrow_length, y_mid
@@ -282,24 +282,115 @@ def create_intersection():
 
 
 
-        # #UPDATING OCC VARIABLE ARROWS FOR CARS (Checking if greater than 0 then display arrow, otherwise remove)          
-        if verticalRoad.signalColour == "green":
+        #UPDATING OCC VARIABLE ARROWS FOR CARS (Checking if greater than 0 then display arrow, otherwise remove)     
+        #ARROWS FOR VERTICAL LIGHTS GREEN      
+        # if verticalRoad.signalColour == "green":              #check out yellow later_---------------------------------------
+        # if verticalRoad.signalColour == "green":
 
-            #OCC1
-            if (TrafficSystem.inter.occ[1] > 0):   #for occ number 2 in diagram but index 1 in array
-                create_arrow(canvas, "top", 270, "occ1ar1", "occ1ar2")
-        else:
-            create_arrow(canvas, "left", 90, "e", "f")
-            create_arrow(canvas, "right", 90, "g", "h")
+
+        #OCC1
+        if (TrafficSystem.inter.occ[0] > 0):   #for occ number 2 in diagram but index 1 in array
+            create_arrow(canvas, "top", 270, "occ1ar1", "occ1ar2")
+        #OCC2
+        if (TrafficSystem.inter.occ[1] > 0): 
+            create_arrow(canvas, "top", 180, "occ2ar1", "occ2ar2")
+        #OCC3
+        if (TrafficSystem.inter.occ[2] > 0):  
+            create_arrow(canvas, "top", 90, "occ3ar1", "occ3ar2")
+
+        #OCC9
+        if (TrafficSystem.inter.occ[8] > 0):   #for occ number 2 in diagram but index 1 in array
+            create_arrow(canvas, "bottom", 90, "occ9ar1", "occ9ar2")
+        #OCC10
+        if (TrafficSystem.inter.occ[9] > 0): 
+            create_arrow(canvas, "bottom", 180, "occ10ar1", "occ10ar2")
+        #OCC11
+        if (TrafficSystem.inter.occ[10] > 0):  
+            create_arrow(canvas, "bottom", 270, "occ11ar1", "occ11ar2")
+
+
+
+        #ARROWS FOR VERTICAL LIGHTS GREEN
+        # if horizontalRoad.signalColour == "green":
+        #     # create_arrow(canvas, "left", 90, "e", "f")
+        #     # create_arrow(canvas, "right", 90, "g", "h")
+        #     pass
+
+
+        #OCC5
+        if (TrafficSystem.inter.occ[4] > 0):   #for occ number 2 in diagram but index 1 in array
+            create_arrow(canvas, "right", 90, "occ5ar1", "occ5ar2")
+        #OCC6
+        if (TrafficSystem.inter.occ[5] > 0): 
+            create_arrow(canvas, "right", 180, "occ6ar1", "occ6ar2")
+        #OCC7
+        if (TrafficSystem.inter.occ[6] > 0):  
+            create_arrow(canvas, "right", 270, "occ7ar1", "occ7ar2")
+
+        #OCC13
+        if (TrafficSystem.inter.occ[12] > 0):   #for occ number 2 in diagram but index 1 in array
+            create_arrow(canvas, "left", 270, "occ13ar1", "occ13ar2")
+        #OCC14
+        if (TrafficSystem.inter.occ[13] > 0): 
+            create_arrow(canvas, "left", 180, "occ14ar1", "occ14ar2")
+        #OCC15
+        if (TrafficSystem.inter.occ[14] > 0):  
+            create_arrow(canvas, "left", 90, "occ15ar1", "occ15ar2")
+
+
 
 
 
 
         #DELETING ARROWS IF NEED BE
-        if(TrafficSystem.inter.occ[1] <= 0):
+        if(TrafficSystem.inter.occ[0] <= 0):
             # delete_arrow(canvas, ("occ1ar1", "occ1ar2"))
             canvas.delete("occ1ar1")
             canvas.delete("occ1ar2")
+        if(TrafficSystem.inter.occ[1] <= 0):
+            canvas.delete("occ2ar1")
+            canvas.delete("occ2ar2")
+        if(TrafficSystem.inter.occ[2] <= 0):
+            canvas.delete("occ3ar1")
+            canvas.delete("occ3ar2")
+
+
+        if(TrafficSystem.inter.occ[8] <= 0):
+            # delete_arrow(canvas, ("occ1ar1", "occ1ar2"))
+            canvas.delete("occ9ar1")
+            canvas.delete("occ9ar2")
+        if(TrafficSystem.inter.occ[9] <= 0):
+            canvas.delete("occ10ar1")
+            canvas.delete("occ10ar2")
+        if(TrafficSystem.inter.occ[10] <= 0):
+            canvas.delete("occ11ar1")
+            canvas.delete("occ11ar2")
+
+
+
+
+        if(TrafficSystem.inter.occ[4] <= 0):
+            # delete_arrow(canvas, ("occ1ar1", "occ1ar2"))
+            canvas.delete("occ5ar1")
+            canvas.delete("occ5ar2")
+        if(TrafficSystem.inter.occ[5] <= 0):
+            canvas.delete("occ6ar1")
+            canvas.delete("occ6ar2")
+        if(TrafficSystem.inter.occ[6] <= 0):
+            canvas.delete("occ7ar1")
+            canvas.delete("occ7ar2")
+
+
+        if(TrafficSystem.inter.occ[12] <= 0):
+            # delete_arrow(canvas, ("occ1ar1", "occ1ar2"))
+            canvas.delete("occ13ar1")
+            canvas.delete("occ13ar2")
+        if(TrafficSystem.inter.occ[13] <= 0):
+            canvas.delete("occ14ar1")
+            canvas.delete("occ14ar2")
+        if(TrafficSystem.inter.occ[14] <= 0):
+            canvas.delete("occ15ar1")
+            canvas.delete("occ15ar2")
 
 
 
