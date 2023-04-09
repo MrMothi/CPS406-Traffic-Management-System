@@ -1,6 +1,23 @@
 import tkinter as tk
+from threading import Thread
 from TrafficSystem import *
 import time
+
+#Creating the thread variable for the run function of intersection
+TrafficSystem.initializeIntersection()
+#Variables for main loop threads
+global indTraffic
+global interloop
+interloop = []
+interloop.append(threading.Thread(target=TrafficSystem.inter.run))
+indTraffic = 0
+
+#Creating signal light threads
+TrafficSystem.inter.createTrafficLightThreads()
+TrafficSystem.inter.createPedestrianLightThreads()
+
+
+
 global canvas
 def create_road(canvas, x1, y1, x2, y2):
     canvas.create_rectangle(x1, y1, x2, y2, fill="dark grey", outline="")
@@ -14,6 +31,35 @@ def create_traffic_light(canvas, x, y, clr, tag):
 def create_pedestrian_light(canvas, x, y, clr, tag):
     canvas.create_polygon(x, y, x - 10, y + 30, x + 10, y + 30, fill=clr, outline="", tags=tag)
 
+
+
+#arrow function for pedestrians
+def create_double_sided_arrow(canvas, position, arr1, arr2, arrow_size=10, thickness=3):
+    length = 200  # Set the fixed length here
+    if position == "top":
+        x, y = 300, 300
+        orientation = "horizontal"
+    elif position == "bottom":
+        x, y = 300, 600
+        orientation = "horizontal"
+    elif position == "left":
+        x, y = 270, 350
+        orientation = "vertical"
+    elif position == "right":
+        x, y = 550, 350
+        orientation = "vertical"
+ 
+    if orientation == "horizontal":
+        # Horizontal arrow
+        canvas.create_line(x, y, x + length, y, arrow=tk.LAST, arrowshape=(arrow_size, arrow_size, arrow_size), width=thickness, tags=arr1)
+        canvas.create_line(x + length, y, x, y, arrow=tk.LAST, arrowshape=(arrow_size, arrow_size, arrow_size), width=thickness, tags=arr2)
+    elif orientation == "vertical":
+        # Vertical arrow
+        canvas.create_line(x, y, x, y + length, arrow=tk.LAST, arrowshape=(arrow_size, arrow_size, arrow_size), width=thickness, tags=arr1)
+        canvas.create_line(x, y + length, x, y, arrow=tk.LAST, arrowshape=(arrow_size, arrow_size, arrow_size), width=thickness, tags=arr2)
+
+
+#Arrow function for vehicles
 def create_arrow(canvas, road, rotation, arr1, arr2):
     arrow_length = 100  # You can adjust the length of the arrow
 
@@ -27,9 +73,9 @@ def create_arrow(canvas, road, rotation, arr1, arr2):
     x1, y1 = road_positions[road]
 
     if road == "left":
-        if rotation == 90:
-            x_mid, y_mid = x1 + arrow_length, y1
-            x2, y2 = x_mid, y_mid - arrow_length
+        if rotation == 90:   
+            x_mid, y_mid = x1 + arrow_length + 80, y1
+            x2, y2 = x_mid, y_mid - arrow_length #-
         elif rotation == 180:
             x_mid, y_mid = x1 + arrow_length + 40, y1
             x2, y2 = x_mid + arrow_length + 40, y_mid
@@ -41,14 +87,14 @@ def create_arrow(canvas, road, rotation, arr1, arr2):
             x_mid, y_mid = x1 - arrow_length, y1
             x2, y2 = x_mid, y_mid - arrow_length
         elif rotation == 180:
-            x_mid, y_mid = x1 - arrow_length - 40, y1   #-
-            x2, y2 = x_mid - arrow_length - 40, y_mid   #-
+            x_mid, y_mid = x1 - arrow_length - 40, y1  
+            x2, y2 = x_mid - arrow_length - 40, y_mid   
         elif rotation == 270:
-            x_mid, y_mid = x1 - arrow_length, y1
+            x_mid, y_mid = x1 - arrow_length - 80, y1
             x2, y2 = x_mid, y_mid + arrow_length
     elif road == "top":
         if rotation == 90:
-            x_mid, y_mid = x1, y1 + arrow_length
+            x_mid, y_mid = x1, y1 + arrow_length + 80 #
             x2, y2 = x_mid + arrow_length, y_mid
         elif rotation == 180:
             x_mid, y_mid = x1, y1 + arrow_length + 40
@@ -64,8 +110,8 @@ def create_arrow(canvas, road, rotation, arr1, arr2):
             x_mid, y_mid = x1, y1 - arrow_length - 40
             x2, y2 = x_mid, y_mid - arrow_length - 40
         elif rotation == 270:
-            x_mid, y_mid = x1, y1 - arrow_length
-            x2, y2 = x_mid - arrow_length, y_mid
+            x_mid, y_mid = x1, y1 - arrow_length - 80 #
+            x2, y2 = x_mid - arrow_length, y_mid 
 
     # Create the first arrow (horizontal)
     canvas.create_line(x1, y1, x_mid, y_mid, width=5, arrow=tk.LAST, arrowshape=(15, 20, 10), tags=arr1)
@@ -92,6 +138,10 @@ def toggle_traffic_light(canvas, light):
     colors = ["green", "yellow", "red"]
     current_color = canvas.itemcget(light, "fill")
     next_color = colors[(colors.index(current_color) + 1) % len(colors)]
+    if (light == "traffic_light_1" or light == "traffic_light_3"):
+        TrafficSystem.inter.trafficLightObj[0].signalColour = next_color
+    else:
+        TrafficSystem.inter.trafficLightObj[1].signalColour = next_color
     canvas.itemconfigure(light, fill=next_color)
 
 def toggle_pedestrian_light(canvas, light):
@@ -99,6 +149,10 @@ def toggle_pedestrian_light(canvas, light):
     current_color = canvas.itemcget(light, "fill")
     next_color = colors[(colors.index(current_color) + 1) % len(colors)]
     canvas.itemconfigure(light, fill=next_color)
+    if(light == "ped_light_1"):
+        TrafficSystem.inter.pedLightObj[0].signalColour = next_color
+    else: #if "ped_light_2"
+        TrafficSystem.inter.pedLightObj[1].signalColour = next_color
 
 def create_admin_panel(window, canvas):
     admin_panel = tk.Frame(window)
@@ -160,6 +214,32 @@ def update_traffic_light(canvas, x, y, clr):
 def update_pedestrian_light(canvas, x, y, clr):
     create_pedestrian_light(canvas, x, y, clr)
 
+#---------------------------------------------------------------------------------
+def toggleTraffic():
+    global indTraffic
+    if(interloop[indTraffic].is_alive()):
+        TrafficSystem.inter.running = False
+        indTraffic = indTraffic + 1
+        interloop.append(threading.Thread(target=TrafficSystem.inter.run))
+    else:     
+        TrafficSystem.inter.running = True
+        interloop[indTraffic].start()
+
+def toggleTrafficLight():
+    if(TrafficSystem.inter.trafficLightObj[0].operational):
+        TrafficSystem.inter.trafficLightObj[0].operational = False
+        TrafficSystem.inter.trafficLightObj[1].operational = False
+    else:
+        TrafficSystem.inter.trafficLightObj[0].operational = True
+        TrafficSystem.inter.trafficLightObj[1].operational = True
+
+def togglePedestrianLight():
+    if(TrafficSystem.inter.pedLightObj[0].operational):
+        TrafficSystem.inter.pedLightObj[0].operational = False
+        TrafficSystem.inter.pedLightObj[1].operational = False
+    else:
+        TrafficSystem.inter.pedLightObj[0].operational = True
+        TrafficSystem.inter.pedLightObj[1].operational = True
 
 def create_admin_panel(window, canvas):
     admin_panel = tk.Frame(window, bg="white", width=300, height=500)
@@ -194,6 +274,18 @@ def create_admin_panel(window, canvas):
     car_entry.grid(row=2, column=1)
     car_button = tk.Button(admin_panel, text="Update", command=lambda: update_car_count(canvas, car_entry, 570, 290))
     car_button.grid(row=2, column=2)
+
+
+
+    #TOGGLING TRAFFIC, TRAFFIC LIGHTS, AND PEDESTRIAN LIGHTS
+    toggleTraffic_button = tk.Button(admin_panel, text="Toggle Traffic", command=lambda: toggleTraffic())  #---------------------------------------------------------
+    toggleTraffic_button.grid(row=2, column=3)
+
+    toggleTrafficLight_button = tk.Button(admin_panel, text="Toggle TrafficLight", command=lambda: toggleTrafficLight()) 
+    toggleTrafficLight_button.grid(row=2, column=4)
+
+    togglePedestrianLight_button = tk.Button(admin_panel, text="Toggle PedestrianLight", command=lambda: togglePedestrianLight()) 
+    togglePedestrianLight_button.grid(row=2, column=5)
 
     traffic_light_buttons = [
         tk.Button(admin_panel, text="Traffic Light 1", command=lambda: toggle_traffic_light(canvas, "traffic_light_1")),
@@ -282,12 +374,44 @@ def create_intersection():
 
 
 
-        #UPDATING OCC VARIABLE ARROWS FOR CARS (Checking if greater than 0 then display arrow, otherwise remove)     
-        #ARROWS FOR VERTICAL LIGHTS GREEN      
-        # if verticalRoad.signalColour == "green":              #check out yellow later_---------------------------------------
-        # if verticalRoad.signalColour == "green":
+        #CREATING ARROWS FOR PEDESTRIAN OCC VARIABLES
+        #OCC4
+        if (TrafficSystem.inter.occ[3] > 0):   #for occ number 2 in diagram but index 1 in array
+            create_double_sided_arrow(canvas, "left", "occ4ar1", "occ4ar2")
+        #OCC8
+        if (TrafficSystem.inter.occ[7] > 0): 
+            create_double_sided_arrow(canvas, "top", "occ8ar1", "occ8ar2")
+        #OCC12
+        if (TrafficSystem.inter.occ[11] > 0):  
+            create_double_sided_arrow(canvas, "right", "occ12ar1", "occ12ar2")
+        #OCC16
+        if (TrafficSystem.inter.occ[15] > 0):  
+            create_double_sided_arrow(canvas, "bottom", "occ16ar1", "occ16ar2")
 
 
+        #DELETING ARROWS FOR PEDESTRIANS IF NEED BE
+        #OCC4
+        if(TrafficSystem.inter.occ[3] <= 0):
+            # delete_arrow(canvas, ("occ1ar3", "occ1ar2"))
+            canvas.delete("occ4ar1")
+            canvas.delete("occ4ar2")
+        #OCC8
+        if(TrafficSystem.inter.occ[7] <= 0):
+            canvas.delete("occ8ar1")
+            canvas.delete("occ8ar2")
+        #OCC12
+        if(TrafficSystem.inter.occ[11] <= 0):
+            canvas.delete("occ12ar1")
+            canvas.delete("occ12ar2")
+        #OCC16
+        if(TrafficSystem.inter.occ[15] <= 0):
+            canvas.delete("occ16ar1")
+            canvas.delete("occ16ar2")
+
+
+
+
+        #CREATING ARROWS FOR VEHICLE OCC VARIABLES
         #OCC1
         if (TrafficSystem.inter.occ[0] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "top", 270, "occ1ar1", "occ1ar2")
@@ -308,13 +432,6 @@ def create_intersection():
         if (TrafficSystem.inter.occ[10] > 0):  
             create_arrow(canvas, "bottom", 270, "occ11ar1", "occ11ar2")
 
-
-
-        #ARROWS FOR VERTICAL LIGHTS GREEN
-        # if horizontalRoad.signalColour == "green":
-        #     # create_arrow(canvas, "left", 90, "e", "f")
-        #     # create_arrow(canvas, "right", 90, "g", "h")
-        #     pass
 
 
         #OCC5
@@ -342,7 +459,7 @@ def create_intersection():
 
 
 
-        #DELETING ARROWS IF NEED BE
+        #DELETING VEHICLE ARROWS IF NEED BE
         if(TrafficSystem.inter.occ[0] <= 0):
             # delete_arrow(canvas, ("occ1ar1", "occ1ar2"))
             canvas.delete("occ1ar1")
@@ -365,8 +482,6 @@ def create_intersection():
         if(TrafficSystem.inter.occ[10] <= 0):
             canvas.delete("occ11ar1")
             canvas.delete("occ11ar2")
-
-
 
 
         if(TrafficSystem.inter.occ[4] <= 0):
@@ -422,10 +537,10 @@ def create_intersection():
         canvas.delete("C2")
         canvas.delete("C1")
         canvas.delete("C3")
-        display_car_count(canvas, 50, 450, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane2), "C4")
-        display_car_count(canvas, 750, 450, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane2), "C3")
-        display_car_count(canvas, 400, 100, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C1")
-        display_car_count(canvas, 400, 780, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C2")
+        display_car_count(canvas, 50, 550, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane2), "C4")
+        display_car_count(canvas, 750, 350, len(TrafficSystem.inter.roadsObj[1].vehiclesInLane1), "C2")
+        display_car_count(canvas, 325, 100, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane1), "C1")
+        display_car_count(canvas, 475, 780, len(TrafficSystem.inter.roadsObj[0].vehiclesInLane2), "C3")
 
         #DISPLAYING AND UPDATING PEDESTRIAN COUNTS
         canvas.delete("PTL")  #pedestrianTopLeft

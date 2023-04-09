@@ -21,6 +21,7 @@ class Vehicle:
                     #1 means go left
                     #2 means go straight
                     #3 means go right
+                    
 
     #Right of way going straight, leftturn, then rightturn
     #ie leftturn checks pedestrian and vehicle coming from left

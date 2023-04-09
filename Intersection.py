@@ -31,6 +31,7 @@ class Intersection:
         self.passedPedestrians = [] #holds all the pedestrians that have passed through the intersection
         self.vehicleId = 0  #variable for the IDs of the vehicles
         self.pedId = 0 #variable for the IDs of the pedestrians
+        self.notfinished = True  # Variable which the pedestrianLight and TrafficLight check (If true they continue running, if false then they end)
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -77,13 +78,13 @@ class Intersection:
         #Lights are only made if they run at a separate colour cycle, other objects can reference the same light if they follow the same signal
         #making trafficlights
         TrafficLight.signalTime = self.trafficlightTiming
-        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road1
-        self.trafficLightObj.append(TrafficLight(True, "green"))    #TrafficLight for road2
+        self.trafficLightObj.append(TrafficLight(True, "red", self))    #TrafficLight for road1
+        self.trafficLightObj.append(TrafficLight(True, "green", self))    #TrafficLight for road2
         
         #making pedestrianlights
         PedestrianLight.signalTime = self.pedestrianLightTiming
-        self.pedLightObj.append(PedestrianLight(True, True, "red"))  #Pedestrian Lights for rd1 (for signalling across rd1)
-        self.pedLightObj.append(PedestrianLight(True, True, "red"))  #Pedestrian Lights for rd2 (for signalling across rd2)
+        self.pedLightObj.append(PedestrianLight(True, True, "red", self))  #Pedestrian Lights for rd1 (for signalling across rd1)
+        self.pedLightObj.append(PedestrianLight(True, True, "red", self))  #Pedestrian Lights for rd2 (for signalling across rd2)
 
         # #making sidewalks (Passing in intersection object reference)
         self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #1  for rd1      parallel to respectively numbered vehicle array
@@ -95,12 +96,7 @@ class Intersection:
         self.roadsObj.append(Road(self, True, False, False, ['''sidewalks?'''], [], [], 1))     #has vehicle arrays 1 and 3   
         self.roadsObj.append(Road(self, True, False, False, [], [], [], 2))     #has vehicle arrays 2 and 4
 
-        # #method which creates random vehicles to appropirate vehicles and vehicle lists
-        # self.addVehicles()
-
         return None
-
-
 
 
 
@@ -179,15 +175,16 @@ class Intersection:
         #Try Catch block for breaking out of the loop via ctrl-c, and error catching
         try:
 
-            #STARTING THREADS FOR LIGHTS
-            self.createTrafficLightThreads()
-            self.createPedestrianLightThreads()
+            # #STARTING THREADS FOR LIGHTS
+            # self.createTrafficLightThreads()
+            # self.createPedestrianLightThreads()
             
             #Adding all the random vehicles before starting
             self.addVehicles()
             # self.testVehicles()
+
             #Adding all the random pedestrians before starting
-            self.addPedestrians() #self.addPedestrians()
+            self.addPedestrians()
 
 
             self.running = True
@@ -202,29 +199,9 @@ class Intersection:
                 print(self.roadsObj[0].vehiclesInLane2)
                 print(self.roadsObj[1].vehiclesInLane2)
                 print(self.occ)
-                
-                #Prompting Vehicles to go through intersection
-                #calling C1
-                if (len(self.roadsObj[0].vehiclesInLane1) > 0):           #arrays are checked if they have any cars, if so then prompts first car from [0]
-                    self.roadsObj[0].vehiclesInLane1[0].doAction()
-
-                #calling C2
-                if (len(self.roadsObj[1].vehiclesInLane1) > 0):
-                    self.roadsObj[1].vehiclesInLane1[0].doAction()
-
-                #calling C3
-                if (len(self.roadsObj[0].vehiclesInLane2) > 0):
-                    self.roadsObj[0].vehiclesInLane2[0].doAction()
-
-                #calling C4
-                if (len(self.roadsObj[1].vehiclesInLane2) > 0):
-                    self.roadsObj[1].vehiclesInLane2[0].doAction()
-
-                # print(self.occ) #TESTING
-                print(self.roadsObj[0].vehiclesInLane1)  
 
 
-                #Prompting pedestrians to go if the way is clear and light is green
+                #Prompting pedestrians (before vehicles) to go if the way is clear and light is green
                 #SIDEWALK1(TOP)
                 if(len(self.sidewalksObj[0].sidewalk1) > 0):
                     self.sidewalksObj[0].sidewalk1[0].tryCrossRoad()
@@ -254,6 +231,27 @@ class Intersection:
                     self.sidewalksObj[3].sidewalk2[0].tryCrossRoad()
 
 
+                #Prompting Vehicles to go through intersection
+                #calling C1
+                if (len(self.roadsObj[0].vehiclesInLane1) > 0):           #arrays are checked if they have any cars, if so then prompts first car from [0]
+                    self.roadsObj[0].vehiclesInLane1[0].doAction()
+
+                #calling C2
+                if (len(self.roadsObj[1].vehiclesInLane1) > 0):
+                    self.roadsObj[1].vehiclesInLane1[0].doAction()
+
+                #calling C3
+                if (len(self.roadsObj[0].vehiclesInLane2) > 0):
+                    self.roadsObj[0].vehiclesInLane2[0].doAction()
+
+                #calling C4
+                if (len(self.roadsObj[1].vehiclesInLane2) > 0):
+                    self.roadsObj[1].vehiclesInLane2[0].doAction()
+
+                # print(self.occ) #TESTING
+                # print(self.roadsObj[0].vehiclesInLane1)  
+
+
                 #1 second wait between pings (Tick rate of the simulation)
                 time.sleep(1)
                 
@@ -275,6 +273,12 @@ class Intersection:
                 self.temp = self.temp + 1
                 if(self.temp == 1000):
                     self.running = False
+
+                #cleanup of passed_ arrays
+                if len(self.passedPedestrians) >= 100:
+                    self.passedPedestrians = []
+                if len(self.passedVehicles) >= 100:
+                    self.passedVehicles = []
 
                 #Testing prints
                 print(self.occ)

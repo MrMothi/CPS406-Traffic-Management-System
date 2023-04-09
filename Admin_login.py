@@ -11,10 +11,10 @@ def main():
         password = password_entry.get()
         if TrafficSystem.login(username, password):
             root.destroy()
-            inter = TrafficSystem.initializeIntersection()
+            # inter = TrafficSystem.initializeIntersection()
             # inter.run()
-            interloop = threading.Thread(target=inter.run) 
-            interloop.start()
+            # interloop = threading.Thread(target=inter.run) 
+            # interloop.start()
             AdminPanel.create_intersection()
         
 
