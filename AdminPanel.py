@@ -241,172 +241,283 @@ def togglePedestrianLight():
         TrafficSystem.inter.pedLightObj[0].operational = True
         TrafficSystem.inter.pedLightObj[1].operational = True
 
+
+
+# def create_admin_panel(window, canvas):
+#     admin_panel = tk.Frame(window, bg="", width=300)
+#     admin_panel.place(x=0, y=0, relheight=1)
+
+#     tk.Label(admin_panel, text="Admin Panel", font=("Arial", 14, "bold"), bg="white").grid(row=0, column=0, columnspan=4, pady=10)
+
+#     #TOGGLING TRAFFIC, TRAFFIC LIGHTS, AND PEDESTRIAN LIGHTS  #---------------------------------------------------------
+#     toggleTraffic_button = tk.Button(admin_panel, text="Toggle Traffic", command=lambda: toggleTraffic())  
+#     toggleTraffic_button.grid(row=1, column=1)
+
+#     toggleTrafficLight_button = tk.Button(admin_panel, text="Toggle TrafficLight", command=lambda: toggleTrafficLight()) 
+#     toggleTrafficLight_button.grid(row=1, column=2)
+
+#     togglePedestrianLight_button = tk.Button(admin_panel, text="Toggle PedestrianLight", command=lambda: togglePedestrianLight()) 
+#     togglePedestrianLight_button.grid(row=2, column=1)
+
+
+
+
+#     pedestrian_count_positions = [
+#         (250, 290),
+#         (570, 290),
+#         (250, 610),
+#         (570, 610)
+#     ]
+
+#     car_count_positions = [
+#         (50, 450),
+#         (750, 450),
+#         (400, 100),
+#         (400, 800)
+#     ]
+
+#     # Change Pedestrian Count
+#     for i in range(3, 7):
+#         tk.Label(admin_panel, text=f"Pedestrians {i}:", font=("Arial", 10), bg="white").grid(row=i, column=0)
+#         pedestrian_entry = tk.Entry(admin_panel, width=5)
+#         pedestrian_entry.grid(row=i, column=1)
+#         pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_pedestrian_count(canvas, pedestrian_entry, *pedestrian_count_positions[i-1], f"ped_count_text_{i}"))
+#         pedestrian_button.grid(row=i, column=2)
+
+#     # Change Car Count
+#     for i in range(3, 7):
+#         tk.Label(admin_panel, text=f"Cars {i}:", font=("Arial", 10), bg="white").grid(row=i+4, column=0)
+#         car_entry = tk.Entry(admin_panel, width=5)
+#         car_entry.grid(row=i+4, column=1)
+#         car_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_car_count(canvas, car_entry, *car_count_positions[i-1], f"car_count_text_{i}"))
+#         car_button.grid(row=i+4, column=2)
+
+#     traffic_light_buttons = [
+#         tk.Button(admin_panel, text="Traffic Light 1", command=lambda: (toggle_traffic_light(canvas, "traffic_light_1"), create_pop_text(canvas, "light_1"))),
+#         tk.Button(admin_panel, text="Traffic Light 2", command=lambda: (toggle_traffic_light(canvas, "traffic_light_2"), create_pop_text(canvas, "light_2"))),
+#         tk.Button(admin_panel, text="Traffic Light 3", command=lambda: (toggle_traffic_light(canvas, "traffic_light_3"), create_pop_text(canvas, "light_3"))),
+#         tk.Button(admin_panel, text="Traffic Light 4", command=lambda: (toggle_traffic_light(canvas, "traffic_light_4"), create_pop_text(canvas, "light_4"))),
+#     ]
+
+#         # Pedestrian Light Buttons
+#     pedestrian_light_buttons = [
+#         tk.Button(admin_panel, text="Pedestrian Light 1", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_1"), create_pop_text(canvas, "ped_light_1"))),
+#         tk.Button(admin_panel, text="Pedestrian Light 2", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_2"), create_pop_text(canvas, "ped_light_2"))),
+#         tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_3"), create_pop_text(canvas, "ped_light_3"))),
+#         tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_4"), create_pop_text(canvas, "ped_light_4"))),
+#         tk.Button(admin_panel, text="Pedestrian Light 5", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_5"), create_pop_text(canvas, "ped_light_5"))),
+#         tk.Button(admin_panel, text="Pedestrian Light 6", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_6"), create_pop_text(canvas, "ped_light_6"))),
+#         tk.Button(admin_panel, text="Pedestrian Light 7", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_7"), create_pop_text(canvas, "ped_light_7"))),
+#         tk.Button(admin_panel, text="Pedestrian Light 8", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_8"), create_pop_text(canvas, "ped_light_8"))),
+#     ]
+
+#     for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
+#         display_pedestrian_count(canvas, x, y, 0, f"ped_count_text_{i}")
+
+#     for i, (x, y) in enumerate(car_count_positions, start=1):
+#         display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
+
+#     # # Pedestrian Light Buttons
+#     # for i, button in enumerate(traffic_light_buttons, start=1):
+#     #     if i <= 2:
+#     #         button.grid(row=i + 9, column=0, pady=2, sticky=tk.W)
+#     #     else:
+#     #         button.grid(row=i + 7, column=2, pady=2, sticky=tk.W)
+
+#     # # Traffic Light Buttons
+#     # for i, button in enumerate(pedestrian_light_buttons, start=1):
+#     #     if i <= 4:
+#     #         button.grid(row=i + 16, column=0, pady=2, sticky=tk.W)
+#     #     else:
+#     #         button.grid(row=i + 12, column=2, pady=2, sticky=tk.W)
+
+
+
+
+
 def create_admin_panel(window, canvas):
-    admin_panel = tk.Frame(window, bg="white", width=300, height=500)
-    admin_panel.pack(side=tk.TOP, anchor=tk.W, padx=10, pady=1)
 
-    tk.Label(admin_panel, text="Admin Panel", font=("Arial", 14, "bold"), bg="white").grid(row=0, column=0, columnspan=2, pady=10)
+    admin_panel = tk.Frame(window, bg="white", width=300)
+    admin_panel.place(x=0, y=0, relheight=1)
 
-    # Change Pedestrian Count
-    for i in range(1, 5):
-        tk.Label(admin_panel, text=f"Pedestrians {i}:", font=("Arial", 10), bg="white").grid(row=i, column=0)
-        pedestrian_entry = tk.Entry(admin_panel, width=5)
-        pedestrian_entry.grid(row=i, column=1)
-        pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_pedestrian_count(canvas, pedestrian_entry, *pedestrian_count_positions[i-1], f"ped_count_text_{i}"))
-        pedestrian_button.grid(row=i, column=2)
+    tk.Label(admin_panel, text="Admin Panel", font=("Arial", 16, "bold"), bg="white").grid(row=0, column=0, columnspan=4, pady=10)
 
-    tk.Label(admin_panel, text="Pedestrians:", font=("Arial", 10), bg="white").grid(row=1, column=0)
-    pedestrian_entry = tk.Entry(admin_panel, width=5)
-    pedestrian_entry.grid(row=1, column=1)
-    pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda: update_pedestrian_count(canvas, pedestrian_entry, 250, 290))
-    pedestrian_button.grid(row=1, column=2)
 
-    # Change Car Count
-    for i in range(1, 5):
-        tk.Label(admin_panel, text=f"Cars {i}:", font=("Arial", 10), bg="white").grid(row=i+4, column=0)
-        car_entry = tk.Entry(admin_panel, width=5)
-        car_entry.grid(row=i+4, column=1)
-        car_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_car_count(canvas, car_entry, *car_count_positions[i-1], f"car_count_text_{i}"))
-        car_button.grid(row=i+4, column=2)
+    # admin_panel = tk.Frame(window, bg="white", width=300, height=500)
+    # admin_panel.pack(side=tk.TOP, anchor=tk.W, padx=10, pady=1)
 
-    tk.Label(admin_panel, text="Cars:", font=("Arial", 10), bg="white").grid(row=2, column=0)
-    car_entry = tk.Entry(admin_panel, width=5)
-    car_entry.grid(row=2, column=1)
-    car_button = tk.Button(admin_panel, text="Update", command=lambda: update_car_count(canvas, car_entry, 570, 290))
-    car_button.grid(row=2, column=2)
+    # tk.Label(admin_panel, text="Admin Panel", font=("Arial", 14, "bold"), bg="white").grid(row=0, column=0, columnspan=2, pady=10)
+
+    # # Change Pedestrian Count
+    # for i in range(1, 5):
+    #     tk.Label(admin_panel, text=f"Pedestrians {i}:", font=("Arial", 10), bg="white").grid(row=i, column=0)
+    #     pedestrian_entry = tk.Entry(admin_panel, width=5)
+    #     pedestrian_entry.grid(row=i, column=1)
+    #     pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_pedestrian_count(canvas, pedestrian_entry, *pedestrian_count_positions[i-1], f"ped_count_text_{i}"))
+    #     pedestrian_button.grid(row=i, column=2)
+
+    # tk.Label(admin_panel, text="Pedestrians:", font=("Arial", 10), bg="white").grid(row=1, column=0)
+    # pedestrian_entry = tk.Entry(admin_panel, width=5)
+    # pedestrian_entry.grid(row=1, column=1)
+    # pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda: update_pedestrian_count(canvas, pedestrian_entry, 250, 290))
+    # pedestrian_button.grid(row=1, column=2)
+
+    # # Change Car Count
+    # for i in range(1, 5):
+    #     tk.Label(admin_panel, text=f"Cars {i}:", font=("Arial", 10), bg="white").grid(row=i+4, column=0)
+    #     car_entry = tk.Entry(admin_panel, width=5)
+    #     car_entry.grid(row=i+4, column=1)
+    #     car_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_car_count(canvas, car_entry, *car_count_positions[i-1], f"car_count_text_{i}"))
+    #     car_button.grid(row=i+4, column=2)
+
+    # tk.Label(admin_panel, text="Cars:", font=("Arial", 10), bg="white").grid(row=2, column=0)
+    # car_entry = tk.Entry(admin_panel, width=5)
+    # car_entry.grid(row=2, column=1)
+    # car_button = tk.Button(admin_panel, text="Update", command=lambda: update_car_count(canvas, car_entry, 570, 290))
+    # car_button.grid(row=2, column=2)
 
 
 
     #TOGGLING TRAFFIC, TRAFFIC LIGHTS, AND PEDESTRIAN LIGHTS  #---------------------------------------------------------
-    toggleTraffic_button = tk.Button(admin_panel, text="Toggle Traffic", command=lambda: toggleTraffic())  
-    toggleTraffic_button.grid(row=2, column=3)
+    tk.Label(admin_panel, text=f"Toggle Loop Buttons", font=("Arial", 10, "bold"), bg="white").grid(row=1, column=0)
+    toggleTraffic_button = tk.Button(admin_panel, text="Toggle Traffic", command=lambda: toggleTraffic(), width=23)  
+    toggleTraffic_button.grid(row=2, column=0)
 
-    toggleTrafficLight_button = tk.Button(admin_panel, text="Toggle TrafficLight", command=lambda: toggleTrafficLight()) 
-    toggleTrafficLight_button.grid(row=2, column=4)
+    toggleTrafficLight_button = tk.Button(admin_panel, text="Toggle TrafficLights", command=lambda: toggleTrafficLight(), width=23) 
+    toggleTrafficLight_button.grid(row=2, column=1)
 
-    togglePedestrianLight_button = tk.Button(admin_panel, text="Toggle PedestrianLight", command=lambda: togglePedestrianLight()) 
-    togglePedestrianLight_button.grid(row=2, column=5)
+    togglePedestrianLight_button = tk.Button(admin_panel, text="Toggle PedestrianLights", command=lambda: togglePedestrianLight(), width=23) 
+    togglePedestrianLight_button.grid(row=2, column=2)
+
+
 
 
     #Buttons for adding vechicles #------------------------------------------------------------------------------------------------
+    tk.Label(admin_panel, text=f"Add Vehicle Buttons", font=("Arial", 10, "bold"), bg="white").grid(row=3, column=0)
     #Vehicle top, turning left
-    addVehicleC1_1button = tk.Button(admin_panel, text="Add Vehicle Top, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 1)) ) 
-    addVehicleC1_1button.grid(row=2, column=6)
+    addVehicleC1_1button = tk.Button(admin_panel, width=23, text="Vehicle Top, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 1)) ) 
+    addVehicleC1_1button.grid(row=4, column=0)
     #Vehicle top, going straight
-    addVehicleC1_2button = tk.Button(admin_panel, text="Add Vehicle Top, Straight", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 2, 1)) ) 
-    addVehicleC1_2button.grid(row=2, column=7)
+    addVehicleC1_2button = tk.Button(admin_panel, width=23, text="Vehicle Top, Straight", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 2, 1)) ) 
+    addVehicleC1_2button.grid(row=4, column=1)
     #Vehicle top, turning right
-    addVehicleC1_3button = tk.Button(admin_panel, text="Add Vehicle Top, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 1)) ) 
-    addVehicleC1_3button.grid(row=2, column=8)
+    addVehicleC1_3button = tk.Button(admin_panel, width=23, text="Vehicle Top, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 1)) ) 
+    addVehicleC1_3button.grid(row=4, column=2)
 
     #Vehicle right, turning left
-    addVehicleC2_1button = tk.Button(admin_panel, text="Add Vehicle Right, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 2)) ) 
-    addVehicleC2_1button.grid(row=2, column=9)
+    addVehicleC2_1button = tk.Button(admin_panel, width=23, text="Vehicle Right, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 2)) ) 
+    addVehicleC2_1button.grid(row=5, column=0)
     #Vehicle right, going straight
-    addVehicleC2_2button = tk.Button(admin_panel, text="Add Vehicle Right, Straight", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 2, 2)) ) 
-    addVehicleC2_2button.grid(row=2, column=10)
+    addVehicleC2_2button = tk.Button(admin_panel, width=23, text="Vehicle Right, Straight", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 2, 2)) ) 
+    addVehicleC2_2button.grid(row=5, column=1)
     #Vehicle right, turning right
-    addVehicleC2_3button = tk.Button(admin_panel, text="Add Vehicle Right, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 2)) ) 
-    addVehicleC2_3button.grid(row=2, column=11)
+    addVehicleC2_3button = tk.Button(admin_panel, width=23, text="Vehicle Right, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 2)) ) 
+    addVehicleC2_3button.grid(row=5, column=2)
 
     #Vehicle bottom, turning left
-    addVehicleC3_1button = tk.Button(admin_panel, text="Add Vehicle Bottom, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 3)) ) 
-    addVehicleC3_1button.grid(row=3, column=6)
+    addVehicleC3_1button = tk.Button(admin_panel, width=23, text="Vehicle Bottom, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 3)) ) 
+    addVehicleC3_1button.grid(row=6, column=0)
     #Vehicle bottom, going straight
-    addVehicleC3_2button = tk.Button(admin_panel, text="Add Vehicle Bottom, Straight", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 2, 3)) ) 
-    addVehicleC3_2button.grid(row=3, column=7)
+    addVehicleC3_2button = tk.Button(admin_panel, width=23, text="Vehicle Bottom, Straight", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 2, 3)) ) 
+    addVehicleC3_2button.grid(row=6, column=1)
     #Vehicle bottom, turning right
-    addVehicleC3_3button = tk.Button(admin_panel, text="Add Vehicle Bottom, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 3)) ) 
-    addVehicleC3_3button.grid(row=3, column=8)
+    addVehicleC3_3button = tk.Button(admin_panel, width=23, text="Vehicle Bottom, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 3)) ) 
+    addVehicleC3_3button.grid(row=6, column=2)
 
     #Vehicle left, turning left
-    addVehicleC4_1button = tk.Button(admin_panel, text="Add Vehicle Left, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 4)) ) 
-    addVehicleC4_1button.grid(row=3, column=9)
+    addVehicleC4_1button = tk.Button(admin_panel, width=23, text="Vehicle Left, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 4)) ) 
+    addVehicleC4_1button.grid(row=7, column=0)
     #Vehicle left, going straight
-    addVehicleC4_2button = tk.Button(admin_panel, text="Add Vehicle Left, Straight", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 2, 4)) ) 
-    addVehicleC4_2button.grid(row=3, column=10)
+    addVehicleC4_2button = tk.Button(admin_panel, width=23, text="Vehicle Left, Straight", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 2, 4)) ) 
+    addVehicleC4_2button.grid(row=7, column=1)
     #Vehicle left, turning right
-    addVehicleC4_3button = tk.Button(admin_panel, text="Add Vehicle Left, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 4)) ) 
-    addVehicleC4_3button.grid(row=3, column=11)
+    addVehicleC4_3button = tk.Button(admin_panel, width=23, text="Vehicle Left, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 4)) ) 
+    addVehicleC4_3button.grid(row=7, column=2)
+
 
 
     #Buttons for adding pedestrians #------------------------------------------------------------------------------------------------
+    tk.Label(admin_panel, text=f"Add Pedestrian Buttons", font=("Arial", 10, "bold"), bg="white").grid(row=8, column=0)
     #Pedestrian Top, crossing from left
         #Naming Sidewalk# Side#
-    addPedestrian_s1s1button = tk.Button(admin_panel, text="Add Pedestrian Top, From Left", command=lambda: TrafficSystem.inter.sidewalksObj[0].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[0], 1, 8))  ) 
-    addPedestrian_s1s1button.grid(row=5, column=4)
+    addPedestrian_s1s1button = tk.Button(admin_panel, width=23, text="Pedestrian Top, From Left", command=lambda: TrafficSystem.inter.sidewalksObj[0].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[0], 1, 8))  ) 
+    addPedestrian_s1s1button.grid(row=9, column=0)
     #Pedestrian Top, crossing from left
-    addPedestrian_s1s2button = tk.Button(admin_panel, text="Add Pedestrian Top, From Right", command=lambda: TrafficSystem.inter.sidewalksObj[0].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[0], 2, 8))  ) 
-    addPedestrian_s1s2button.grid(row=5, column=5)
+    addPedestrian_s1s2button = tk.Button(admin_panel, width=23, text="Pedestrian Top, From Right", command=lambda: TrafficSystem.inter.sidewalksObj[0].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[0], 2, 8))  ) 
+    addPedestrian_s1s2button.grid(row=9, column=1)
 
     #Pedestrian Right, crossing from top
-    addPedestrian_s2s1button = tk.Button(admin_panel, text="Add Pedestrian Right, From Top", command=lambda: TrafficSystem.inter.sidewalksObj[1].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[1], 1, 12))  ) 
-    addPedestrian_s2s1button.grid(row=5, column=6)
+    addPedestrian_s2s1button = tk.Button(admin_panel, width=23, text="Pedestrian Right, From Top", command=lambda: TrafficSystem.inter.sidewalksObj[1].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[1], 1, 12))  ) 
+    addPedestrian_s2s1button.grid(row=10, column=0)
     #Pedestrian Right, crossing from bottom
-    addPedestrian_s2s2button = tk.Button(admin_panel, text="Add Pedestrian Right, From Bottom", command=lambda: TrafficSystem.inter.sidewalksObj[1].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[1], 2, 12))  ) 
-    addPedestrian_s2s2button.grid(row=5, column=7)
+    addPedestrian_s2s2button = tk.Button(admin_panel, width=23, text="Pedestrian Right, From Bottom", command=lambda: TrafficSystem.inter.sidewalksObj[1].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[1], 2, 12))  ) 
+    addPedestrian_s2s2button.grid(row=10, column=1)
 
     #Pedestrian Bottom, crossing from left
-    addPedestrian_s3s1button = tk.Button(admin_panel, text="Add Pedestrian Bottom, From Left", command=lambda: TrafficSystem.inter.sidewalksObj[2].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[2], 2, 16)) )
-    addPedestrian_s3s1button.grid(row=5, column=8)
+    addPedestrian_s3s1button = tk.Button(admin_panel, width=23, text="Pedestrian Bottom, From Left", command=lambda: TrafficSystem.inter.sidewalksObj[2].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[2], 2, 16)) )
+    addPedestrian_s3s1button.grid(row=11, column=0)
     #Pedestrian Bottom, crossing from left
-    addPedestrian_s3s2button = tk.Button(admin_panel, text="Add Pedestrian Bottom, From Right", command=lambda: TrafficSystem.inter.sidewalksObj[2].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[2], 1, 16))  ) 
-    addPedestrian_s3s2button.grid(row=5, column=9)
+    addPedestrian_s3s2button = tk.Button(admin_panel, width=23, text="Pedestrian Bottom, From Right", command=lambda: TrafficSystem.inter.sidewalksObj[2].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[2], 1, 16))  ) 
+    addPedestrian_s3s2button.grid(row=11, column=1)
 
     #Pedestrian Left, crossing from top
-    addPedestrian_s4s1button = tk.Button(admin_panel, text="Add Pedestrian Left, From Top", command=lambda: TrafficSystem.inter.sidewalksObj[3].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[3], 2, 4))  ) 
-    addPedestrian_s4s1button.grid(row=6, column=6)
+    addPedestrian_s4s1button = tk.Button(admin_panel, width=23, text="Pedestrian Left, From Top", command=lambda: TrafficSystem.inter.sidewalksObj[3].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[3], 2, 4))  ) 
+    addPedestrian_s4s1button.grid(row=12, column=0)
     #Pedestrian Left, crossing from bottom
-    addPedestrian_s4s2button = tk.Button(admin_panel, text="Add Pedestrian Left, From Bottom", command=lambda: TrafficSystem.inter.sidewalksObj[3].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[3], 1, 4))  ) 
-    addPedestrian_s4s2button.grid(row=6, column=7)
+    addPedestrian_s4s2button = tk.Button(admin_panel, width=23, text="Pedestrian Left, From Bottom", command=lambda: TrafficSystem.inter.sidewalksObj[3].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[3], 1, 4))  ) 
+    addPedestrian_s4s2button.grid(row=12, column=1)
 
 
 
+    #Change Colour of Traffic Light Buttons------------------------------------------------------------------------------------------------------------------
 
     traffic_light_buttons = [
-        tk.Button(admin_panel, text="Change Top&Bottom Traffic Lights", command=lambda: toggle_traffic_light(canvas, "traffic_light_1")),
-        tk.Button(admin_panel, text="Change Left&Right Traffic Lights", command=lambda: toggle_traffic_light(canvas, "traffic_light_2")),
-        tk.Button(admin_panel, text="Traffic Light 3", command=lambda: toggle_traffic_light(canvas, "traffic_light_3")),
-        tk.Button(admin_panel, text="Traffic Light 4", command=lambda: toggle_traffic_light(canvas, "traffic_light_4")),
+        tk.Button(admin_panel, width=23, text="Top & Bottom", command=lambda: toggle_traffic_light(canvas, "traffic_light_1")),
+        tk.Button(admin_panel, width=23, text="Left & Right", command=lambda: toggle_traffic_light(canvas, "traffic_light_2")),
+        # tk.Button(admin_panel, text="Traffic Light 3", command=lambda: toggle_traffic_light(canvas, "traffic_light_3")),
+        # tk.Button(admin_panel, text="Traffic Light 4", command=lambda: toggle_traffic_light(canvas, "traffic_light_4")),
     ]
 
     pedestrian_light_buttons = [
-        tk.Button(admin_panel, text="Change Top&Bottom Pedestrian Lights", command=lambda: toggle_pedestrian_light(canvas, "ped_light_1")),
-        tk.Button(admin_panel, text="Change Left&Right Pedestrian Lights", command=lambda: toggle_pedestrian_light(canvas, "ped_light_2")),
-        tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: toggle_pedestrian_light(canvas, "ped_light_3")),
-        tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: toggle_pedestrian_light(canvas, "ped_light_4")),
-        tk.Button(admin_panel, text="Pedestrian Light 5", command=lambda: toggle_pedestrian_light(canvas, "ped_light_5")),
-        tk.Button(admin_panel, text="Pedestrian Light 6", command=lambda: toggle_pedestrian_light(canvas, "ped_light_6")),
-        tk.Button(admin_panel, text="Pedestrian Light 7", command=lambda: toggle_pedestrian_light(canvas, "ped_light_7")),
-        tk.Button(admin_panel, text="Pedestrian Light 8", command=lambda: toggle_pedestrian_light(canvas, "ped_light_8")),
+        tk.Button(admin_panel, width=23, text="Top & Bottom", command=lambda: toggle_pedestrian_light(canvas, "ped_light_1")),
+        tk.Button(admin_panel, width=23, text="Left & Right", command=lambda: toggle_pedestrian_light(canvas, "ped_light_2")),
+        # tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: toggle_pedestrian_light(canvas, "ped_light_3")),
+        # tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: toggle_pedestrian_light(canvas, "ped_light_4")),
+        # tk.Button(admin_panel, text="Pedestrian Light 5", command=lambda: toggle_pedestrian_light(canvas, "ped_light_5")),
+        # tk.Button(admin_panel, text="Pedestrian Light 6", command=lambda: toggle_pedestrian_light(canvas, "ped_light_6")),
+        # tk.Button(admin_panel, text="Pedestrian Light 7", command=lambda: toggle_pedestrian_light(canvas, "ped_light_7")),
+        # tk.Button(admin_panel, text="Pedestrian Light 8", command=lambda: toggle_pedestrian_light(canvas, "ped_light_8")),
     ]
-    pedestrian_count_positions = [
-    (250, 290),
-    (570, 290),
-    (250, 610),
-    (570, 610)
-    ]
-
-    car_count_positions = [
-    (50, 450),
-    (750, 450),
-    (400, 100),
-    (400, 800)
-    ]   
-
-    # for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
-    #     display_pedestrian_count(canvas, x, y, 1, f"ped_count_text_{i}")
-
-    # for i, (x, y) in enumerate(car_count_positions, start=1):
-    #     display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
-
+    tk.Label(admin_panel, justify='left', text=f"Change Traffic Light Colour", font=("Arial", 10, "bold"), bg="white").grid(row=13, column=0, columnspan = 2, sticky="W")
     for i, button in enumerate(traffic_light_buttons, start=1):
-        button.grid(row=3, column=i)
-
+        button.grid(row=14, column=i-1)
+    tk.Label(admin_panel, text=f"Change Pedestrian Light Colour", font=("Arial", 10, "bold"), bg="white", anchor="w").grid(row=15, column=0, columnspan = 2, sticky="W")
     for i, button in enumerate(pedestrian_light_buttons, start=1):
-        button.grid(row=4, column=i)
+        button.grid(row=16, column=i-1)
 
-   
+    
+    
+    #-----------------------------------------------------------------------------------
+    # pedestrian_count_positions = [
+    # (250, 290),
+    # (570, 290),
+    # (250, 610),
+    # (570, 610)
+    # ]
+
+    # car_count_positions = [
+    # (50, 450),
+    # (750, 450),
+    # (400, 100),
+    # (400, 800)
+    # ]   
+
+    # # for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
+    # #     display_pedestrian_count(canvas, x, y, 1, f"ped_count_text_{i}")
+
+    # # for i, (x, y) in enumerate(car_count_positions, start=1):
+    # #     display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
+
 
 def create_intersection():
     window = tk.Tk()
