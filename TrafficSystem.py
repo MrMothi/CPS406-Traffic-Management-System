@@ -25,6 +25,6 @@ class TrafficSystem:
     def initializeIntersection(cls):
         cls.inter = Intersection(10, 4, "", totalPedestrianCount=10, totalVehicleCount=10) #need to check if params even do anything
         return cls.inter
-    
+
 if __name__ == "__main__":
     create_title_screen()

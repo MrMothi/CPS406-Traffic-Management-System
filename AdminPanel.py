@@ -277,8 +277,8 @@ def create_admin_panel(window, canvas):
 
 
 
-    #TOGGLING TRAFFIC, TRAFFIC LIGHTS, AND PEDESTRIAN LIGHTS
-    toggleTraffic_button = tk.Button(admin_panel, text="Toggle Traffic", command=lambda: toggleTraffic())  #---------------------------------------------------------
+    #TOGGLING TRAFFIC, TRAFFIC LIGHTS, AND PEDESTRIAN LIGHTS  #---------------------------------------------------------
+    toggleTraffic_button = tk.Button(admin_panel, text="Toggle Traffic", command=lambda: toggleTraffic())  
     toggleTraffic_button.grid(row=2, column=3)
 
     toggleTrafficLight_button = tk.Button(admin_panel, text="Toggle TrafficLight", command=lambda: toggleTrafficLight()) 
@@ -287,16 +287,92 @@ def create_admin_panel(window, canvas):
     togglePedestrianLight_button = tk.Button(admin_panel, text="Toggle PedestrianLight", command=lambda: togglePedestrianLight()) 
     togglePedestrianLight_button.grid(row=2, column=5)
 
+
+    #Buttons for adding vechicles #------------------------------------------------------------------------------------------------
+    #Vehicle top, turning left
+    addVehicleC1_1button = tk.Button(admin_panel, text="Add Vehicle Top, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 1)) ) 
+    addVehicleC1_1button.grid(row=2, column=6)
+    #Vehicle top, going straight
+    addVehicleC1_2button = tk.Button(admin_panel, text="Add Vehicle Top, Straight", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 2, 1)) ) 
+    addVehicleC1_2button.grid(row=2, column=7)
+    #Vehicle top, turning right
+    addVehicleC1_3button = tk.Button(admin_panel, text="Add Vehicle Top, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 1)) ) 
+    addVehicleC1_3button.grid(row=2, column=8)
+
+    #Vehicle right, turning left
+    addVehicleC2_1button = tk.Button(admin_panel, text="Add Vehicle Right, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 2)) ) 
+    addVehicleC2_1button.grid(row=2, column=9)
+    #Vehicle right, going straight
+    addVehicleC2_2button = tk.Button(admin_panel, text="Add Vehicle Right, Straight", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 2, 2)) ) 
+    addVehicleC2_2button.grid(row=2, column=10)
+    #Vehicle right, turning right
+    addVehicleC2_3button = tk.Button(admin_panel, text="Add Vehicle Right, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 2)) ) 
+    addVehicleC2_3button.grid(row=2, column=11)
+
+    #Vehicle bottom, turning left
+    addVehicleC3_1button = tk.Button(admin_panel, text="Add Vehicle Bottom, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 3)) ) 
+    addVehicleC3_1button.grid(row=3, column=6)
+    #Vehicle bottom, going straight
+    addVehicleC3_2button = tk.Button(admin_panel, text="Add Vehicle Bottom, Straight", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 2, 3)) ) 
+    addVehicleC3_2button.grid(row=3, column=7)
+    #Vehicle bottom, turning right
+    addVehicleC3_3button = tk.Button(admin_panel, text="Add Vehicle Bottom, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 3)) ) 
+    addVehicleC3_3button.grid(row=3, column=8)
+
+    #Vehicle left, turning left
+    addVehicleC4_1button = tk.Button(admin_panel, text="Add Vehicle Left, Left Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 4)) ) 
+    addVehicleC4_1button.grid(row=3, column=9)
+    #Vehicle left, going straight
+    addVehicleC4_2button = tk.Button(admin_panel, text="Add Vehicle Left, Straight", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 2, 4)) ) 
+    addVehicleC4_2button.grid(row=3, column=10)
+    #Vehicle left, turning right
+    addVehicleC4_3button = tk.Button(admin_panel, text="Add Vehicle Left, Right Turn", command=lambda: TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 4)) ) 
+    addVehicleC4_3button.grid(row=3, column=11)
+
+
+    #Buttons for adding pedestrians #------------------------------------------------------------------------------------------------
+    #Pedestrian Top, crossing from left
+        #Naming Sidewalk# Side#
+    addPedestrian_s1s1button = tk.Button(admin_panel, text="Add Pedestrian Top, From Left", command=lambda: TrafficSystem.inter.sidewalksObj[0].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[0], 1, 8))  ) 
+    addPedestrian_s1s1button.grid(row=5, column=4)
+    #Pedestrian Top, crossing from left
+    addPedestrian_s1s2button = tk.Button(admin_panel, text="Add Pedestrian Top, From Right", command=lambda: TrafficSystem.inter.sidewalksObj[0].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[0], 2, 8))  ) 
+    addPedestrian_s1s2button.grid(row=5, column=5)
+
+    #Pedestrian Right, crossing from top
+    addPedestrian_s2s1button = tk.Button(admin_panel, text="Add Pedestrian Right, From Top", command=lambda: TrafficSystem.inter.sidewalksObj[1].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[1], 1, 12))  ) 
+    addPedestrian_s2s1button.grid(row=5, column=6)
+    #Pedestrian Right, crossing from bottom
+    addPedestrian_s2s2button = tk.Button(admin_panel, text="Add Pedestrian Right, From Bottom", command=lambda: TrafficSystem.inter.sidewalksObj[1].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[1], 2, 12))  ) 
+    addPedestrian_s2s2button.grid(row=5, column=7)
+
+    #Pedestrian Bottom, crossing from left
+    addPedestrian_s3s1button = tk.Button(admin_panel, text="Add Pedestrian Bottom, From Left", command=lambda: TrafficSystem.inter.sidewalksObj[2].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[2], 2, 16)) )
+    addPedestrian_s3s1button.grid(row=5, column=8)
+    #Pedestrian Bottom, crossing from left
+    addPedestrian_s3s2button = tk.Button(admin_panel, text="Add Pedestrian Bottom, From Right", command=lambda: TrafficSystem.inter.sidewalksObj[2].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 0, TrafficSystem.inter.sidewalksObj[2], 1, 16))  ) 
+    addPedestrian_s3s2button.grid(row=5, column=9)
+
+    #Pedestrian Left, crossing from top
+    addPedestrian_s4s1button = tk.Button(admin_panel, text="Add Pedestrian Left, From Top", command=lambda: TrafficSystem.inter.sidewalksObj[3].sidewalk2.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[3], 2, 4))  ) 
+    addPedestrian_s4s1button.grid(row=6, column=6)
+    #Pedestrian Left, crossing from bottom
+    addPedestrian_s4s2button = tk.Button(admin_panel, text="Add Pedestrian Left, From Bottom", command=lambda: TrafficSystem.inter.sidewalksObj[3].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[3], 1, 4))  ) 
+    addPedestrian_s4s2button.grid(row=6, column=7)
+
+
+
+
     traffic_light_buttons = [
-        tk.Button(admin_panel, text="Traffic Light 1", command=lambda: toggle_traffic_light(canvas, "traffic_light_1")),
-        tk.Button(admin_panel, text="Traffic Light 2", command=lambda: toggle_traffic_light(canvas, "traffic_light_2")),
+        tk.Button(admin_panel, text="Change Top&Bottom Traffic Lights", command=lambda: toggle_traffic_light(canvas, "traffic_light_1")),
+        tk.Button(admin_panel, text="Change Left&Right Traffic Lights", command=lambda: toggle_traffic_light(canvas, "traffic_light_2")),
         tk.Button(admin_panel, text="Traffic Light 3", command=lambda: toggle_traffic_light(canvas, "traffic_light_3")),
         tk.Button(admin_panel, text="Traffic Light 4", command=lambda: toggle_traffic_light(canvas, "traffic_light_4")),
     ]
 
     pedestrian_light_buttons = [
-        tk.Button(admin_panel, text="Pedestrian Light 1", command=lambda: toggle_pedestrian_light(canvas, "ped_light_1")),
-        tk.Button(admin_panel, text="Pedestrian Light 2", command=lambda: toggle_pedestrian_light(canvas, "ped_light_2")),
+        tk.Button(admin_panel, text="Change Top&Bottom Pedestrian Lights", command=lambda: toggle_pedestrian_light(canvas, "ped_light_1")),
+        tk.Button(admin_panel, text="Change Left&Right Pedestrian Lights", command=lambda: toggle_pedestrian_light(canvas, "ped_light_2")),
         tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: toggle_pedestrian_light(canvas, "ped_light_3")),
         tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: toggle_pedestrian_light(canvas, "ped_light_4")),
         tk.Button(admin_panel, text="Pedestrian Light 5", command=lambda: toggle_pedestrian_light(canvas, "ped_light_5")),
@@ -507,6 +583,21 @@ def create_intersection():
             canvas.delete("occ15ar1")
             canvas.delete("occ15ar2")
 
+
+
+        #Deleting traffic and pedestrian lights
+        canvas.delete("traffic_light_1")
+        canvas.delete("traffic_light_2")
+        canvas.delete("traffic_light_4")
+        canvas.delete("traffic_light_5")
+        canvas.delete("ped_light_1")
+        canvas.delete("ped_light_2")
+        canvas.delete("ped_light_3")
+        canvas.delete("ped_light_4")
+        canvas.delete("ped_light_5")
+        canvas.delete("ped_light_6")
+        canvas.delete("ped_light_7")
+        canvas.delete("ped_light_8")
 
 
         # Traffic lights    

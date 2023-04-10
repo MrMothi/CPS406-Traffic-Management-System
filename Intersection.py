@@ -180,11 +180,11 @@ class Intersection:
             # self.createPedestrianLightThreads()
             
             #Adding all the random vehicles before starting
-            self.addVehicles()
+            # self.addVehicles()
             # self.testVehicles()
 
             #Adding all the random pedestrians before starting
-            self.addPedestrians()
+            # self.addPedestrians()
 
 
             self.running = True
@@ -258,14 +258,14 @@ class Intersection:
                 # adding vehicles back into the system every 15 seconds
                 self.countForCarAdd = self.countForCarAdd + 1
                 if(self.countForCarAdd >= 15):
-                    self.addVehicles()
+                    # self.addVehicles()
                     self.countForCarAdd = 0
 
 
                 #adding pedestrians back into system every 30 seconds        was>=30                   
                 self.countForPedAdd = self.countForPedAdd + 1
                 if(self.countForPedAdd >= 30):
-                    self.addPedestrians()
+                    # self.addPedestrians()
                     self.countForPedAdd = 0
 
 
