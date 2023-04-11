@@ -13,36 +13,6 @@ class TrafficLight:
         self.signalColour = signalColour #string
         self.inter = inter
 
-
-    #Two cycleLight methods to have two separate running loops which are opposite to eachother in signal colour
-    def cycleLight1(self):
-        while (self.operational):
-            print(self.signalTime)
-            self.signalColour = "red"
-            print("Now red1", flush=True)
-            time.sleep(self.signalTime)
-            self.signalColour = "green"
-            print("Now green1", flush=True)
-            time.sleep(self.signalTime - (self.signalTime/4))
-            print("Now yellow1", flush=True)
-            self.signalColour = "yellow"
-            time.sleep(self.signalTime/4)
-        return
-    
-    def cycleLight2(self):
-        while (self.operational):
-            print(self.signalTime)
-            self.signalColour = "green"
-            print("Now green2", flush=True)
-            time.sleep(self.signalTime - (self.signalTime/4))
-            self.signalColour = "yellow"
-            print("Now yellow2", flush=True)
-            time.sleep(self.signalTime/4)
-            self.signalColour = "red"
-            print("Now red2", flush=True)
-            time.sleep(self.signalTime)
-        return
-    
     def setColour(self, colour):
         self.signalColour = colour
     
