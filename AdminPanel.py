@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import scrolledtext
 from threading import Thread
 from TrafficSystem import *
 import time
@@ -495,7 +496,19 @@ def create_admin_panel(window, canvas):
     for i, button in enumerate(pedestrian_light_buttons, start=1):
         button.grid(row=16, column=i-1)
 
-    
+ 
+def create_console_window(window, x, y, width, height):
+    frame = tk.Frame(master=window, bg='#808080')
+    frame.place(x=x, y=y)
+    log = scrolledtext.ScrolledText(master=frame, wrap=tk.WORD, width=width, height=height, state=tk.DISABLED)
+    log.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
+    return log
+
+def log_message(textbox:scrolledtext.ScrolledText, text:str):
+    textbox.configure(state="normal")
+    textbox.insert(tk.INSERT, text + "\n")
+    textbox.configure(state="disabled")
+
     
     #-----------------------------------------------------------------------------------
     # pedestrian_count_positions = [
@@ -545,10 +558,13 @@ def create_intersection():
 
     create_legend(canvas)
     create_admin_panel(window, canvas)
+    log = create_console_window(window, 1080, 40, 45, 60)
 
     verticalRoad = TrafficSystem.inter.trafficLightObj[0]
     horizontalRoad = TrafficSystem.inter.trafficLightObj[1]
 
+    log_message(log, "testing")
+    log_message(log, "testing")
 
     while True:
         # # Traffic lights
@@ -556,11 +572,7 @@ def create_intersection():
         # create_traffic_light(canvas, 240, 435, TrafficSystem.inter.trafficLightObj[1].signalColour, "traffic_light_2")  # Left
         # create_traffic_light(canvas, 385, 600, TrafficSystem.inter.trafficLightObj[0].signalColour, "traffic_light_3")  # Bottom
         # create_traffic_light(canvas, 540, 435, TrafficSystem.inter.trafficLightObj[1].signalColour, "traffic_light_4")  # Right
-
-
-
-
-
+        
         #CREATING ARROWS FOR PEDESTRIAN OCC VARIABLES
         #OCC4
         if (TrafficSystem.inter.occ[3] > 0):   #for occ number 2 in diagram but index 1 in array

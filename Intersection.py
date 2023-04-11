@@ -164,6 +164,12 @@ class Intersection:
         
         # utilizes changeLight function after increasing the speed the lights
 
+        if self.trafficLightObj[0].colour == "green":
+            time.sleep(2)
+            self.changeLights("yellow", "red")
+        elif self.trafficLightObj[1].colour == "green":
+            time.sleep(2)
+            self.changeLights("red", "yellow")
         return
 
 

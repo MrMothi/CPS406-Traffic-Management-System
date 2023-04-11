@@ -12,13 +12,19 @@ class TrafficLight:
         self.operational = operational #bool
         self.signalColour = signalColour #string
         self.inter = inter
+        if self.signalColour == "red":
+            self.timer = self.signalTime
+        elif self.signalColour == "yellow":
+            self.timer = self.signalTime/4
+        else:
+            self.timer = self.signalTime - (self.signalTime/4)
 
     def setColour(self, colour):
         self.signalColour = colour
     
     # Implement general light cycle, makes it easier to accelerate and immediate change from admin
     def cycleLight(self, reduceRed=False):
-        while( self.inter.notfinished ):
+        while (self.inter.notfinished):
             if (self.operational):
                 print(self.signalTime)
                 print(f"Now {self.signalColour}", flush=True)
