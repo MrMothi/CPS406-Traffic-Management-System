@@ -3,23 +3,28 @@ from tkinter import scrolledtext
 from tkinter.scrolledtext import *
 from threading import Thread
 from TrafficSystem import *
+import TitleScreen
+
 
 #Global variable for the window object
 global window
-#Creating the thread variable for the run function of intersection
-TrafficSystem.initializeIntersection()
 #Global variable for log object
 global log
 #Variables for main loop threads
 global indTraffic
 global interloop
-interloop = []
-interloop.append(threading.Thread(target=TrafficSystem.inter.run))
-indTraffic = 0
 
-#Creating signal light threads
-TrafficSystem.inter.createTrafficLightThreads()
-TrafficSystem.inter.createPedestrianLightThreads()
+
+#Creating Threads if not already made
+if(TrafficSystem.inter == None):
+    #Creating the thread variable for the run function of intersection
+    TrafficSystem.initializeIntersection()
+    interloop = []
+    interloop.append(threading.Thread(target=TrafficSystem.inter.run))
+    indTraffic = 0
+    #Creating signal light threads
+    TrafficSystem.inter.createTrafficLightThreads()
+    TrafficSystem.inter.createPedestrianLightThreads()
 
 
 
@@ -302,9 +307,16 @@ def resetIntersection():
     #calling both resync traffilight and reset traffic buttons
     resetTraffic()
     #resyncLights()
+    #make passed arrays = []
 
 def emergency():
     pass
+
+
+def switch_to_main_menu():
+    window.destroy()
+    TitleScreen.create_title_screen()
+
 
 def closeProgram():
     #end all lights threads
@@ -504,7 +516,7 @@ def closeProgram():
 
 def create_admin_panel(window, canvas):
 
-    admin_panel = tk.Frame(window, bg="white", width=300)
+    admin_panel = tk.Frame(window, bg="white", width=300, highlightthickness=1, highlightbackground="black")
     admin_panel.place(x=0, y=0, relheight=1)
 
     tk.Label(admin_panel, text="Admin Panel", font=("Arial", 16, "bold"), bg="white").grid(row=0, column=0, columnspan=4, pady=10)
@@ -690,7 +702,7 @@ def create_admin_panel(window, canvas):
 
     #Buttons for app
     tk.Label(admin_panel, text=f"App Buttons", font=("Arial", 10, "bold"), bg="white", anchor="w").grid(row=24, column=0, columnspan = 2, sticky="W")
-    backtomain_button = tk.Button(admin_panel, text="Back To Main Menu", command=lambda: 1+1, width=69) 
+    backtomain_button = tk.Button(admin_panel, text="Back To Main Menu", command=lambda: switch_to_main_menu(), width=69) 
     backtomain_button.grid(row=25, column=0, columnspan = 3)
     resetTraffic_button = tk.Button(admin_panel, text="Close MetroFloPro", command=lambda:[log_message(log, "Thanks For Using MetroFloPro"), time.sleep(2), closeProgram(), print("End of Program")], width=69) 
     resetTraffic_button.grid(row=26, column=0, columnspan = 3)
