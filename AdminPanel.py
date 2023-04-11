@@ -3,7 +3,6 @@ from tkinter import scrolledtext
 from tkinter.scrolledtext import *
 from threading import Thread
 from TrafficSystem import *
-import time
 
 #Creating the thread variable for the run function of intersection
 TrafficSystem.initializeIntersection()
@@ -653,7 +652,6 @@ def create_intersection():
 
     create_legend(canvas)
     create_admin_panel(window, canvas)
-    log = create_console_window(window, 1080, 40, 45, 60)
     log = create_console_window(window, 1080, 40, 45, 60)
 
     verticalRoad = TrafficSystem.inter.trafficLightObj[0]
