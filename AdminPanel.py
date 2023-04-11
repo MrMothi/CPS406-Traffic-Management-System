@@ -4,6 +4,8 @@ from tkinter.scrolledtext import *
 from threading import Thread
 from TrafficSystem import *
 
+#Global variable for the window object
+global window
 #Creating the thread variable for the run function of intersection
 TrafficSystem.initializeIntersection()
 #Global variable for log object
@@ -270,7 +272,47 @@ def toggleAutoPed():
         TrafficSystem.inter.autoPedestrians = True
         log_message(log, "Started Auto Pedestrians")
 
+def resetTraffic():
+    #Clearning Vehicle arrays
+    TrafficSystem.inter.roadsObj[0].vehiclesInLane1 = []   #c1  
+    TrafficSystem.inter.roadsObj[1].vehiclesInLane1 = []   #c2  
+    TrafficSystem.inter.roadsObj[0].vehiclesInLane2 = []   #c3  
+    TrafficSystem.inter.roadsObj[1].vehiclesInLane2 = []   #c4  
 
+    #Clearing Pedestrian arrays
+    #pedestrians in sidewalk 1
+    TrafficSystem.inter.sidewalksObj[0].sidewalk1 = []
+    TrafficSystem.inter.sidewalksObj[0].sidewalk2 = []
+    #pedestrians in sidewalk 2
+    TrafficSystem.inter.sidewalksObj[1].sidewalk1 = []                      
+    TrafficSystem.inter.sidewalksObj[1].sidewalk2 = []
+    #pedestrians in sidewalk 3
+    TrafficSystem.inter.sidewalksObj[2].sidewalk1 = []                 
+    TrafficSystem.inter.sidewalksObj[2].sidewalk2 = []
+    #pedestrians in sidewalk 4
+    TrafficSystem.inter.sidewalksObj[3].sidewalk1 = []                  
+    TrafficSystem.inter.sidewalksObj[3].sidewalk2 = []
+
+
+def resyncLights():
+    pass
+
+def resetIntersection():
+    #calling both resync traffilight and reset traffic buttons
+    resetTraffic()
+    #resyncLights()
+
+def emergency():
+    pass
+
+def closeProgram():
+    #end all lights threads
+    TrafficSystem.inter.notfinished = False
+    #ending main inter.run thread
+    TrafficSystem.inter.running = False
+    #closing the window and program
+    global window
+    window.destroy()
 
 
 # def create_admin_panel(window, canvas):
@@ -629,12 +671,28 @@ def create_admin_panel(window, canvas):
 
 
 
+    #Buttons for resets
+    tk.Label(admin_panel, text=f"Reset Buttons", font=("Arial", 10, "bold"), bg="white", anchor="w").grid(row=19, column=0, columnspan = 2, sticky="W")
+    resetLights_button = tk.Button(admin_panel, text="Resync Lights", command=lambda:[resyncLights(), log_message(log, "Resynced Lights")], width=23) 
+    resetLights_button.grid(row=20, column=0)
+    resetTraffic_button = tk.Button(admin_panel, text="Reset Traffic", command=lambda:[resetTraffic(), log_message(log, "Resetting Traffic")], width=23) 
+    resetTraffic_button.grid(row=20, column=1)
+    resetInter_button = tk.Button(admin_panel, text="Reset Intersection", command=lambda:[resetIntersection(), log_message(log, "Resetting Intersection")], width=23) 
+    resetInter_button.grid(row=20, column=2)
 
 
+    #Buttons for resets
+    tk.Label(admin_panel, text=f"Miscellaneous", font=("Arial", 10, "bold"), bg="white", anchor="w").grid(row=21, column=0, columnspan = 2, sticky="W")
+    emergencyEvent_button = tk.Button(admin_panel, text="Emergency Event", command=lambda:[log_message(log, "Emergency Event")], width=23) 
+    emergencyEvent_button.grid(row=22, column=0)
 
-    # toggleAutoPedestrian_button = tk.Button(admin_panel, text="Toggle Auto Pedestrians", command=lambda:[toggleAutoPed(), log_message(log, "Toggle Auto Pedestrians")], width=23) 
-    # toggleAutoPedestrian_button.grid(row=18, column=1)
 
+    #Buttons for app
+    tk.Label(admin_panel, text=f"App Buttons", font=("Arial", 10, "bold"), bg="white", anchor="w").grid(row=24, column=0, columnspan = 2, sticky="W")
+    backtomain_button = tk.Button(admin_panel, text="Back To Main Menu", command=lambda: 1+1, width=69) 
+    backtomain_button.grid(row=25, column=0, columnspan = 3)
+    resetTraffic_button = tk.Button(admin_panel, text="Close MetroFloPro", command=lambda:[log_message(log, "Thanks For Using MetroFloPro"), time.sleep(2), closeProgram(), print("End of Program")], width=69) 
+    resetTraffic_button.grid(row=26, column=0, columnspan = 3)
 
 
 
@@ -674,6 +732,7 @@ def log_message(console:ScrolledText, text:str):
 
 
 def create_intersection():
+    global window
     window = tk.Tk()
     window.title("Intersection")
     window.geometry("1920x1080")
