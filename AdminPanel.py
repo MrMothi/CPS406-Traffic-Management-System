@@ -140,24 +140,18 @@ def display_car_count(canvas, x, y, count):
     canvas.create_text(x, y, text=f"Cars: {count}", font=("Arial", 10), tags="car_count_text")    
 
 def toggle_traffic_light(canvas, light):
-    colors = ["green", "yellow", "red"]
-    current_color = canvas.itemcget(light, "fill")
-    next_color = colors[(colors.index(current_color) + 1) % len(colors)]
     if (light == "traffic_light_1" or light == "traffic_light_3"):
-        TrafficSystem.inter.trafficLightObj[0].signalColour = next_color
+        next_color = TrafficSystem.inter.trafficLightObj[0].cycleNext()
     else:
-        TrafficSystem.inter.trafficLightObj[1].signalColour = next_color
+        next_color = TrafficSystem.inter.trafficLightObj[1].cycleNext()
     canvas.itemconfigure(light, fill=next_color)
 
 def toggle_pedestrian_light(canvas, light):
-    colors = ["red", "green"]
-    current_color = canvas.itemcget(light, "fill")
-    next_color = colors[(colors.index(current_color) + 1) % len(colors)]
-    canvas.itemconfigure(light, fill=next_color)
     if(light == "ped_light_1"):
-        TrafficSystem.inter.pedLightObj[0].signalColour = next_color
+        next_color = TrafficSystem.inter.pedLightObj[0].cycleNext()
     else: #if "ped_light_2"
-        TrafficSystem.inter.pedLightObj[1].signalColour = next_color
+        next_color = TrafficSystem.inter.pedLightObj[1].cycleNext()
+    canvas.itemconfigure(light, fill=next_color)
 
 def create_admin_panel(window, canvas):
     admin_panel = tk.Frame(window)
@@ -295,7 +289,14 @@ def resetTraffic():
 
 
 def resyncLights():
-    pass
+    TrafficSystem.inter.trafficLightObj[0].operational = False
+    TrafficSystem.inter.trafficLightObj[1].operational = False
+    TrafficSystem.inter.pedLightObj[0].operational = False
+    TrafficSystem.inter.pedLightObj[1].operational = False
+    TrafficSystem.inter.trafficLightObj[0].operational = True
+    TrafficSystem.inter.trafficLightObj[1].operational = True
+    TrafficSystem.inter.pedLightObj[0].operational = True
+    TrafficSystem.inter.pedLightObj[1].operational = True
 
 def resetIntersection():
     #calling both resync traffilight and reset traffic buttons

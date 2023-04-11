@@ -8,41 +8,55 @@ class TrafficLight:
     accelTime = 5
     signalTime = defaultTime #default class variable for the traffic signal timings, can be edited globally by the intersection class
 
+    greenTime = 8
+    yellowTime = 4
+    redTime = greenTime + yellowTime
+
     def __init__(self, operational, signalColour, inter):   
         self.operational = operational #bool
-        self.signalColour = signalColour #string
+        self.resetColour = signalColour #set a colour for the reset state
+        self.signalColour = self.resetColour #string
         self.inter = inter
-        if self.signalColour == "red":
-            self.timer = self.signalTime
-        elif self.signalColour == "yellow":
-            self.timer = self.signalTime/4
-        else:
-            self.timer = self.signalTime - (self.signalTime/4)
+        self.timer = 0
+        self.reset()
 
     def setColour(self, colour):
         self.signalColour = colour
     
-    # Implement general light cycle, makes it easier to accelerate and immediate change from admin
-    def cycleLight(self, reduceRed=False):
+    def cycle(self):
         while (self.inter.notfinished):
-            if (self.operational):
-                print(self.signalTime)
-                print(f"Now {self.signalColour}", flush=True)
-                if self.signalColour == "green":
-                    time.sleep(self.signalTime - (self.signalTime/4))
-                    self.setColour("yellow")
-                elif self.signalColour == "yellow":
-                    time.sleep(self.signalTime/4)
-                    self.setColour("red")
-                elif self.signalColour == "red":
-                    if reduceRed:
-                        time.sleep(self.signalTime/4)
-                        reduceRed = False
-                    else:
-                        time.sleep(self.signalTime)
-                    self.setColour("green")
+            if self.operational:
+                if self.signalColour == "black":
+                    self.reset()
+                elif self.timer <= 0:
+                    print(f"Now {self.signalColour}", flush=True)
+                    if self.signalColour == "green":
+                        self.setColour("yellow")
+                        self.timer = TrafficLight.yellowTime
+                    elif self.signalColour == "red":
+                        self.setColour("green")
+                        self.timer = TrafficLight.greenTime
+                    elif self.signalColour == "yellow":
+                        self.setColour("red")
+                        self.timer = TrafficLight.redTime
+                else:
+                    self.timer -= 1
+                    time.sleep(1)
             else:
-                time.sleep(1)
-        return
+                self.setColour("black")
+                self.timer = 0
+    
+    def cycleNext(self):
+        self.timer = 0
+        return self.signalColour # returns the next colour from cycling
+    
+    def reset(self):
+        if self.resetColour == "red":
+            self.timer = TrafficLight.redTime
+        elif self.resetColour == "green":
+            self.timer = TrafficLight.greenTime
+        elif self.resetColour == "yellow":
+            self.timer = TrafficLight.yellowTime
+        self.signalColour = self.resetColour
 
     #implement methods for changing signal to specific colour, make this break the threads and apply to both?

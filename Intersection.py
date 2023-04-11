@@ -85,7 +85,7 @@ class Intersection:
         
         #making pedestrianlights
         PedestrianLight.signalTime = self.pedestrianLightTiming
-        self.pedLightObj.append(PedestrianLight(True, True, "red", self))  #Pedestrian Lights for rd1 (for signalling across rd1)
+        self.pedLightObj.append(PedestrianLight(True, True, "green", self))  #Pedestrian Lights for rd1 (for signalling across rd1)
         self.pedLightObj.append(PedestrianLight(True, True, "red", self))  #Pedestrian Lights for rd2 (for signalling across rd2)
 
         # #making sidewalks (Passing in intersection object reference)
@@ -103,15 +103,15 @@ class Intersection:
 
 
     #Creates threads for the two trafficlights, cycling through colours while also being opposite
-    def createTrafficLightThreads(self, modify1=False, modify2=False):
-        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[0].cycleLight, args=(modify1,)))
-        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[1].cycleLight, args=(modify2,)))
+    def createTrafficLightThreads(self):
+        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[0].cycle))
+        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[1].cycle))
         self.trafficLightThreads[0].start()
         self.trafficLightThreads[1].start()
 
     def createPedestrianLightThreads(self):
-        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[0].cycleLight1))  #PedestrianLight for going across rd1
-        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[1].cycleLight2))  #PedestrianLight for going across rd2
+        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[0].cycle))  #PedestrianLight for going across rd1
+        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[1].cycle))  #PedestrianLight for going across rd2
         self.pedLightThreads[0].start()
         self.pedLightThreads[1].start()
 
@@ -129,7 +129,7 @@ class Intersection:
 
     # maybe another function to change lights seperately
 
-    def changeLights(self, colour1, colour2):
+    def changeLights(self):
         # this function essentially changes the lights of the intersection while in sync
         # so if one light is red and the other is green, immediately change green to yellow
         # and let the red one sit for the duration that yellow is idle, then switch red to
@@ -138,21 +138,15 @@ class Intersection:
         # to instantly change the colours, but we would need to break the delay of red
         # to shorten it so it stays only for the duration of yellow
 
-        # kill threads
-        self.trafficLightObj[0].operational = False
-        self.trafficLightObj[1].operational = False
-        self.trafficLightThreads = []
-
-        self.trafficLightObj[0].setColour(colour1)
-        self.trafficLightObj[1].setColour(colour2)
-        self.trafficLightObj[0].operational = True
-        self.trafficLightObj[1].operational = True
-        if colour1 == "yellow" and colour2 == "red":
-            self.createTrafficLightThreads(modify2=True)
-        elif colour1 == "red" and colour2 == "yellow":
-            self.createTrafficLightThreads(modify1=True)
+        if self.trafficLightObj[0].signalColour == "green":
+            self.trafficLightObj[0].timer = 0   # change to yellow
+            self.trafficLightObj[1].timer = TrafficLight.yellowTime # keep as red for the duration of yellow
+        elif self.trafficLightObj[1].signalColour == "green":
+            self.trafficLightObj[1].timer = 0
+            self.trafficLightObj[0].timer = TrafficLight.yellowTime
         else:
-            self.createTrafficLightThreads()
+            self.trafficLightObj[0].timer = 0
+            self.trafficLightObj[1].timer = 0
 
 
     def accelLights(self):
@@ -173,8 +167,6 @@ class Intersection:
             time.sleep(2)
             self.changeLights("red", "yellow")
         return
-
-
 
 
 
