@@ -41,6 +41,8 @@ class TrafficLight:
                     else:
                         time.sleep(self.signalTime)
                     self.setColour("green")
+            else:
+                time.sleep(1)
         return
 
     #implement methods for changing signal to specific colour, make this break the threads and apply to both?

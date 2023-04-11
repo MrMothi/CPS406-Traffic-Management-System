@@ -32,6 +32,8 @@ class Intersection:
         self.vehicleId = 0  #variable for the IDs of the vehicles
         self.pedId = 0 #variable for the IDs of the pedestrians
         self.notfinished = True  # Variable which the pedestrianLight and TrafficLight check (If true they continue running, if false then they end)
+        self.autoVehicles = False
+        self.autoPedestrians = False
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -186,11 +188,14 @@ class Intersection:
             # self.createPedestrianLightThreads()
             
             #Adding all the random vehicles before starting
-            # self.addVehicles()
-            # self.testVehicles()
+            if(self.autoVehicles):
+                self.addVehicles()
+                # self.testVehicles()
 
             #Adding all the random pedestrians before starting
-            # self.addPedestrians()
+            if(self.autoPedestrians):
+                self.addPedestrians()
+                # self.testPedestrians()
 
 
             self.running = True
@@ -263,15 +268,15 @@ class Intersection:
                 
                 # adding vehicles back into the system every 15 seconds
                 self.countForCarAdd = self.countForCarAdd + 1
-                if(self.countForCarAdd >= 15):
-                    # self.addVehicles()
+                if(self.countForCarAdd >= 15 and self.autoVehicles == True):
+                    self.addVehicles()
                     self.countForCarAdd = 0
 
 
                 #adding pedestrians back into system every 30 seconds        was>=30                   
                 self.countForPedAdd = self.countForPedAdd + 1
-                if(self.countForPedAdd >= 30):
-                    # self.addPedestrians()
+                if(self.countForPedAdd >= 30 and self.autoPedestrians == True):
+                    self.addPedestrians()
                     self.countForPedAdd = 0
 
 

@@ -26,6 +26,8 @@ class PedestrianLight:
                 self.signalColour = "green"                                                            #plus any left over from pedestrian signal time    
                 print("Now walk2", flush=True)
                 time.sleep(self.greenTime)
+            else:
+                time.sleep(1)
         return
     
     def cycleLight1(self):
@@ -37,6 +39,8 @@ class PedestrianLight:
                 self.signalColour = "red"
                 print("Now stop1", flush=True)
                 time.sleep(self.redTime) 
+            else:
+                time.sleep(1)
         return
 
 
