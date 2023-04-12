@@ -1,7 +1,7 @@
 import tkinter as tk
 from PIL import ImageTk, Image
 import subprocess
-import Normal_login
+import NormalView
 import Admin_login
 
 def admin_login(root):
@@ -13,7 +13,7 @@ def admin_login(root):
 def normal_login(root):
     print("Normal Login")
     root.destroy()
-    Normal_login.main()
+    NormalView.create_intersection()
 
 def create_title_screen():
     root = tk.Tk()

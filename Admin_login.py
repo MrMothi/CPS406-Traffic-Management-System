@@ -1,9 +1,11 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, Button
 from PIL import Image, ImageTk, ImageDraw
 import AdminPanel
 from TrafficSystem import *
 from threading import Thread
+import TitleScreen
+
 
 def main():
     def login(root):
@@ -17,6 +19,22 @@ def main():
             # interloop.start()
             AdminPanel.create_intersection()
         
+    #functon for main menu button
+    def switch_to_main_menu():
+        root.destroy()
+        TitleScreen.create_title_screen()
+
+    #function for closing program button
+    def closeProgram():
+        #end all lights threads
+        TrafficSystem.inter.notfinished = False
+        #ending main inter.run thread
+        TrafficSystem.inter.running = False
+        #closing the window and program
+        # global window
+        root.destroy()
+
+
 
     # Create a logo
     def create_arrow_image(size, fill_color):
@@ -103,6 +121,15 @@ def main():
 
     # Add a login button with some styling
     login_button = ttk.Button(main_frame, text="Login", command=lambda: login(root))
+
+
+    #CLOSE APP AND BACK TO MENU BUTTONS
+    menuButton = ttk.Button(root, text="Main Menu", command=lambda: switch_to_main_menu())
+    menuButton.place(x=20, y=950)
+
+    closeButton = ttk.Button(root, text="Close Program", command=lambda: closeProgram())
+    closeButton.place(x=200, y=950)
+
 
     # Create a custom ttk style
     style = ttk.Style()
