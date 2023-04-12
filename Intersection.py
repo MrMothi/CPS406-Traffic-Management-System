@@ -32,8 +32,10 @@ class Intersection:
         self.vehicleId = 0  #variable for the IDs of the vehicles
         self.pedId = 0 #variable for the IDs of the pedestrians
         self.notfinished = True  # Variable which the pedestrianLight and TrafficLight check (If true they continue running, if false then they end)
-        self.autoVehicles = False
-        self.autoPedestrians = False
+        self.autoVehicles = False #Variable for checking if auto add vehicles is on or not
+        self.autoPedestrians = False #Variable for checking if auto add pedestrians is on or not
+        self.emergency = False # Variable for checking if there is an emergency or not at the current time
+        self.emergencyTimer = 0 #Variable for emergency timer
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -58,7 +60,7 @@ class Intersection:
         self.otherThreads = []
 
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
-        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]     #Test [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1]          
+        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]         
         #   occ# occupancy where  #mod4+1 = 
         # 1 is turning left
         # 2 is going straight
@@ -102,13 +104,13 @@ class Intersection:
 
 
 
-    #Creates threads for the two trafficlights, cycling through colours while also being opposite
+    #Creates threads for the two trafficLights, cycling through colours while also being opposite
     def createTrafficLightThreads(self):
         self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[0].cycle))
         self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[1].cycle))
         self.trafficLightThreads[0].start()
         self.trafficLightThreads[1].start()
-
+    #Same as above, but for pedestrianLights
     def createPedestrianLightThreads(self):
         self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[0].cycle))  #PedestrianLight for going across rd1
         self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[1].cycle))  #PedestrianLight for going across rd2
@@ -426,6 +428,7 @@ class Intersection:
         self.pedestrianCount = self.pedestrianCount + 1
     
 
+
     def testPedestrians(self):
         #TESTING
         #Adding Pedestrians to every sidewalk array within the 4 sidewalk objects (2 per obj)
@@ -447,10 +450,6 @@ class Intersection:
 
 
 
-
-
-    #methods from UML
-
     #Given a Road object, it returns the current signal colour string for its respective trafficLights
     def checkTrafficSignal(self, rd: Road):
         return self.trafficLightObj[rd.rdNum-1].signalColour
@@ -459,6 +458,7 @@ class Intersection:
         # checks for pSignal from sidewalk linked to rd
         return self.pedLightObj[rd.rdNum-1].signalColour
     
+
 
     #Function for emergency vehicle or accident on road, which immediately sets all lights to red, thus halting the intersection
     #Run as thread, set all occupancy variables to 1, wait x amount of seconds before restarting loop
@@ -470,91 +470,9 @@ class Intersection:
         self.trafficLightObj[0].signalColour = "red"
         self.trafficLightObj[1].signalColour = "red"
 
-    
-
-#manages the creation of vehicles and pedestrians
-#manages the timings of signals, events and also changes made by the admin
-#sets variables used by the vehicles and pedestrians
-   #these variables allow them to determine when to go into the intersection or not
-
-
-
-   # 12-16 threads for locations on the roads at the intersection, 4 for sidewalks, 3 per enterance for cars on the intersections
-   # are joined after the end of the loop
-   # have a while loop for the whole system here, possibly treat this class as a object, run threads within while maybe or by methods??
-   # other objects such as cars and such check the variables changed by the threads to move through the intersection or not
-   # ie for emergencies, we can set x areas of the 16 to be filled for y amount of time
-
-   #4 threads for the 4 sets of lights (1 of each per road), 2 stoplights, 2 pedestrianlights
-   #these threads will source info for multiple light objects
-   #can be terminated here, and run with ifstatements for the light timings, and or possibly the sleep timings to adjust the durations
- 
-    #all pedestrians(maybe just 1, which induces others if leaving queue) and vehicles 1st in queue run on busy wait queues, and
-    #based on thier action will check the appropriate queue & stoplight timing variables both within intersection, before moving
-   #MAKE NOTE OF CHANGES IN REPORT SUBMISSION
-   
-
-
-   #make object get out of list/dequeue, after creating thread in intersection for the time occupied
-
-
-
-#-____________________________________________________________________________________________________________________________
-#FIRST SET UP THREADS FOR THE LOCATION OCCUPIED VARS, THEN SET UP OBJECTS, LIGHTS, LIGHT THREADS, THEN CAR AI, THEN PEDESTRIAN AI
-                                            #DONT FORGET PEDESTRIAN THREADS AND AI, GIVE PEDESTRIANS RIGHT OF WAY
-
-
-                                            #emergency all location variables now True (indicating area is taken)
-                                            #4 way stop and call new method in vehicle whihc is force action, give wait between loop 2 seconds
-                                                #cycle through vehicle arrays per road in circle
-                                                #force action just goes without checking
-
-
-
-                                        #function for creating all 2 stoplight threads and function for pedeslight threads,
-                                        #instance variable for threads
-                                        #so that admin may control 
-                                        #maybe have timings for each light (or kill thread, send set red function)
-                                        
-
-                                        #for finding appropirate occupancy variables, maybe hardcode(need to have variable to determine which vehicle
-                                        # array)
-                                        #otherwise find formula to find the road then work from that road#
-
-
-
-                                        # have while conditions in threads to end them externally (like while occupied# != 0)
-
-
-                                        #have a separate lights setup function here that runs to offset the light timings
-                                        # green =   x - (x/2)         yellow = x/2
-
-                                        #make the occupancy threads based on time instead, to allow for multiple cars from the same intersection to go
-                                        # also maybe assume that same intersection can go concurrently after .25 seconds  (dont need to check if current lane is in intersection?)
-
-                                        #vehicle AI is a big set of if statments
-                                        #first checking road, then if light is green/yellow (maybe allow green only?/check lightTimeleft instance variable/just dont go on yellows yet)
-                                        #then check which array of the road its in
-                                        #then check appropirate variables of occ#
-
-                                        #pass in object of intersection to each lower object
-                                        #pass in road for cars and maybe sidewalk for pedestrian along with intersection
-                                        #intersection holds the lights
-                                        #add function in intersection to give timings & signal color or set them as global variables
-
-
-                                        #sidewalks hold 2 arrays for the two sides of the road, once pedestrian crosses, they get deleted from system& array
-
-                                        #read all these notes
-
-
-
-
-
-
-
-
-
-
-
-                                        #setup roading pinging then after do the ifstatements
+    #Method for changing the emergency variable back to false after 5 seconds
+    def interEmergency(self):
+        while(self.emergencyTimer > 0):
+            time.sleep(1)
+            self.emergencyTimer = self.emergencyTimer - 1
+        self.emergency = False

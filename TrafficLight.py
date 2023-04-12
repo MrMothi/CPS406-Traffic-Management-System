@@ -43,8 +43,13 @@ class TrafficLight:
                     self.timer -= 1
                     time.sleep(1)
             else:
-                self.setColour("black")
-                self.timer = 0
+                if(self.inter.emergency == True):
+                    self.setColour("red")
+                    time.sleep(1)
+                else:
+                    self.setColour("black")
+                    self.timer = 0
+                    time.sleep(1)
     
     def cycleNext(self):
         self.timer = 0

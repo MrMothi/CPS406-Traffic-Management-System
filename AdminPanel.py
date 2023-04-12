@@ -15,6 +15,10 @@ global indTraffic
 global interloop
 
 
+#Global variable for resync lights (if true then it will resynch and set back to false)
+global syncLights
+syncLights = False
+
 #Creating Threads if not already made
 if(TrafficSystem.inter == None):
     #Creating the thread variable for the run function of intersection
@@ -298,19 +302,41 @@ def resyncLights():
     TrafficSystem.inter.trafficLightObj[1].operational = False
     TrafficSystem.inter.pedLightObj[0].operational = False
     TrafficSystem.inter.pedLightObj[1].operational = False
+    TrafficSystem.inter.trafficLightObj[0].signalColour = "black"
+    TrafficSystem.inter.trafficLightObj[1].signalColour = "black"
+    TrafficSystem.inter.pedLightObj[0].signalColour = "black"
+    TrafficSystem.inter.pedLightObj[1].signalColour = "black"
     TrafficSystem.inter.trafficLightObj[0].operational = True
     TrafficSystem.inter.trafficLightObj[1].operational = True
     TrafficSystem.inter.pedLightObj[0].operational = True
     TrafficSystem.inter.pedLightObj[1].operational = True
 
+
 def resetIntersection():
     #calling both resync traffilight and reset traffic buttons
     resetTraffic()
-    #resyncLights()
-    #make passed arrays = []
+    resyncLights()
+    #clearing arrays for data
+    TrafficSystem.inter.passedPedestrians = []
+    TrafficSystem.inter.passedVehicles = []
 
+#method for emergency event 
 def emergency():
-    pass
+    global syncLights
+    log_message(log, "--Stopped Traffic for Emergency--")
+    log_message(log, "--Emergency is for 5 Seconds--")
+    TrafficSystem.inter.trafficLightObj[0].operational = False
+    TrafficSystem.inter.trafficLightObj[1].operational = False
+    TrafficSystem.inter.pedLightObj[0].operational = False
+    TrafficSystem.inter.pedLightObj[1].operational = False
+    #setting variables for the emergency
+    TrafficSystem.inter.emergency = True
+    TrafficSystem.inter.emergencyTimer = 5
+    syncLights = True
+    #starting the thread
+    temp = []
+    temp.append(threading.Thread(target=TrafficSystem.inter.interEmergency))
+    temp[-1].start()
 
 
 def switch_to_main_menu():
@@ -694,9 +720,9 @@ def create_admin_panel(window, canvas):
     resetInter_button.grid(row=20, column=2)
 
 
-    #Buttons for resets
+    #Buttons random things, like emergency
     tk.Label(admin_panel, text=f"Miscellaneous", font=("Arial", 10, "bold"), bg="white", anchor="w").grid(row=21, column=0, columnspan = 2, sticky="W")
-    emergencyEvent_button = tk.Button(admin_panel, text="Emergency Event", command=lambda:[log_message(log, "Emergency Event")], width=23) 
+    emergencyEvent_button = tk.Button(admin_panel, text="Emergency Event", command=lambda:[log_message(log, "Emergency Event"), emergency()], width=23) 
     emergencyEvent_button.grid(row=22, column=0)
 
 
@@ -783,6 +809,14 @@ def create_intersection():
 
     while True:
         
+        #Checking if resyncing lights is required (checks both if synclights is true and emergency timer is <= 0, therefore emergency has completed)
+        global syncLights
+        if (syncLights == True and TrafficSystem.inter.emergencyTimer <= 0):
+            resyncLights()
+            syncLights = False
+            log_message(log, "--Emergency Event Complete--")
+
+
         #CREATING ARROWS FOR PEDESTRIAN OCC VARIABLES
         #OCC4
         if (TrafficSystem.inter.occ[3] > 0):   #for occ number 2 in diagram but index 1 in array
