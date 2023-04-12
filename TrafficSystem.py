@@ -27,4 +27,5 @@ class TrafficSystem:
         return cls.inter
 
 if __name__ == "__main__":
+    # if(cls.testing = False)
     create_title_screen()

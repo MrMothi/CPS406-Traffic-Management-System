@@ -13,7 +13,7 @@ from Pedestrian import *
 class Intersection:
 
     def __init__(self, trafficlightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
-        totalPedestrianCount: int = 6, totalVehicleCount: int = 20, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
+        totalPedestrianCount: int = 6, totalVehicleCount: int = 20, incident: bool = False, crossSignalRequested: bool = False, speedsData = [], testing: bool = False):
 
         # REGULAR INSTANCE VARIABLES----------------------------------------------------------------------------
         self.trafficlightTiming = trafficlightTiming
@@ -36,6 +36,7 @@ class Intersection:
         self.autoPedestrians = False #Variable for checking if auto add pedestrians is on or not
         self.emergency = False # Variable for checking if there is an emergency or not at the current time
         self.emergencyTimer = 0 #Variable for emergency timer
+        self.testing = testing
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -163,8 +164,9 @@ class Intersection:
         try:
 
             # #STARTING THREADS FOR LIGHTS
-            # self.createTrafficLightThreads()
-            # self.createPedestrianLightThreads()
+            if(self.testing == True):
+                self.createTrafficLightThreads()
+                self.createPedestrianLightThreads()
             
             #Adding all the random vehicles before starting
             if(self.autoVehicles):

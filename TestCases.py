@@ -7,7 +7,6 @@ from Pedestrian import *
 from Vehicle import *
 from Admin import *
 
-
 class TestCases(unittest.TestCase):
     """
     USECASE TESTS
@@ -17,9 +16,9 @@ class TestCases(unittest.TestCase):
         #initialising intersection obj, where pedestrian lights are by default red
         inter = Intersection(10, 4, "", totalPedestrianCount=1, totalVehicleCount=0)
         #adding single pedestrian to intersection
-        inter.sidewalksObj[0].sidewalk2.append(Pedestrian(2, inter, 0, inter.sidewalksObj[0], 2, 8))
+        inter.sidewalksObj[1].sidewalk2.append(Pedestrian(2, inter, 1, interimage.png.sidewalksObj[1], 2, 12))
         #prompting the pedestrian to cross if clear
-        inter.sidewalksObj[0].sidewalk2[0].tryCrossRoad()
+        inter.sidewalksObj[1].sidewalk2[0].tryCrossRoad()
         #checking if the pedestrian crossed, expected to no cross
         self.assertEqual(inter.passedPedestrians,[])
 

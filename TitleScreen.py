@@ -41,7 +41,7 @@ def create_title_screen():
     admin_login_button.pack(pady=20)
 
     # Normal Login Button
-    normal_login_button = tk.Button(root, text="Normal Login", font=("Times", 14), command=lambda: normal_login(root))
+    normal_login_button = tk.Button(root, text="Normal View", font=("Times", 14), command=lambda: normal_login(root))
     normal_login_button.pack(pady=20)
 
     # Center the window on the screen
