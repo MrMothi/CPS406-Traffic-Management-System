@@ -7,6 +7,8 @@ from Pedestrian import *
 from Vehicle import *
 from Admin import *
 
+#NOTE: Please comment out the 2nd line in TrafficSystem.py before running testcases
+#NOTE: These tests are for the backend, and tkinter imports mess up the testing by throwing an error
 class TestCases(unittest.TestCase):
     """
     USECASE TESTS

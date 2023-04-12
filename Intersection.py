@@ -63,12 +63,13 @@ class Intersection:
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
         self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]         
         #   occ# occupancy where  #mod4+1 = 
-        # 1 is turning left
+        # 1 is turning right
         # 2 is going straight
-        # 3 is turning right
+        # 3 is turning left
         # 4 is pedestrian walking
         # <=0 means open, >0 means occupied for x seconds more 
-
+        #NOTE: FOR ALL FOLLOWING REFERENCES TO RIGHT OR LEFT, ON THE GUI THEY ARE FLIPPED (ie: left is right, and right is left)
+        #NOTE: This is due to the prespective used for the backend was for the top road from the coder, and that view was translated to each road
 
         self.countForCarAdd = 0 #variable used to iterate 15 times before creating new vehicles in the system
         self.countForPedAdd = 0 #variable used to iterate 30 times before creating new vehlices in the system
@@ -352,7 +353,7 @@ class Intersection:
     #Function which holds an example of a vehicle in each location doing each action
     def testVehicles(self):
         #TESTING
-        #cars in C1
+        #cars in C1                                                                                                 
         self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
         self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"2",20,"type","ABC",self, self.roadsObj[0], 2, 1))   #going straight from c1
         self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"3",20,"type","ABC",self, self.roadsObj[0], 3, 1))   #going right from c1

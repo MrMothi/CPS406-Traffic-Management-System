@@ -1,5 +1,5 @@
 from Intersection import *
-from TitleScreen import *
+from TitleScreen import *   #Comment this line before testing via TestCases.py, if running TrafficSystem.py regularly then make sure it is uncommented
 
 class TrafficSystem:
     intersectionName = "MetroFloRoad"
@@ -7,9 +7,11 @@ class TrafficSystem:
     userInfoDict = {
         "Admin1" : "Pa55word",
         "Admin2" : "traffic",
+        "admin"  : "pass",
         "a" : "a"
     }
 
+    #variable for logged in state or not
     loggedIn = False
     
     @classmethod
@@ -27,5 +29,4 @@ class TrafficSystem:
         return cls.inter
 
 if __name__ == "__main__":
-    # if(cls.testing = False)
     create_title_screen()
