@@ -600,43 +600,43 @@ def create_admin_panel(window, canvas):
     #Buttons for adding vechicles #------------------------------------------------------------------------------------------------
     tk.Label(admin_panel, text=f"Add Vehicle Buttons", font=("Arial", 10, "bold"), bg="white").grid(row=3, column=0)
     #Vehicle top, turning left
-    addVehicleC1_1button = tk.Button(admin_panel, width=23, text="Vehicle Top, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 1)), log_message(log, "Added Vehicle at Top Turning Left")] ) 
+    addVehicleC1_1button = tk.Button(admin_panel, width=23, text="Vehicle Top, Right Turn", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 1)), log_message(log, "Added Vehicle at Top Turning Left")] ) 
     addVehicleC1_1button.grid(row=4, column=0)
     #Vehicle top, going straight
     addVehicleC1_2button = tk.Button(admin_panel, width=23, text="Vehicle Top, Straight", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 2, 1)), log_message(log, "Added Vehicle at Top Going Straight")] ) 
     addVehicleC1_2button.grid(row=4, column=1)
     #Vehicle top, turning right
-    addVehicleC1_3button = tk.Button(admin_panel, width=23, text="Vehicle Top, Right Turn", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 1)), log_message(log, "Added Vehicle at Top Turning Right")] ) 
+    addVehicleC1_3button = tk.Button(admin_panel, width=23, text="Vehicle Top, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 1)), log_message(log, "Added Vehicle at Top Turning Right")] ) 
     addVehicleC1_3button.grid(row=4, column=2)
 
     #Vehicle right, turning left
-    addVehicleC2_1button = tk.Button(admin_panel, width=23, text="Vehicle Right, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 2)), log_message(log, "Added Vehicle at Right Turning Left")] ) 
+    addVehicleC2_1button = tk.Button(admin_panel, width=23, text="Vehicle Right, Right Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 2)), log_message(log, "Added Vehicle at Right Turning Left")] ) 
     addVehicleC2_1button.grid(row=5, column=0)
     #Vehicle right, going straight
     addVehicleC2_2button = tk.Button(admin_panel, width=23, text="Vehicle Right, Straight", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 2, 2)), log_message(log, "Added Vehicle at Right Going Straight")] ) 
     addVehicleC2_2button.grid(row=5, column=1)
     #Vehicle right, turning right
-    addVehicleC2_3button = tk.Button(admin_panel, width=23, text="Vehicle Right, Right Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 2)), log_message(log, "Added Vehicle at Right Turning Right")] ) 
+    addVehicleC2_3button = tk.Button(admin_panel, width=23, text="Vehicle Right, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane1.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 2)), log_message(log, "Added Vehicle at Right Turning Right")] ) 
     addVehicleC2_3button.grid(row=5, column=2)
 
     #Vehicle bottom, turning left
-    addVehicleC3_1button = tk.Button(admin_panel, width=23, text="Vehicle Bottom, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 3)), log_message(log, "Added Vehicle at Bottom Turning Left")] ) 
+    addVehicleC3_1button = tk.Button(admin_panel, width=23, text="Vehicle Bottom, Right Turn", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 1, 3)), log_message(log, "Added Vehicle at Bottom Turning Left")] ) 
     addVehicleC3_1button.grid(row=6, column=0)
     #Vehicle bottom, going straight
     addVehicleC3_2button = tk.Button(admin_panel, width=23, text="Vehicle Bottom, Straight", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 2, 3)), log_message(log, "Added Vehicle at Bottom Going Straight")] ) 
     addVehicleC3_2button.grid(row=6, column=1)
     #Vehicle bottom, turning right
-    addVehicleC3_3button = tk.Button(admin_panel, width=23, text="Vehicle Bottom, Right Turn", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 3)), log_message(log, "Added Vehicle at Bottom Turning Right")] ) 
+    addVehicleC3_3button = tk.Button(admin_panel, width=23, text="Vehicle Bottom, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[0].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[0], 3, 3)), log_message(log, "Added Vehicle at Bottom Turning Right")] ) 
     addVehicleC3_3button.grid(row=6, column=2)
 
     #Vehicle left, turning left
-    addVehicleC4_1button = tk.Button(admin_panel, width=23, text="Vehicle Left, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 4)), log_message(log, "Added Vehicle at Left Turning Left")] ) 
+    addVehicleC4_1button = tk.Button(admin_panel, width=23, text="Vehicle Left, Right Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 1, 4)), log_message(log, "Added Vehicle at Left Turning Left")] ) 
     addVehicleC4_1button.grid(row=7, column=0)
     #Vehicle left, going straight
     addVehicleC4_2button = tk.Button(admin_panel, width=23, text="Vehicle Left, Straight", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 2, 4)), log_message(log, "Added Vehicle at Left Going Straight")] ) 
     addVehicleC4_2button.grid(row=7, column=1)
     #Vehicle left, turning right
-    addVehicleC4_3button = tk.Button(admin_panel, width=23, text="Vehicle Left, Right Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 4)), log_message(log, "Added Vehicle at Left Turning Right")] ) 
+    addVehicleC4_3button = tk.Button(admin_panel, width=23, text="Vehicle Left, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 4)), log_message(log, "Added Vehicle at Left Turning Right")] ) 
     addVehicleC4_3button.grid(row=7, column=2)
 
 
@@ -938,7 +938,7 @@ def create_intersection():
             time.sleep(0.15)
             if (TrafficSystem.inter.occ[14] == 0):
                 log_message(log, "Eastbound vehicle turning left.")
-                
+
 
         #DELETING VEHICLE ARROWS IF NEED BE
         if(TrafficSystem.inter.occ[0] <= 0):
