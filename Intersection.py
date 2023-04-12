@@ -145,20 +145,6 @@ class Intersection:
             self.trafficLightObj[1].timer = 0
 
 
-    def accelLights(self):
-        # get the traffic light that is green
-        # accelerate both time until green becomes yellow
-        # set back time to regular (only green is accelerated, red time matches at the same time)
-        # this is basically a switch function for pedestrians ex. if there are pedestrians waiting
-        # or an admin button
-        # ideally admin will be able to automatically switch the lights so green will automatically change
-        # to yellow and follow the cycle for both sides
-        
-        # utilizes changeLight function after increasing the speed the lights
-        return
-
-
-
     #Main loop for the intersection
     def run(self):
         #Try Catch block for breaking out of the loop via ctrl-c, and error catching
@@ -306,7 +292,7 @@ class Intersection:
     #Function to create multiple vehicles
     def addVehicles(self):
         tem = self.totalVehicleCount-self.vehicleCount   
-        for i in range(tem):
+        for _ in range(tem):
             self.addSingleVehicle()
     
     #method which calls the randomize vehicles function based on how many more vehicles are needed in the system

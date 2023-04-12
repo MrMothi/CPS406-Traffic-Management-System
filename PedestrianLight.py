@@ -53,20 +53,6 @@ class PedestrianLight:
             self.timer = PedestrianLight.greenTime
         self.signalColour = self.resetColour
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     def setStop(self):
         return True
     

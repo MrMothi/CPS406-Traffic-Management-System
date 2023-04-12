@@ -354,234 +354,12 @@ def closeProgram():
     window.destroy()
 
 
-# def create_admin_panel(window, canvas):
-#     admin_panel = tk.Frame(window, bg="", width=300)
-#     admin_panel.place(x=0, y=0, relheight=1)
-
-#     tk.Label(admin_panel, text="Admin Panel", font=("Arial", 14, "bold"), bg="white").grid(row=0, column=0, columnspan=4, pady=10)
-
-#     #TOGGLING TRAFFIC, TRAFFIC LIGHTS, AND PEDESTRIAN LIGHTS  #---------------------------------------------------------
-#     toggleTraffic_button = tk.Button(admin_panel, text="Toggle Traffic", command=lambda: toggleTraffic())  
-#     toggleTraffic_button.grid(row=1, column=1)
-
-#     toggleTrafficLight_button = tk.Button(admin_panel, text="Toggle TrafficLight", command=lambda: toggleTrafficLight()) 
-#     toggleTrafficLight_button.grid(row=1, column=2)
-
-#     togglePedestrianLight_button = tk.Button(admin_panel, text="Toggle PedestrianLight", command=lambda: togglePedestrianLight()) 
-#     togglePedestrianLight_button.grid(row=2, column=1)
-
-
-
-
-#     pedestrian_count_positions = [
-#         (250, 290),
-#         (570, 290),
-#         (250, 610),
-#         (570, 610)
-#     ]
-
-#     car_count_positions = [
-#         (50, 450),
-#         (750, 450),
-#         (400, 100),
-#         (400, 800)
-#     ]
-
-#     # Change Pedestrian Count
-#     for i in range(3, 7):
-#         tk.Label(admin_panel, text=f"Pedestrians {i}:", font=("Arial", 10), bg="white").grid(row=i, column=0)
-#         pedestrian_entry = tk.Entry(admin_panel, width=5)
-#         pedestrian_entry.grid(row=i, column=1)
-#         pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_pedestrian_count(canvas, pedestrian_entry, *pedestrian_count_positions[i-1], f"ped_count_text_{i}"))
-#         pedestrian_button.grid(row=i, column=2)
-
-#     # Change Car Count
-#     for i in range(3, 7):
-#         tk.Label(admin_panel, text=f"Cars {i}:", font=("Arial", 10), bg="white").grid(row=i+4, column=0)
-#         car_entry = tk.Entry(admin_panel, width=5)
-#         car_entry.grid(row=i+4, column=1)
-#         car_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_car_count(canvas, car_entry, *car_count_positions[i-1], f"car_count_text_{i}"))
-#         car_button.grid(row=i+4, column=2)
-
-#     traffic_light_buttons = [
-#         tk.Button(admin_panel, text="Traffic Light 1", command=lambda: (toggle_traffic_light(canvas, "traffic_light_1"), create_pop_text(canvas, "light_1"))),
-#         tk.Button(admin_panel, text="Traffic Light 2", command=lambda: (toggle_traffic_light(canvas, "traffic_light_2"), create_pop_text(canvas, "light_2"))),
-#         tk.Button(admin_panel, text="Traffic Light 3", command=lambda: (toggle_traffic_light(canvas, "traffic_light_3"), create_pop_text(canvas, "light_3"))),
-#         tk.Button(admin_panel, text="Traffic Light 4", command=lambda: (toggle_traffic_light(canvas, "traffic_light_4"), create_pop_text(canvas, "light_4"))),
-#     ]
-
-#         # Pedestrian Light Buttons
-#     pedestrian_light_buttons = [
-#         tk.Button(admin_panel, text="Pedestrian Light 1", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_1"), create_pop_text(canvas, "ped_light_1"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 2", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_2"), create_pop_text(canvas, "ped_light_2"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_3"), create_pop_text(canvas, "ped_light_3"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_4"), create_pop_text(canvas, "ped_light_4"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 5", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_5"), create_pop_text(canvas, "ped_light_5"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 6", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_6"), create_pop_text(canvas, "ped_light_6"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 7", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_7"), create_pop_text(canvas, "ped_light_7"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 8", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_8"), create_pop_text(canvas, "ped_light_8"))),
-#     ]
-
-#     for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
-#         display_pedestrian_count(canvas, x, y, 0, f"ped_count_text_{i}")
-
-#     for i, (x, y) in enumerate(car_count_positions, start=1):
-#         display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
-
-#     # # Pedestrian Light Buttons
-#     # for i, button in enumerate(traffic_light_buttons, start=1):
-#     #     if i <= 2:
-#     #         button.grid(row=i + 9, column=0, pady=2, sticky=tk.W)
-#     #     else:
-#     #         button.grid(row=i + 7, column=2, pady=2, sticky=tk.W)
-
-#     # # Traffic Light Buttons
-#     # for i, button in enumerate(pedestrian_light_buttons, start=1):
-#     #     if i <= 4:
-#     #         button.grid(row=i + 16, column=0, pady=2, sticky=tk.W)
-#     #     else:
-#     #         button.grid(row=i + 12, column=2, pady=2, sticky=tk.W)
-
-
-
-
-
-
-
-# def create_admin_panel(window, canvas):
-#     admin_panel = tk.Frame(window, bg="", width=300)
-#     admin_panel.place(x=0, y=0, relheight=1)
-
-#     tk.Label(admin_panel, text="Admin Panel", font=("Arial", 14, "bold"), bg="white").grid(row=0, column=0, columnspan=4, pady=10)
-
-#     #TOGGLING TRAFFIC, TRAFFIC LIGHTS, AND PEDESTRIAN LIGHTS  #---------------------------------------------------------
-#     toggleTraffic_button = tk.Button(admin_panel, text="Toggle Traffic", command=lambda: toggleTraffic())  
-#     toggleTraffic_button.grid(row=1, column=1)
-
-#     toggleTrafficLight_button = tk.Button(admin_panel, text="Toggle TrafficLight", command=lambda: toggleTrafficLight()) 
-#     toggleTrafficLight_button.grid(row=1, column=2)
-
-#     togglePedestrianLight_button = tk.Button(admin_panel, text="Toggle PedestrianLight", command=lambda: togglePedestrianLight()) 
-#     togglePedestrianLight_button.grid(row=2, column=1)
-
-
-
-
-#     pedestrian_count_positions = [
-#         (250, 290),
-#         (570, 290),
-#         (250, 610),
-#         (570, 610)
-#     ]
-
-#     car_count_positions = [
-#         (50, 450),
-#         (750, 450),
-#         (400, 100),
-#         (400, 800)
-#     ]
-
-#     # Change Pedestrian Count
-#     for i in range(3, 7):
-#         tk.Label(admin_panel, text=f"Pedestrians {i}:", font=("Arial", 10), bg="white").grid(row=i, column=0)
-#         pedestrian_entry = tk.Entry(admin_panel, width=5)
-#         pedestrian_entry.grid(row=i, column=1)
-#         pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_pedestrian_count(canvas, pedestrian_entry, *pedestrian_count_positions[i-1], f"ped_count_text_{i}"))
-#         pedestrian_button.grid(row=i, column=2)
-
-#     # Change Car Count
-#     for i in range(3, 7):
-#         tk.Label(admin_panel, text=f"Cars {i}:", font=("Arial", 10), bg="white").grid(row=i+4, column=0)
-#         car_entry = tk.Entry(admin_panel, width=5)
-#         car_entry.grid(row=i+4, column=1)
-#         car_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_car_count(canvas, car_entry, *car_count_positions[i-1], f"car_count_text_{i}"))
-#         car_button.grid(row=i+4, column=2)
-
-#     traffic_light_buttons = [
-#         tk.Button(admin_panel, text="Traffic Light 1", command=lambda: (toggle_traffic_light(canvas, "traffic_light_1"), create_pop_text(canvas, "light_1"))),
-#         tk.Button(admin_panel, text="Traffic Light 2", command=lambda: (toggle_traffic_light(canvas, "traffic_light_2"), create_pop_text(canvas, "light_2"))),
-#         tk.Button(admin_panel, text="Traffic Light 3", command=lambda: (toggle_traffic_light(canvas, "traffic_light_3"), create_pop_text(canvas, "light_3"))),
-#         tk.Button(admin_panel, text="Traffic Light 4", command=lambda: (toggle_traffic_light(canvas, "traffic_light_4"), create_pop_text(canvas, "light_4"))),
-#     ]
-
-#         # Pedestrian Light Buttons
-#     pedestrian_light_buttons = [
-#         tk.Button(admin_panel, text="Pedestrian Light 1", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_1"), create_pop_text(canvas, "ped_light_1"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 2", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_2"), create_pop_text(canvas, "ped_light_2"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_3"), create_pop_text(canvas, "ped_light_3"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_4"), create_pop_text(canvas, "ped_light_4"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 5", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_5"), create_pop_text(canvas, "ped_light_5"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 6", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_6"), create_pop_text(canvas, "ped_light_6"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 7", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_7"), create_pop_text(canvas, "ped_light_7"))),
-#         tk.Button(admin_panel, text="Pedestrian Light 8", command=lambda: (toggle_pedestrian_light(canvas, "ped_light_8"), create_pop_text(canvas, "ped_light_8"))),
-#     ]
-
-#     for i, (x, y) in enumerate(pedestrian_count_positions, start=1):
-#         display_pedestrian_count(canvas, x, y, 0, f"ped_count_text_{i}")
-
-#     for i, (x, y) in enumerate(car_count_positions, start=1):
-#         display_car_count(canvas, x, y, 0, f"car_count_text_{i}")
-
-#     # # Pedestrian Light Buttons
-#     # for i, button in enumerate(traffic_light_buttons, start=1):
-#     #     if i <= 2:
-#     #         button.grid(row=i + 9, column=0, pady=2, sticky=tk.W)
-#     #     else:
-#     #         button.grid(row=i + 7, column=2, pady=2, sticky=tk.W)
-
-#     # # Traffic Light Buttons
-#     # for i, button in enumerate(pedestrian_light_buttons, start=1):
-#     #     if i <= 4:
-#     #         button.grid(row=i + 16, column=0, pady=2, sticky=tk.W)
-#     #     else:
-#     #         button.grid(row=i + 12, column=2, pady=2, sticky=tk.W)
-
-
-
-
-
 def create_admin_panel(window, canvas):
 
     admin_panel = tk.Frame(window, bg="white", width=300, highlightthickness=1, highlightbackground="black")
     admin_panel.place(x=0, y=0, relheight=1)
 
     tk.Label(admin_panel, text="Admin Panel", font=("Arial", 16, "bold"), bg="white").grid(row=0, column=0, columnspan=4, pady=10)
-
-
-    # admin_panel = tk.Frame(window, bg="white", width=300, height=500)
-    # admin_panel.pack(side=tk.TOP, anchor=tk.W, padx=10, pady=1)
-
-    # tk.Label(admin_panel, text="Admin Panel", font=("Arial", 14, "bold"), bg="white").grid(row=0, column=0, columnspan=2, pady=10)
-
-    # # Change Pedestrian Count
-    # for i in range(1, 5):
-    #     tk.Label(admin_panel, text=f"Pedestrians {i}:", font=("Arial", 10), bg="white").grid(row=i, column=0)
-    #     pedestrian_entry = tk.Entry(admin_panel, width=5)
-    #     pedestrian_entry.grid(row=i, column=1)
-    #     pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_pedestrian_count(canvas, pedestrian_entry, *pedestrian_count_positions[i-1], f"ped_count_text_{i}"))
-    #     pedestrian_button.grid(row=i, column=2)
-
-    # tk.Label(admin_panel, text="Pedestrians:", font=("Arial", 10), bg="white").grid(row=1, column=0)
-    # pedestrian_entry = tk.Entry(admin_panel, width=5)
-    # pedestrian_entry.grid(row=1, column=1)
-    # pedestrian_button = tk.Button(admin_panel, text="Update", command=lambda: update_pedestrian_count(canvas, pedestrian_entry, 250, 290))
-    # pedestrian_button.grid(row=1, column=2)
-
-    # # Change Car Count
-    # for i in range(1, 5):
-    #     tk.Label(admin_panel, text=f"Cars {i}:", font=("Arial", 10), bg="white").grid(row=i+4, column=0)
-    #     car_entry = tk.Entry(admin_panel, width=5)
-    #     car_entry.grid(row=i+4, column=1)
-    #     car_button = tk.Button(admin_panel, text="Update", command=lambda i=i: update_car_count(canvas, car_entry, *car_count_positions[i-1], f"car_count_text_{i}"))
-    #     car_button.grid(row=i+4, column=2)
-
-    # tk.Label(admin_panel, text="Cars:", font=("Arial", 10), bg="white").grid(row=2, column=0)
-    # car_entry = tk.Entry(admin_panel, width=5)
-    # car_entry.grid(row=2, column=1)
-    # car_button = tk.Button(admin_panel, text="Update", command=lambda: update_car_count(canvas, car_entry, 570, 290))
-    # car_button.grid(row=2, column=2)
-
-
 
     #TOGGLING TRAFFIC, TRAFFIC LIGHTS, AND PEDESTRIAN LIGHTS  #---------------------------------------------------------
     tk.Label(admin_panel, text=f"Toggle Loop Buttons", font=("Arial", 10, "bold"), bg="white").grid(row=1, column=0)
@@ -593,8 +371,6 @@ def create_admin_panel(window, canvas):
 
     togglePedestrianLight_button = tk.Button(admin_panel, text="Toggle PedestrianLights", command=lambda: togglePedestrianLight(), width=23) 
     togglePedestrianLight_button.grid(row=2, column=2)
-
-
 
     #Here 1 means right turn, 2 means straight, 3 means left turn
     #Buttons for adding vechicles #------------------------------------------------------------------------------------------------
@@ -639,8 +415,6 @@ def create_admin_panel(window, canvas):
     addVehicleC4_3button = tk.Button(admin_panel, width=23, text="Vehicle Left, Left Turn", command=lambda: [TrafficSystem.inter.roadsObj[1].vehiclesInLane2.append(Vehicle(True,False,"Admin",20,"type","ABC",TrafficSystem.inter, TrafficSystem.inter.roadsObj[1], 3, 4)), log_message(log, "Added Vehicle at Left Turning Left")] ) 
     addVehicleC4_3button.grid(row=7, column=2)
 
-
-
     #Buttons for adding pedestrians #------------------------------------------------------------------------------------------------
     tk.Label(admin_panel, text=f"Add Pedestrian Buttons", font=("Arial", 10, "bold"), bg="white").grid(row=8, column=0)
     #Pedestrian Top, crossing from left
@@ -672,26 +446,16 @@ def create_admin_panel(window, canvas):
     addPedestrian_s4s2button = tk.Button(admin_panel, width=23, text="Pedestrian Left, From Bottom", command=lambda: [TrafficSystem.inter.sidewalksObj[3].sidewalk1.append(Pedestrian(-1, TrafficSystem.inter, 1, TrafficSystem.inter.sidewalksObj[3], 1, 4)), log_message(log, "Added Pedestrian at Left Crossing From Bottom")]  ) 
     addPedestrian_s4s2button.grid(row=12, column=1)
 
-
-
     #Change Colour of Traffic Light Buttons------------------------------------------------------------------------------------------------------------------
 
     traffic_light_buttons = [
         tk.Button(admin_panel, width=23, text="Top & Bottom", command=lambda: [toggle_traffic_light(canvas, "traffic_light_1"), log_message(log, "Changing Top and Bottom Traffic Light to Next Colour")]  ),
         tk.Button(admin_panel, width=23, text="Left & Right", command=lambda: [toggle_traffic_light(canvas, "traffic_light_2"), log_message(log, "Changing Left and Right Traffic Light to Next Colour")]  )
-        # tk.Button(admin_panel, text="Traffic Light 3", command=lambda: toggle_traffic_light(canvas, "traffic_light_3")),
-        # tk.Button(admin_panel, text="Traffic Light 4", command=lambda: toggle_traffic_light(canvas, "traffic_light_4")),
     ]
 
     pedestrian_light_buttons = [
         tk.Button(admin_panel, width=23, text="Top & Bottom", command=lambda: [toggle_pedestrian_light(canvas, "ped_light_1"), log_message(log, "Changing Top and Bottom Pedestrian Light to Next Colour")] ),
         tk.Button(admin_panel, width=23, text="Left & Right", command=lambda: [toggle_pedestrian_light(canvas, "ped_light_2"), log_message(log, "Changing Left and Right Pedestrian Light to Next Colour")] )
-        # tk.Button(admin_panel, text="Pedestrian Light 3", command=lambda: toggle_pedestrian_light(canvas, "ped_light_3")),
-        # tk.Button(admin_panel, text="Pedestrian Light 4", command=lambda: toggle_pedestrian_light(canvas, "ped_light_4")),
-        # tk.Button(admin_panel, text="Pedestrian Light 5", command=lambda: toggle_pedestrian_light(canvas, "ped_light_5")),
-        # tk.Button(admin_panel, text="Pedestrian Light 6", command=lambda: toggle_pedestrian_light(canvas, "ped_light_6")),
-        # tk.Button(admin_panel, text="Pedestrian Light 7", command=lambda: toggle_pedestrian_light(canvas, "ped_light_7")),
-        # tk.Button(admin_panel, text="Pedestrian Light 8", command=lambda: toggle_pedestrian_light(canvas, "ped_light_8")),
     ]
     tk.Label(admin_panel, justify='left', text=f"Change Traffic Light Colour", font=("Arial", 10, "bold"), bg="white").grid(row=13, column=0, columnspan = 2, sticky="W")
     for i, button in enumerate(traffic_light_buttons, start=1):
@@ -734,7 +498,6 @@ def create_admin_panel(window, canvas):
     resetTraffic_button.grid(row=26, column=0, columnspan = 3)
 
 
-
 def create_console_window(window, x, y, width, height):
     frame = tk.Frame(master=window, bg='#808080')
     frame.place(x=x, y=y)
@@ -742,12 +505,11 @@ def create_console_window(window, x, y, width, height):
     log.pack(side=tk.LEFT, padx=5, pady=5, fill=tk.BOTH, expand=True)
     return log
 
+
 def log_message(console:ScrolledText, text:str):
     console.configure(state="normal")
     console.insert(tk.INSERT, text + "\n")
     console.configure(state="disabled")
-
-    
 
 
 def create_intersection():
@@ -845,9 +607,7 @@ def create_intersection():
             canvas.delete("occ16ar2")
 
 
-
-
-#CREATING ARROWS FOR VEHICLE OCC VARIABLES
+        #CREATING ARROWS FOR VEHICLE OCC VARIABLES
         #OCC1
         if (TrafficSystem.inter.occ[0] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "top", 270, "occ1ar1", "occ1ar2")
@@ -1034,27 +794,7 @@ def create_intersection():
         display_pedestrian_count(canvas, 570, 290, (len(TrafficSystem.inter.sidewalksObj[1].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[0].sidewalk2)), "PTR") #adds sidewalkobj1 arr2 with sidewalkobj2 arr1
         display_pedestrian_count(canvas, 250, 610, (len(TrafficSystem.inter.sidewalksObj[3].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[2].sidewalk2)), "PBL") #adds sidewalkobj3 arr2 with sidewalkobj4 arr1
         display_pedestrian_count(canvas, 570, 610, (len(TrafficSystem.inter.sidewalksObj[2].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[1].sidewalk2)), "PBR") #adds sidewalkonj3 arr1 with sidewalkobj2 arr2
-
-        #Updating
-
-    # pedestrian_count_positions = [
-    # (250, 290), tlef
-    # (570, 290), trigh
-    # (250, 610), bleft
-    # (570, 610)  brigh
-    # ]
-
-
-    
-    # def display_pedestrian_count(canvas, x, y, count):
-    # canvas.create_text(x, y, text=f"Pedestrians: {count}", font=("Arial", 10), tags="ped_count_text")
-
-        # create_arrow("left", 90)
-        # create_arrow(canvas, "right", 180)    
-        # create_arrow(canvas, "bottom", 90)      
-                    
-        # create_arrow(canvas, 100, 450, 200, 450)
-
+        
         window.update()
 
 if __name__ == "__main__":
