@@ -1,13 +1,6 @@
 import time
-# from TrafficSystem import *
-# import TrafficSystem
 
 class TrafficLight:
-    
-    defaultTime = 10
-    accelTime = 5
-    signalTime = defaultTime #default class variable for the traffic signal timings, can be edited globally by the intersection class
-
     greenTime = 8
     yellowTime = 4
     redTime = greenTime + yellowTime
@@ -63,5 +56,3 @@ class TrafficLight:
         elif self.resetColour == "yellow":
             self.timer = TrafficLight.yellowTime
         self.signalColour = self.resetColour
-
-    #implement methods for changing signal to specific colour, make this break the threads and apply to both?

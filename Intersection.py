@@ -132,14 +132,6 @@ class Intersection:
     # maybe another function to change lights seperately
 
     def changeLights(self):
-        # this function essentially changes the lights of the intersection while in sync
-        # so if one light is red and the other is green, immediately change green to yellow
-        # and let the red one sit for the duration that yellow is idle, then switch red to
-        # green when yellow cycles to red
-        # note: trafficLights still run as threads so we can just kill them and remake them
-        # to instantly change the colours, but we would need to break the delay of red
-        # to shorten it so it stays only for the duration of yellow
-
         if self.trafficLightObj[0].signalColour == "green":
             self.trafficLightObj[0].timer = 0   # change to yellow
             self.trafficLightObj[1].timer = TrafficLight.yellowTime # keep as red for the duration of yellow
@@ -161,13 +153,6 @@ class Intersection:
         # to yellow and follow the cycle for both sides
         
         # utilizes changeLight function after increasing the speed the lights
-
-        if self.trafficLightObj[0].colour == "green":
-            time.sleep(2)
-            self.changeLights("yellow", "red")
-        elif self.trafficLightObj[1].colour == "green":
-            time.sleep(2)
-            self.changeLights("red", "yellow")
         return
 
 

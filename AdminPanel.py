@@ -803,9 +803,15 @@ def create_intersection():
     verticalRoad = TrafficSystem.inter.trafficLightObj[0]
     horizontalRoad = TrafficSystem.inter.trafficLightObj[1]
 
-    log_message(log, "Admin View Loaded")
-    # log_message(log, "testing")
+    verticalTrafficColour = verticalRoad.signalColour
+    horizontalTrafficColour = horizontalRoad.signalColour
 
+    create_traffic_light(canvas, 385, 300, verticalRoad.signalColour, "traffic_light_1")  # Top
+    create_traffic_light(canvas, 385, 600, verticalRoad.signalColour, "traffic_light_3")  # Bottom
+    create_traffic_light(canvas, 240, 435, horizontalRoad.signalColour, "traffic_light_2")  # Left
+    create_traffic_light(canvas, 540, 435, horizontalRoad.signalColour, "traffic_light_4")  # Right
+
+    log_message(log, "Admin View Loaded")
 
     while True:
         
@@ -854,53 +860,58 @@ def create_intersection():
 
 
 
-        #CREATING ARROWS FOR VEHICLE OCC VARIABLES
+#CREATING ARROWS FOR VEHICLE OCC VARIABLES
         #OCC1
         if (TrafficSystem.inter.occ[0] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "top", 270, "occ1ar1", "occ1ar2")
+            # log_message(log, "Southbound vehicle turning right.")
         #OCC2
         if (TrafficSystem.inter.occ[1] > 0): 
             create_arrow(canvas, "top", 180, "occ2ar1", "occ2ar2")
+            # log_message(log, "Southbound vehicle going straight through intersection.")
         #OCC3
         if (TrafficSystem.inter.occ[2] > 0):  
             create_arrow(canvas, "top", 90, "occ3ar1", "occ3ar2")
+            # log_message(log, "Southbound vehicle turning left.")
 
         #OCC9
         if (TrafficSystem.inter.occ[8] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "bottom", 90, "occ9ar1", "occ9ar2")
+            # log_message(log, "Northbound vehicle turning right.")
         #OCC10
         if (TrafficSystem.inter.occ[9] > 0): 
             create_arrow(canvas, "bottom", 180, "occ10ar1", "occ10ar2")
+            # log_message(log, "Northbound vehicle going straight through intersection.")
         #OCC11
         if (TrafficSystem.inter.occ[10] > 0):  
             create_arrow(canvas, "bottom", 270, "occ11ar1", "occ11ar2")
-
-
+            # log_message(log, "Northbound vehicle turning left.")
 
         #OCC5
         if (TrafficSystem.inter.occ[4] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "right", 90, "occ5ar1", "occ5ar2")
+            # log_message(log, "Westbound vehicle turning right.")
         #OCC6
         if (TrafficSystem.inter.occ[5] > 0): 
             create_arrow(canvas, "right", 180, "occ6ar1", "occ6ar2")
+            # log_message(log, "Westbound vehicle going straight through intersection.")
         #OCC7
         if (TrafficSystem.inter.occ[6] > 0):  
             create_arrow(canvas, "right", 270, "occ7ar1", "occ7ar2")
+            # log_message(log, "Westbound vehicle turning left.")
 
         #OCC13
         if (TrafficSystem.inter.occ[12] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "left", 270, "occ13ar1", "occ13ar2")
+            # log_message(log, "Eastbound vehicle turning right.")
         #OCC14
         if (TrafficSystem.inter.occ[13] > 0): 
             create_arrow(canvas, "left", 180, "occ14ar1", "occ14ar2")
+            # log_message(log, "Eastbound vehicle going straight through intersection.")
         #OCC15
         if (TrafficSystem.inter.occ[14] > 0):  
             create_arrow(canvas, "left", 90, "occ15ar1", "occ15ar2")
-
-
-
-
-
+            # log_message(log, "Eastbound vehicle turning left.")
 
         #DELETING VEHICLE ARROWS IF NEED BE
         if(TrafficSystem.inter.occ[0] <= 0):
@@ -914,7 +925,6 @@ def create_intersection():
             canvas.delete("occ3ar1")
             canvas.delete("occ3ar2")
 
-
         if(TrafficSystem.inter.occ[8] <= 0):
             # delete_arrow(canvas, ("occ1ar1", "occ1ar2"))
             canvas.delete("occ9ar1")
@@ -925,7 +935,6 @@ def create_intersection():
         if(TrafficSystem.inter.occ[10] <= 0):
             canvas.delete("occ11ar1")
             canvas.delete("occ11ar2")
-
 
         if(TrafficSystem.inter.occ[4] <= 0):
             # delete_arrow(canvas, ("occ1ar1", "occ1ar2"))
@@ -938,7 +947,6 @@ def create_intersection():
             canvas.delete("occ7ar1")
             canvas.delete("occ7ar2")
 
-
         if(TrafficSystem.inter.occ[12] <= 0):
             # delete_arrow(canvas, ("occ1ar1", "occ1ar2"))
             canvas.delete("occ13ar1")
@@ -950,13 +958,7 @@ def create_intersection():
             canvas.delete("occ15ar1")
             canvas.delete("occ15ar2")
 
-
-
         #Deleting traffic and pedestrian lights
-        canvas.delete("traffic_light_1")
-        canvas.delete("traffic_light_2")
-        canvas.delete("traffic_light_4")
-        canvas.delete("traffic_light_5")
         canvas.delete("ped_light_1")
         canvas.delete("ped_light_2")
         canvas.delete("ped_light_3")
@@ -966,13 +968,22 @@ def create_intersection():
         canvas.delete("ped_light_7")
         canvas.delete("ped_light_8")
 
-
         # Traffic lights    
-        create_traffic_light(canvas, 385, 300, verticalRoad.signalColour, "traffic_light_1")  # Top
-        create_traffic_light(canvas, 240, 435, horizontalRoad.signalColour, "traffic_light_2")  # Left
-        create_traffic_light(canvas, 385, 600, verticalRoad.signalColour, "traffic_light_3")  # Bottom
-        create_traffic_light(canvas, 540, 435, horizontalRoad.signalColour, "traffic_light_4")  # Right
+        if verticalRoad.signalColour != verticalTrafficColour:
+            canvas.delete("traffic_light_1")
+            create_traffic_light(canvas, 385, 300, verticalRoad.signalColour, "traffic_light_1")  # Top
+            canvas.delete("traffic_light_3")
+            create_traffic_light(canvas, 385, 600, verticalRoad.signalColour, "traffic_light_3")  # Bottom
+            verticalTrafficColour = verticalRoad.signalColour
+            log_message(log, f"Vertical road now {verticalTrafficColour}")
 
+        if horizontalRoad.signalColour != horizontalTrafficColour:
+            canvas.delete("traffic_light_2")
+            create_traffic_light(canvas, 240, 435, horizontalRoad.signalColour, "traffic_light_2")  # Left
+            canvas.delete("traffic_light_4")
+            create_traffic_light(canvas, 540, 435, horizontalRoad.signalColour, "traffic_light_4")  # Right
+            horizontalTrafficColour = horizontalRoad.signalColour
+            log_message(log, f"Horizontal road now {horizontalTrafficColour}")
 
         # Pedestrian lights
         create_pedestrian_light(canvas, 550, 615, TrafficSystem.inter.pedLightObj[0].signalColour, "ped_light_1")  # Bottom Right
@@ -1009,10 +1020,6 @@ def create_intersection():
         display_pedestrian_count(canvas, 570, 290, (len(TrafficSystem.inter.sidewalksObj[1].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[0].sidewalk2)), "PTR") #adds sidewalkobj1 arr2 with sidewalkobj2 arr1
         display_pedestrian_count(canvas, 250, 610, (len(TrafficSystem.inter.sidewalksObj[3].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[2].sidewalk2)), "PBL") #adds sidewalkobj3 arr2 with sidewalkobj4 arr1
         display_pedestrian_count(canvas, 570, 610, (len(TrafficSystem.inter.sidewalksObj[2].sidewalk1) + len(TrafficSystem.inter.sidewalksObj[1].sidewalk2)), "PBR") #adds sidewalkonj3 arr1 with sidewalkobj2 arr2
-
-
-
-
 
         #Updating
 
