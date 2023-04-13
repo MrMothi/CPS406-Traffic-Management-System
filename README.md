@@ -26,7 +26,7 @@ CPS406 Project: MetroFloPro
         -Download zip of main branch on the github repo for the program “https://github.com/MrMothi/CPS406-Traffic-Management-System”
         Before running, Install the Python Pillow Library via PIP on your machine (https://pillow.readthedocs.io/en/stable/installation.html)
 
-    -Run the “TrafficSystem.py” file with python
+    -Run the “TrafficSystem.py” file with python OR run the executable within the "Executable TrafficSystem File" folder
     -You will now see a simple landing page for the application
     -Proceed to Admin Login to use the full capability of the program
     -Use the following admin credentials:
