@@ -1,5 +1,13 @@
 # CPS406-Traffic-Management-System
-This is the group project for cps406
+This is our group project for CPS406, it is called MetroFloPro and is a simple tool for Traffic Administrators to simulate traffic, while also allowing regular users to see the simulation.
+
+You are able to control traffic lights, pedestrian lights, pedestrians, and vehicles.
+
+There are several admin tools within the admin view of the intersection.
+
+Default credentials for the admin are: 
+    Username: admin
+    Password: pass
 
 ## Group # 4 Members:
 Mathew P
