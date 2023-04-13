@@ -10,17 +10,16 @@ from PedestrianLight import *
 from Vehicle import *
 from Pedestrian import *
 
-
 class Intersection:
 
     def __init__(self, trafficlightTiming: int, pedestrianLightTiming: int, weather: str, running: bool = False,
-        pedestrianCount: int = 0, totalVehicleCount: int = 20, incident: bool = False, crossSignalRequested: bool = False, speedsData = []):
-
+        totalPedestrianCount: int = 6, totalVehicleCount: int = 20, incident: bool = False, crossSignalRequested: bool = False, speedsData = [], testing: bool = False):
 
         # REGULAR INSTANCE VARIABLES----------------------------------------------------------------------------
         self.trafficlightTiming = trafficlightTiming
         self.pedestrianLightTiming = pedestrianLightTiming
-        self.pedestrianCount = pedestrianCount
+        self.pedestrianCount = 0 
+        self.totalPedestrianCount = totalPedestrianCount
         self.vehicleCount = 0
         self.totalVehicleCount = totalVehicleCount
         self.weather = weather
@@ -29,7 +28,15 @@ class Intersection:
         self.crossSignalRequested = crossSignalRequested
         self.speedsData = speedsData
         self.passedVehicles = [] #holds all vehicles which have passed through the intersection, allows data gathering
+        self.passedPedestrians = [] #holds all the pedestrians that have passed through the intersection
         self.vehicleId = 0  #variable for the IDs of the vehicles
+        self.pedId = 0 #variable for the IDs of the pedestrians
+        self.notfinished = True  # Variable which the pedestrianLight and TrafficLight check (If true they continue running, if false then they end)
+        self.autoVehicles = False #Variable for checking if auto add vehicles is on or not
+        self.autoPedestrians = False #Variable for checking if auto add pedestrians is on or not
+        self.emergency = False # Variable for checking if there is an emergency or not at the current time
+        self.emergencyTimer = 0 #Variable for emergency timer
+        self.testing = testing
 
         # OBJECT REFERENCE LISTS--------------------------------------------------------------------------------
         #array holding TrafficLightsights
@@ -38,8 +45,8 @@ class Intersection:
         self.pedLightObj = []
         #array holding Roads
         self.roadsObj = [] #roads: tuple(Road, Road)
-        #array holding Sidewalks
-        self.sidewalkObj = []
+        #array holding Sidewalks (Acting as crosswalks)
+        self.sidewalksObj = []
         
         #calling method to create all objects
         self.constructObjects()
@@ -54,19 +61,20 @@ class Intersection:
         self.otherThreads = []
 
         #Variables for indicating occupancy of the various locations in the intersection (ie Turning left area for Rd1 IncomingLane#3)
-        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]     #Test [0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1]          
+        self.occ = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]         
         #   occ# occupancy where  #mod4+1 = 
-        # 1 is turning left
+        # 1 is turning right
         # 2 is going straight
-        # 3 is turning right
+        # 3 is turning left
         # 4 is pedestrian walking
         # <=0 means open, >0 means occupied for x seconds more 
+        #NOTE: FOR ALL FOLLOWING REFERENCES TO RIGHT OR LEFT, ON THE GUI THEY ARE FLIPPED (ie: left is right, and right is left)
+        #NOTE: This is due to the prespective used for the backend was for the top road from the coder, and that view was translated to each road
 
-
-
-
-        self.count = 0 #variable used to iterate 10 times before creating new vehicles in the system
+        self.countForCarAdd = 0 #variable used to iterate 15 times before creating new vehicles in the system
+        self.countForPedAdd = 0 #variable used to iterate 30 times before creating new vehlices in the system
         self.temp = 0
+
 
 
 
@@ -76,50 +84,45 @@ class Intersection:
         #Lights are only made if they run at a separate colour cycle, other objects can reference the same light if they follow the same signal
         #making trafficlights
         TrafficLight.signalTime = self.trafficlightTiming
-        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road1
-        self.trafficLightObj.append(TrafficLight(True, "red"))    #TrafficLight for road2
+        self.trafficLightObj.append(TrafficLight(True, "red", self))    #TrafficLight for road1
+        self.trafficLightObj.append(TrafficLight(True, "green", self))    #TrafficLight for road2
         
         #making pedestrianlights
         PedestrianLight.signalTime = self.pedestrianLightTiming
-        self.pedLightObj.append(PedestrianLight(True, True, "stop"))  #Pedestrian Lights for rd1 (for signalling across rd1)
-        self.pedLightObj.append(PedestrianLight(True, True, "stop"))  #Pedestrian Lights for rd2 (for signalling across rd2)
-
-
+        self.pedLightObj.append(PedestrianLight(True, True, "green", self))  #Pedestrian Lights for rd1 (for signalling across rd1)
+        self.pedLightObj.append(PedestrianLight(True, True, "red", self))  #Pedestrian Lights for rd2 (for signalling across rd2)
 
         # #making sidewalks (Passing in intersection object reference)
-        # self.sidewalksObj.append(SideWalk())   #Sidewalk #1  for rd1      parallel to respectively numbered vehicle array       -----------implement more after car stuff finished---------
-        # self.sidewalksObj.append(SideWalk())   #Sidewalk #2  for rd2
-        # self.sidewalksObj.append(SideWalk())   #Sidewalk #3  for rd1
-        # self.sidewalksObj.append(SideWalk())   #Sidewalk #4  for rd2
+        self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #1  for rd1      parallel to respectively numbered vehicle array
+        self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #2  for rd2      each sidewalk has two arrays which, represent pedestrians on either side of the road
+        self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #3  for rd1
+        self.sidewalksObj.append(SideWalk(self, True, [], []))   #Sidewalk #4  for rd2
 
         #making roads  (Passing in intersection object reference)
         self.roadsObj.append(Road(self, True, False, False, ['''sidewalks?'''], [], [], 1))     #has vehicle arrays 1 and 3   
         self.roadsObj.append(Road(self, True, False, False, [], [], [], 2))     #has vehicle arrays 2 and 4
 
-        #method which creates random vehicles to appropirate vehicles and vehicle lists
-        self.addVehicles()
-
         return None
 
-    #Creates threads for the two trafficlights, cycling through colours while also being opposite
+
+
+    #Creates threads for the two trafficLights, cycling through colours while also being opposite
     def createTrafficLightThreads(self):
-        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[0].cycleLight1))
-        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[1].cycleLight2))
+        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[0].cycle))
+        self.trafficLightThreads.append(threading.Thread(target=self.trafficLightObj[1].cycle))
         self.trafficLightThreads[0].start()
         self.trafficLightThreads[1].start()
-
+    #Same as above, but for pedestrianLights
     def createPedestrianLightThreads(self):
-        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[0].cycleLight1))  #PedestrianLight for going across rd1
-        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[1].cycleLight2))  #PedestrianLight for going across rd2
+        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[0].cycle))  #PedestrianLight for going across rd1
+        self.pedLightThreads.append(threading.Thread(target=self.pedLightObj[1].cycle))  #PedestrianLight for going across rd2
         self.pedLightThreads[0].start()
         self.pedLightThreads[1].start()
-
 
     #Thread function to keep decreasing variable until its <= 0, decreasing by 1 each time, and waiting 1 second each time
     def updateAfterTime(self, var):        #pass in reference to instance variable
         self.otherThreads.append(threading.Thread(target=self.updateVar, args=[var]))
         self.otherThreads[-1].start()
-
 
     #Thread function, called by the updateAfterTime function
     def updateVar(self, var):  
@@ -128,22 +131,46 @@ class Intersection:
             time.sleep(1)
         return                     
 
+    # maybe another function to change lights seperately
+
+    def changeLights(self):
+        if self.trafficLightObj[0].signalColour == "green":
+            self.trafficLightObj[0].timer = 0   # change to yellow
+            self.trafficLightObj[1].timer = TrafficLight.yellowTime # keep as red for the duration of yellow
+        elif self.trafficLightObj[1].signalColour == "green":
+            self.trafficLightObj[1].timer = 0
+            self.trafficLightObj[0].timer = TrafficLight.yellowTime
+        else:
+            self.trafficLightObj[0].timer = 0
+            self.trafficLightObj[1].timer = 0
+
 
     #Main loop for the intersection
     def run(self):
         #Try Catch block for breaking out of the loop via ctrl-c, and error catching
         try:
 
-            #STARTING THREADS FOR LIGHTS
-            self.createTrafficLightThreads()
-            self.createPedestrianLightThreads()
+            # #STARTING THREADS FOR LIGHTS
+            if(self.testing == True):
+                self.createTrafficLightThreads()
+                self.createPedestrianLightThreads()
             
             #Adding all the random vehicles before starting
-            self.addVehicles()
-            
+            if(self.autoVehicles):
+                self.addVehicles()
+                # self.testVehicles()
+
+            #Adding all the random pedestrians before starting
+            if(self.autoPedestrians):
+                self.addPedestrians()
+                # self.testPedestrians()
+
+
             self.running = True
             #MAIN LOOP FOR THE INTERSECTION--------------------------------------
             while(self.running):
+                # print(self.trafficLightObj[0].signalColour)
+                # print(self.trafficLightObj[1].signalColour)
                 #Pinging every car first in the queue for each car array in the two roads
                 #Going clockwise from C1, C2, C3, C4 : where C1 and C3 are in rd1 and C2 and C4 are in rd2
                 print(self.roadsObj[0].vehiclesInLane1)   
@@ -151,7 +178,39 @@ class Intersection:
                 print(self.roadsObj[0].vehiclesInLane2)
                 print(self.roadsObj[1].vehiclesInLane2)
                 print(self.occ)
+
+
+                #Prompting pedestrians (before vehicles) to go if the way is clear and light is green
+                #SIDEWALK1(TOP)
+                if(len(self.sidewalksObj[0].sidewalk1) > 0):
+                    self.sidewalksObj[0].sidewalk1[0].tryCrossRoad()
                 
+                if(len(self.sidewalksObj[0].sidewalk2) > 0):
+                    self.sidewalksObj[0].sidewalk2[0].tryCrossRoad()
+
+                #SIDEWALK2(RIGHT)
+                if(len(self.sidewalksObj[1].sidewalk1) > 0):
+                    self.sidewalksObj[1].sidewalk1[0].tryCrossRoad()
+                
+                if(len(self.sidewalksObj[1].sidewalk2) > 0):
+                    self.sidewalksObj[1].sidewalk2[0].tryCrossRoad()
+
+                #SIDEWALK3(BOTTOM)
+                if(len(self.sidewalksObj[2].sidewalk1) > 0):
+                    self.sidewalksObj[2].sidewalk1[0].tryCrossRoad()
+                
+                if(len(self.sidewalksObj[2].sidewalk2) > 0):
+                    self.sidewalksObj[2].sidewalk2[0].tryCrossRoad()
+
+                #SIDEWALK4(LEFT)
+                if(len(self.sidewalksObj[3].sidewalk1) > 0):
+                    self.sidewalksObj[3].sidewalk1[0].tryCrossRoad()
+                
+                if(len(self.sidewalksObj[3].sidewalk2) > 0):
+                    self.sidewalksObj[3].sidewalk2[0].tryCrossRoad()
+
+
+                #Prompting Vehicles to go through intersection
                 #calling C1
                 if (len(self.roadsObj[0].vehiclesInLane1) > 0):           #arrays are checked if they have any cars, if so then prompts first car from [0]
                     self.roadsObj[0].vehiclesInLane1[0].doAction()
@@ -169,19 +228,36 @@ class Intersection:
                     self.roadsObj[1].vehiclesInLane2[0].doAction()
 
                 # print(self.occ) #TESTING
-                print(self.roadsObj[0].vehiclesInLane1)  
+                # print(self.roadsObj[0].vehiclesInLane1)  
 
-                #.5 second wait between pings (Tick rate of the simulation)
+
+                #1 second wait between pings (Tick rate of the simulation)
                 time.sleep(1)
-                #adding vehicles back into the system every 10 seconds
-                self.count = self.count + 1
-                if(self.count >= 20):
+                
+                # adding vehicles back into the system every 15 seconds
+                self.countForCarAdd = self.countForCarAdd + 1
+                if(self.countForCarAdd >= 15 and self.autoVehicles == True):
                     self.addVehicles()
+                    self.countForCarAdd = 0
 
-                #Currently running the system for 50 seconds before halting the while loop
+
+                #adding pedestrians back into system every 30 seconds        was>=30                   
+                self.countForPedAdd = self.countForPedAdd + 1
+                if(self.countForPedAdd >= 30 and self.autoPedestrians == True):
+                    self.addPedestrians()
+                    self.countForPedAdd = 0
+
+
+                #Automatically ending the program after 100s (Just in case there is a infinite loop)
                 self.temp = self.temp + 1
-                if(self.temp == 100):
+                if(self.temp == 1000):
                     self.running = False
+
+                #cleanup of passed_ arrays
+                if len(self.passedPedestrians) >= 100:
+                    self.passedPedestrians = []
+                if len(self.passedVehicles) >= 100:
+                    self.passedVehicles = []
 
                 #Testing prints
                 print(self.occ)
@@ -199,8 +275,8 @@ class Intersection:
             self.trafficLightObj[0].operational = False
             self.trafficLightObj[1].operational = False
             self.pedLightObj[0].operational = False
-            self.pedLightObj[1].operational = False
-            #MAYBE INSTALL PACKAGE WHICH ENDS THE THREADS BY THROWING EXCEPTION IN THEM
+            self.pedLightObj[1].operational = False                                
+            #MAYBE INSTALL PACKAGE WHICH ENDS THE THREADS BY THROWING EXCEPTION IN THEM                    -------------------------------------
         #else:
 
         #Printing done when the main loop is ended
@@ -210,14 +286,18 @@ class Intersection:
         return None
 
 
+
+
+
+    #Function to create multiple vehicles
+    def addVehicles(self):
+        tem = self.totalVehicleCount-self.vehicleCount   
+        for _ in range(tem):
+            self.addSingleVehicle()
     
     #method which calls the randomize vehicles function based on how many more vehicles are needed in the system
-    def addVehicles(self):
-        for i in range(self.totalVehicleCount-self.vehicleCount):
-            self.randomizeVehicle()
-
     #Vehicle parameters randomiser, creates then adds vehicle object which has been created with random paramteres with set probabilities for some
-    def randomizeVehicle(self):   
+    def addSingleVehicle(self):
         newId = self.vehicleId
         self.vehicleId += 1
 
@@ -244,17 +324,22 @@ class Intersection:
 
         #Adding vehicle to the respective arrays in the roads
         if(randCarArrayNum == 1 or randCarArrayNum == 2): #if car is in vehicle arrays 1
-            self.roadsObj[randRd].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+            if(randCarArrayNum == 1):
+                self.roadsObj[0].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[0], randAction, randCarArrayNum))
+            else:
+                self.roadsObj[1].vehiclesInLane1.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[1], randAction, randCarArrayNum))
         else: #if cars are in vehicle arrays 2
-            self.roadsObj[randRd].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[randRd], randAction, randCarArrayNum))
+            if(randCarArrayNum == 3):
+                self.roadsObj[0].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[0], randAction, randCarArrayNum))
+            else:
+                self.roadsObj[1].vehiclesInLane2.append(Vehicle(True, False, newId, 40, randType, randPlate, self, self.roadsObj[1], randAction, randCarArrayNum))
         self.vehicleCount = self.vehicleCount + 1
-
 
 
     #Function which holds an example of a vehicle in each location doing each action
     def testVehicles(self):
         #TESTING
-        #cars in C1
+        #cars in C1                                                                                                 
         self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"1",20,"type","ABC",self, self.roadsObj[0], 1, 1))   #going left from c1  
         self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"2",20,"type","ABC",self, self.roadsObj[0], 2, 1))   #going straight from c1
         self.roadsObj[0].vehiclesInLane1.append(Vehicle(True,False,"3",20,"type","ABC",self, self.roadsObj[0], 3, 1))   #going right from c1
@@ -275,7 +360,69 @@ class Intersection:
 
 
 
-    #methods from UML
+    #function to create multiple pedestrians
+    def addPedestrians(self):
+        tem = self.totalPedestrianCount-self.pedestrianCount
+        for i in range(tem):
+            self.addSinglePedestrian()
+
+
+    #Method to randomly add pedestrians
+    def addSinglePedestrian(self):
+        print(self.totalPedestrianCount, "   ",  self.pedestrianCount)
+        #getting and updating ID variable
+        newId = self.pedId
+        self.pedId += 1
+        #getting random sidewalk obj number
+        sidewalkNum = random.randint(0,3)
+        #getting random sidewalk array number
+        arrNum = random.randint(1,2)
+        
+        #if statements for each possibility
+        if(sidewalkNum == 0): #adding to road 1, sidewalk obj 1
+            if(arrNum == 1):
+                self.sidewalksObj[0].sidewalk1.append(Pedestrian(newId, self, 0, self.sidewalksObj[0], 1, 8))
+            else:
+                self.sidewalksObj[0].sidewalk2.append(Pedestrian(newId, self, 0, self.sidewalksObj[0], 2, 8))
+        elif(sidewalkNum == 1): #sidewalk obj2
+            if(arrNum == 1):
+                self.sidewalksObj[1].sidewalk1.append(Pedestrian(newId, self, 1, self.sidewalksObj[1], 1, 12))   
+            else:
+                self.sidewalksObj[1].sidewalk2.append(Pedestrian(newId, self, 1, self.sidewalksObj[1], 2, 12))
+        elif(sidewalkNum == 2): #sidewalk obj3
+            if(arrNum == 1):
+                self.sidewalksObj[2].sidewalk1.append(Pedestrian(newId, self, 0, self.sidewalksObj[2], 1, 16))  
+            else:
+                self.sidewalksObj[2].sidewalk2.append(Pedestrian(newId, self, 0, self.sidewalksObj[2], 2, 16))
+        elif(sidewalkNum == 3): #sidewalk obj4
+            if(arrNum == 1):
+                self.sidewalksObj[3].sidewalk1.append(Pedestrian(newId, self, 1, self.sidewalksObj[3], 1, 4))   
+            else:
+                self.sidewalksObj[3].sidewalk2.append(Pedestrian(newId, self, 1, self.sidewalksObj[3], 2, 4))
+        self.pedestrianCount = self.pedestrianCount + 1
+    
+
+
+    def testPedestrians(self):
+        #TESTING
+        #Adding Pedestrians to every sidewalk array within the 4 sidewalk objects (2 per obj)
+        #using indexes to denote rdnum/rdcross in pedestrian
+        #rd1 [0] has sidewalk obj of index 0 and 2   #aka c1 and c3
+        #rd2 [1] has sidewalk obj of index 1 and 3   #aka c2 and c4
+        #pedestrians in sidewalk 1
+        self.sidewalksObj[0].sidewalk1.append(Pedestrian(1, self, 0, self.sidewalksObj[0], 1, 8))                         #make sure about rdcross corresponding to sidew (need to be from same part of intersection)
+        self.sidewalksObj[0].sidewalk2.append(Pedestrian(2, self, 0, self.sidewalksObj[0], 2, 8))
+        #pedestrians in sidewalk 2
+        self.sidewalksObj[1].sidewalk1.append(Pedestrian(3, self, 1, self.sidewalksObj[1], 1, 12))                       
+        self.sidewalksObj[1].sidewalk2.append(Pedestrian(4, self, 1, self.sidewalksObj[1], 2, 12))
+        #pedestrians in sidewalk 3
+        self.sidewalksObj[2].sidewalk1.append(Pedestrian(5, self, 0, self.sidewalksObj[2], 1, 16))                       
+        self.sidewalksObj[2].sidewalk2.append(Pedestrian(6, self, 0, self.sidewalksObj[2], 2, 16))
+        #pedestrians in sidewalk 4
+        self.sidewalksObj[3].sidewalk1.append(Pedestrian(7, self, 1, self.sidewalksObj[3], 1, 4))                       
+        self.sidewalksObj[3].sidewalk2.append(Pedestrian(8, self, 1, self.sidewalksObj[3], 2, 4))
+
+
 
     #Given a Road object, it returns the current signal colour string for its respective trafficLights
     def checkTrafficSignal(self, rd: Road):
@@ -285,93 +432,21 @@ class Intersection:
         # checks for pSignal from sidewalk linked to rd
         return self.pedLightObj[rd.rdNum-1].signalColour
     
-    def requestEmergencySignal(self, rd: Road):
-        return
-    
-
-#manages the creation of vehicles and pedestrians
-#manages the timings of signals, events and also changes made by the admin
-#sets variables used by the vehicles and pedestrians
-   #these variables allow them to determine when to go into the intersection or not
 
 
+    #Function for emergency vehicle or accident on road, which immediately sets all lights to red, thus halting the intersection
+    #Run as thread, set all occupancy variables to 1, wait x amount of seconds before restarting loop
+    #spawn emergency vehicle to front of one of the vehicle arrays
+    def requestEmergency(self):
+        self.running = False
+        self.pedLightObj[0].signalColour = "red"
+        self.pedLightObj[1].signalColour = "red"
+        self.trafficLightObj[0].signalColour = "red"
+        self.trafficLightObj[1].signalColour = "red"
 
-   # 12-16 threads for locations on the roads at the intersection, 4 for sidewalks, 3 per enterance for cars on the intersections
-   # are joined after the end of the loop
-   # have a while loop for the whole system here, possibly treat this class as a object, run threads within while maybe or by methods??
-   # other objects such as cars and such check the variables changed by the threads to move through the intersection or not
-   # ie for emergencies, we can set x areas of the 16 to be filled for y amount of time
-
-   #4 threads for the 4 sets of lights (1 of each per road), 2 stoplights, 2 pedestrianlights
-   #these threads will source info for multiple light objects
-   #can be terminated here, and run with ifstatements for the light timings, and or possibly the sleep timings to adjust the durations
- 
-    #all pedestrians(maybe just 1, which induces others if leaving queue) and vehicles 1st in queue run on busy wait queues, and
-    #based on thier action will check the appropriate queue & stoplight timing variables both within intersection, before moving
-   #MAKE NOTE OF CHANGES IN REPORT SUBMISSION
-   
-
-
-   #make object get out of list/dequeue, after creating thread in intersection for the time occupied
-
-
-
-#-____________________________________________________________________________________________________________________________
-#FIRST SET UP THREADS FOR THE LOCATION OCCUPIED VARS, THEN SET UP OBJECTS, LIGHTS, LIGHT THREADS, THEN CAR AI, THEN PEDESTRIAN AI
-                                            #DONT FORGET PEDESTRIAN THREADS AND AI, GIVE PEDESTRIANS RIGHT OF WAY
-
-
-                                            #emergency all location variables now True (indicating area is taken)
-                                            #4 way stop and call new method in vehicle whihc is force action, give wait between loop 2 seconds
-                                                #cycle through vehicle arrays per road in circle
-                                                #force action just goes without checking
-
-
-
-                                        #function for creating all 2 stoplight threads and function for pedeslight threads,
-                                        #instance variable for threads
-                                        #so that admin may control 
-                                        #maybe have timings for each light (or kill thread, send set red function)
-                                        
-
-                                        #for finding appropirate occupancy variables, maybe hardcode(need to have variable to determine which vehicle
-                                        # array)
-                                        #otherwise find formula to find the road then work from that road#
-
-
-
-                                        # have while conditions in threads to end them externally (like while occupied# != 0)
-
-
-                                        #have a separate lights setup function here that runs to offset the light timings
-                                        # green =   x - (x/2)         yellow = x/2
-
-                                        #make the occupancy threads based on time instead, to allow for multiple cars from the same intersection to go
-                                        # also maybe assume that same intersection can go concurrently after .25 seconds  (dont need to check if current lane is in intersection?)
-
-                                        #vehicle AI is a big set of if statments
-                                        #first checking road, then if light is green/yellow (maybe allow green only?/check lightTimeleft instance variable/just dont go on yellows yet)
-                                        #then check which array of the road its in
-                                        #then check appropirate variables of occ#
-
-                                        #pass in object of intersection to each lower object
-                                        #pass in road for cars and maybe sidewalk for pedestrian along with intersection
-                                        #intersection holds the lights
-                                        #add function in intersection to give timings & signal color or set them as global variables
-
-
-                                        #sidewalks hold 2 arrays for the two sides of the road, once pedestrian crosses, they get deleted from system& array
-
-                                        #read all these notes
-
-
-
-
-
-
-
-
-
-
-
-                                        #setup roading pinging then after do the ifstatements
+    #Method for changing the emergency variable back to false after 5 seconds
+    def interEmergency(self):
+        while(self.emergencyTimer > 0):
+            time.sleep(1)
+            self.emergencyTimer = self.emergencyTimer - 1
+        self.emergency = False

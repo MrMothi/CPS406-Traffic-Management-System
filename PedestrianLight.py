@@ -1,52 +1,62 @@
 from TrafficLight import *
 
 class PedestrianLight:
-    signalTime = 4   #default signal time for PedestrianLight
-    
-    def __init__(self, operational, hasAudibleSignal, signalColour):           #timeToWalk, walkTiming
+    # timers correspond to the length of the trafficlight class timers
+    greenTime = TrafficLight.greenTime   #default signal time for PedestrianLight
+    redTime = TrafficLight.redTime + TrafficLight.yellowTime # account for both yellow lights
+
+    def __init__(self, operational, hasAudibleSignal, signalColour, inter):           #timeToWalk, walkTiming
         self.operational = operational
         self.hasAudibleSignal = hasAudibleSignal #bool
-        self.signalColour = signalColour #string either walk or stop
+        self.resetColour = signalColour
+        self.signalColour = self.resetColour #string either walk or stop
         self.walkTimeRemaining = 0
-        self.trafficLightSigTime = TrafficLight.signalTime
-
+        self.inter = inter
+        self.timer = 0
+        self.reset()
     
+    # change the colour
+    def setColour(self, colour):
+        self.signalColour = colour
 
-
-    #Two cycleLight methods to have two separate running loops which are opposite to eachother in signal colour
-    def cycleLight2(self):
-        while (self.operational):                       #trafficlight is signaltime 
-            self.signalColour = "red"
-            print("Now stop2", flush=True)
-            time.sleep(self.trafficLightSigTime + (self.trafficLightSigTime - self.signalTime))  #running red for the trafficSignal Time
-            self.signalColour = "green"                                                            #plus any left over from pedestrian signal time    
-            print("Now walk2", flush=True)
-            time.sleep(self.signalTime)
-        return
+    # main function for the thread to cycle 
+    def cycle(self):
+        while (self.inter.notfinished):
+            # update timer and colour when operational
+            if (self.operational):
+                if self.signalColour == "black":
+                    self.reset()
+                elif self.timer <= 0:
+                    print(f"Ped {self.signalColour}", flush=True)
+                    if self.signalColour == "green":
+                        self.setColour("red")
+                        self.timer = PedestrianLight.redTime
+                    elif self.signalColour == "red":
+                        self.setColour("green")
+                        self.timer = PedestrianLight.greenTime
+                else:
+                    self.timer -= 1
+                    time.sleep(1)
+            else:
+                if(self.inter.emergency == True):
+                    self.setColour("red")
+                    time.sleep(1)
+                else:
+                    self.setColour("black")
+                    self.timer = 0
+                    time.sleep(1)
     
-    def cycleLight1(self):
-        while (self.operational):
-            self.signalColour = "green"                                                            
-            print("Now walk1", flush=True)
-            time.sleep(self.signalTime)
-            self.signalColour = "red"
-            print("Now stop1", flush=True)
-            time.sleep(self.trafficLightSigTime + (self.trafficLightSigTime - self.signalTime)) 
-        return
+    def cycleNext(self):
+        self.timer = 0
+        return self.signalColour
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # set signal colour and timer to preset
+    def reset(self):
+        if self.resetColour == "red":
+            self.timer = PedestrianLight.redTime - TrafficLight.yellowTime # doesnt account for first yellow timer on initial
+        elif self.resetColour == "green":
+            self.timer = PedestrianLight.greenTime
+        self.signalColour = self.resetColour
 
     def setStop(self):
         return True

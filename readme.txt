@@ -1,23 +1,7 @@
-# CPS406-Traffic-Management-System
-This is the group project for cps406
-
-## Group # 4 Members:
-Mathew P
-
-Mohit S
-
-Joseph Z
-
-Abdullah H
-
-Abdullah I
-
-Aoun H
-
 CPS406 Project: MetroFloPro
 
 
-## Instructions on how to install and run MetroFloPro:
+→ Instructions on how to install and run MetroFloPro:
 
     -There are two ways to install the program, either:
         -Run the following command within a terminal opened on a new file: 
@@ -38,7 +22,7 @@ CPS406 Project: MetroFloPro
 
 
 
-## Instructions on how to use the Admin Panel
+→ Instructions on how to use the Admin Panel
 
     Preconditions of the intersection:
         -By default, the intersection does not have any automatic vehicle and pedestrian traffic
@@ -58,3 +42,4 @@ CPS406 Project: MetroFloPro
         -Traffic can be reset/cleared
         -The intersection can be reset to default conditions
         -Traffic and Pedestrian lights can be disabled (Will show the colour black and not allow traffic through.
+

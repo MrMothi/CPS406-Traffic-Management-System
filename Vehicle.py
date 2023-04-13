@@ -18,7 +18,7 @@ class Vehicle:
         self.rd = rd #Road object reference which holds the vehicle
         self.actionType = actionType #if the car is given an action type to do
         self.carArrayNum = carArrayNum #Number to indicate which vehicle array the vehicle is in
-        self.moveTime = 2 #default movetime (Base on speed for future) =======================================
+        self.moveTime = 2 #default movetime (Base on speed for future 2) =======================================
 
     #Variable Numbering info
     #carArrayNum, based on the C# indicate which vehicle array the vehicle is in goes from 1-4
@@ -26,6 +26,8 @@ class Vehicle:
                     #1 means go left
                     #2 means go straight
                     #3 means go right
+                    #Left and right directions are swapped for the GUI
+                    
 
     #Right of way going straight, leftturn, then rightturn
     #ie leftturn checks pedestrian and vehicle coming from left
@@ -41,7 +43,7 @@ class Vehicle:
         if(self.carArrayNum == 1):
             print("c1")
             #checks if stoplight is green for rd1
-            if(self.inter.checkTrafficSignal(self.rd) == "green"):                                    #FOR THIS CHECK, IF NEEDED ADD A TIME CHECK TO NOT ALLOW ANY ARROWS WHILE RED (PREVIOUSLY MADE FROM GREENLIGHT)
+            if(self.inter.checkTrafficSignal(self.rd) == "green"):                                   
                 print("grenR1")                                                                                  #   and checkIfTrafficLightTime > moveTime
                 #if going left (ARROW #1)
                 if(self.actionType == 1):
@@ -103,7 +105,7 @@ class Vehicle:
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action1")
+                        print("Action1 2")
 
                 #if going straight (ARROW #6)
                 elif(self.actionType == 2):
@@ -117,7 +119,7 @@ class Vehicle:
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action2")
+                        print("Action2 2")
                 
                 #if turning right (ARROW #7)
                 elif(self.actionType == 3):
@@ -131,7 +133,7 @@ class Vehicle:
                         #delete car from C2 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane1.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action3")
+                        print("Action3 2")
 
         #If car is in rd 1, C3
         elif(self.carArrayNum == 3):
@@ -151,7 +153,7 @@ class Vehicle:
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action1")
+                        print("Action1 3")
 
                 #if going straight (ARROW #10)
                 elif(self.actionType == 2):
@@ -165,7 +167,7 @@ class Vehicle:
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action2")
+                        print("Action2 3")
                 
                 #if turning right (ARROW #11)
                 elif(self.actionType == 3):
@@ -179,7 +181,7 @@ class Vehicle:
                         #delete car from C3 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action3")
+                        print("Action3 3")
         
         #If car is in rd 2, C4
         elif(self.carArrayNum == 4):
@@ -199,7 +201,7 @@ class Vehicle:
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action1")
+                        print("Action1 4")
 
                 #if going straight (ARROW #14)
                 elif(self.actionType == 2):
@@ -213,7 +215,7 @@ class Vehicle:
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action2")
+                        print("Action2 4")
                 
                 #if turning right (ARROW #15)
                 elif(self.actionType == 3):
@@ -227,42 +229,8 @@ class Vehicle:
                         #delete car from C4 list
                         self.inter.passedVehicles.append(self.rd.vehiclesInLane2.pop(0))
                         self.inter.vehicleCount = self.inter.vehicleCount - 1
-                        print("Action3")
+                        print("Action3 4")
 
 
         #if None of the if statements match, then print wait and do nothing
         print("Waiting", self.name)
-
-
-    def getRandomAction():
-        #maybe 80% of the time is straight
-        #10% left and right respectively
-        pass
-
-    def addVehicles(cls):   
-        newId = cls.vehicleId
-        cls.vehicleId += 1
-
-        x = random.randint(1,100)
-        if x <= 88:
-            randType = "car"
-        elif x <= 98:
-            randType = "publicTransit"
-        else:
-            randType = "emergencyVehicle"
-
-        y = random.randint(1,10)
-        randAction = 2
-        if y == 9:
-            randAction = 1
-        elif y == 10:
-            randAction = 3
-        else:
-            randAction = 2
-
-        randPlate = (''.join(random.choices(string.ascii_uppercase + string.digits, k=7)))
-        randRd = (random.randint(0, 1))
-        randCarArrayNum = (random.randint(1,4))
-
-
-        print (True, True, newId, 40, randType, randPlate, cls, cls.roadsObj[randRd], randAction, randCarArrayNum)
