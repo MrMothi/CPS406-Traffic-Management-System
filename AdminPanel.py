@@ -611,80 +611,44 @@ def create_intersection():
         #OCC1
         if (TrafficSystem.inter.occ[0] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "top", 270, "occ1ar1", "occ1ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[0] == 0):
-                log_message(log, "Southbound vehicle turning right.")
         #OCC2
         if (TrafficSystem.inter.occ[1] > 0): 
             create_arrow(canvas, "top", 180, "occ2ar1", "occ2ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[1] == 0):
-                log_message(log, "Southbound vehicle going straight through intersection.")
         #OCC3
         if (TrafficSystem.inter.occ[2] > 0):  
             create_arrow(canvas, "top", 90, "occ3ar1", "occ3ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[2] == 0):
-                log_message(log, "Southbound vehicle turning left.")
 
         #OCC9
         if (TrafficSystem.inter.occ[8] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "bottom", 90, "occ9ar1", "occ9ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[8] == 0):
-                log_message(log, "Northbound vehicle turning right.")
         #OCC10
         if (TrafficSystem.inter.occ[9] > 0): 
             create_arrow(canvas, "bottom", 180, "occ10ar1", "occ10ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[9] == 0):
-                log_message(log, "Northbound vehicle going straight through intersection.")
 
         #OCC11
         if (TrafficSystem.inter.occ[10] > 0):  
             create_arrow(canvas, "bottom", 270, "occ11ar1", "occ11ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[10] == 0):
-                log_message(log, "Northbound vehicle turning left.")
 
         #OCC5
         if (TrafficSystem.inter.occ[4] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "right", 90, "occ5ar1", "occ5ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[4] == 0):
-                log_message(log, "Westbound vehicle turning right.")
         #OCC6
         if (TrafficSystem.inter.occ[5] > 0): 
             create_arrow(canvas, "right", 180, "occ6ar1", "occ6ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[5] == 0):
-                log_message(log, "Westbound vehicle going straight through intersection.")
         #OCC7
         if (TrafficSystem.inter.occ[6] > 0):  
             create_arrow(canvas, "right", 270, "occ7ar1", "occ7ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[6] == 0):
-                log_message(log, "Westbound vehicle turning left.")
 
         #OCC13
         if (TrafficSystem.inter.occ[12] > 0):   #for occ number 2 in diagram but index 1 in array
             create_arrow(canvas, "left", 270, "occ13ar1", "occ13ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[12] == 0):
-                log_message(log, "Eastbound vehicle turning right.")
         #OCC14
         if (TrafficSystem.inter.occ[13] > 0): 
             create_arrow(canvas, "left", 180, "occ14ar1", "occ14ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[13] == 0):
-                log_message(log, "Eastbound vehicle going straight through intersection.")
         
         #OCC15
         if (TrafficSystem.inter.occ[14] > 0):  
             create_arrow(canvas, "left", 90, "occ15ar1", "occ15ar2")
-            time.sleep(0.15)
-            if (TrafficSystem.inter.occ[14] == 0):
-                log_message(log, "Eastbound vehicle turning left.")
 
 
         #DELETING VEHICLE ARROWS IF NEED BE
