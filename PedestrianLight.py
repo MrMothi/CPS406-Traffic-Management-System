@@ -1,6 +1,7 @@
 from TrafficLight import *
 
 class PedestrianLight:
+    # timers correspond to the length of the trafficlight class timers
     greenTime = TrafficLight.greenTime   #default signal time for PedestrianLight
     redTime = TrafficLight.redTime + TrafficLight.yellowTime # account for both yellow lights
 
@@ -14,11 +15,14 @@ class PedestrianLight:
         self.timer = 0
         self.reset()
     
+    # change the colour
     def setColour(self, colour):
         self.signalColour = colour
 
+    # main function for the thread to cycle 
     def cycle(self):
         while (self.inter.notfinished):
+            # update timer and colour when operational
             if (self.operational):
                 if self.signalColour == "black":
                     self.reset()
@@ -46,6 +50,7 @@ class PedestrianLight:
         self.timer = 0
         return self.signalColour
 
+    # set signal colour and timer to preset
     def reset(self):
         if self.resetColour == "red":
             self.timer = PedestrianLight.redTime - TrafficLight.yellowTime # doesnt account for first yellow timer on initial
