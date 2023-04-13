@@ -6,7 +6,9 @@ You are able to control traffic lights, pedestrian lights, pedestrians, and vehi
 There are several admin tools within the admin view of the intersection.
 
 Default credentials for the admin are: 
+    
     Username: admin
+    
     Password: pass
 
 ## Group # 4 Members:
