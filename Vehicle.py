@@ -1,7 +1,12 @@
 from Intersection import *
 from Road import *
+import random
+import string
 
 class Vehicle:
+
+    vehicleId = 1
+
     def __init__(self, operational, stopped, name, speed, type, plate, inter, rd, actionType, carArrayNum):
         self.operational = True
         self.stopped = True
@@ -21,6 +26,7 @@ class Vehicle:
                     #1 means go left
                     #2 means go straight
                     #3 means go right
+                    #Left and right directions are swapped for the GUI
                     
 
     #Right of way going straight, leftturn, then rightturn
@@ -37,7 +43,7 @@ class Vehicle:
         if(self.carArrayNum == 1):
             print("c1")
             #checks if stoplight is green for rd1
-            if(self.inter.checkTrafficSignal(self.rd) == "green"):                                    #FOR THIS CHECK, IF NEEDED ADD A TIME CHECK TO NOT ALLOW ANY ARROWS WHILE RED (PREVIOUSLY MADE FROM GREENLIGHT)
+            if(self.inter.checkTrafficSignal(self.rd) == "green"):                                   
                 print("grenR1")                                                                                  #   and checkIfTrafficLightTime > moveTime
                 #if going left (ARROW #1)
                 if(self.actionType == 1):
