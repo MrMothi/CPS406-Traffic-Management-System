@@ -100,3 +100,5 @@ Normal View
         -Traffic and Pedestrian lights can be disabled (Will show the colour black and will not allow traffic through
         -Normal view is a simple view of the intersection without any admin tools and displays its current state
         -Any changes made by the admin can be seen within normal view
+      
+Final Note: "TestCases.py" tests backend, will only run if 2nd line within "TrafficSystem.py" is commented out, uncomment after testing is complete
